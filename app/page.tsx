@@ -21,10 +21,10 @@ const Home = () => {
       <div className="relative z-10 flex flex-col min-h-screen px-4 text-center">
 
         {/* --- Hero Section --- */}
-        <section className="max-w-4xl mx-auto px-6 md:px-12 py-20 md:py-28 flex-grow">
+        <section className="max-w-4xl mx-auto px-6 md:px-12 py-20 md:py-28 grow">
 
           {/* Logo / Title */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white trackin-wider">
             Repurfy
           </h1>
 
@@ -79,7 +79,7 @@ const Home = () => {
                 className="bg-linear-to-br from-slate-800/50 to-slate-900/50 border border-slate-700/50 rounded-xl p-3 backdrop-blur-sm hover:border-indigo-500/50 transition-colors"
               >
                 <div className="text-3xl mb-3">{feature.icon}</div>
-                <h3 className="text-lg text-white font-semibold mb-2">
+                <h3 className="text-white font-semibold mb-2">
                   {feature.label}
                 </h3>
                 <p className="text-gray-400 text-sm">{feature.desc}</p>
