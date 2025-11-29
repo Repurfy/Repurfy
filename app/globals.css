@@ -1,31 +1,231 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300..900&family=Lexend:wght@300..900&display=swap");
+
 
 @import "tailwindcss";
+@import "tw-animate-css";
 
+/* 1. Import Fonts: Inter & Lexend */
+
+/* 2. Custom Variant for Dark Mode */
+@custom-variant dark (&:is(.dark *));
+
+/* 3. CSS Variables (Theming) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* --- Light Theme (Clean, Professional Fallback) --- */
+  --background: oklch(0.98 0 0);
+  --foreground: oklch(0.12 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.12 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.12 0 0);
+  
+  /* Brand Purple/Blue as Primary in Light Mode */
+  --primary: oklch(0.45 0.19 260); /* Deep Blue/Purple */
+  --primary-foreground: oklch(1 0 0);
+  
+  --secondary: oklch(0.96 0.01 260);
+  --secondary-foreground: oklch(0.12 0 0);
+  --muted: oklch(0.92 0 0);
+  --muted-foreground: oklch(0.55 0 0);
+  --accent: oklch(0.96 0.01 260);
+  --accent-foreground: oklch(0.45 0.19 260);
+  
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.9 0 0);
+  --input: oklch(0.9 0 0);
+  --ring: oklch(0.45 0.19 260);
+  --radius: 0.625rem;
 
-  --font-body: "Inter", sans-serif;
-  --font-title: "Lexend", sans-serif;
+  /* Chart Colors */
+  --chart-1: oklch(0.5 0.22 260);
+  --chart-2: oklch(0.6 0.15 260);
+  --chart-3: oklch(0.7 0.1 260);
+  --chart-4: oklch(0.8 0.08 45);
+  --chart-5: oklch(0.75 0.12 120);
+
+  /* Sidebar */
+  --sidebar: oklch(0.98 0 0);
+  --sidebar-foreground: oklch(0.12 0 0);
+  --sidebar-primary: oklch(0.45 0.19 260);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.96 0.01 260);
+  --sidebar-accent-foreground: oklch(0.45 0.19 260);
+  --sidebar-border: oklch(0.9 0 0);
+  --sidebar-ring: oklch(0.45 0.19 260);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-body); /* ✅ MAIN FONT */
+.dark {
+  /* --- Repurfy Dark Theme (Midnight Blues & Neon Purples) --- */
+  
+  /* Base Background: Matches the darkest shade of your gradient (#0A0F1A) */
+  --background: oklch(0.15 0.04 265); 
+  --foreground: oklch(0.95 0 0);
+  
+  /* Cards: Slightly lighter midnight blue (#1A2439) */
+  --card: oklch(0.22 0.06 265);
+  --card-foreground: oklch(0.95 0 0);
+  
+  --popover: oklch(0.22 0.06 265);
+  --popover-foreground: oklch(0.95 0 0);
+  
+  /* Primary: Your Brand Purple (#7C3AED) */
+  --primary: oklch(0.58 0.23 290);
+  --primary-foreground: oklch(1 0 0);
+  
+  /* Secondary: Deep Navy */
+  --secondary: oklch(0.25 0.05 265);
+  --secondary-foreground: oklch(0.95 0 0);
+  
+  --muted: oklch(0.25 0.05 265);
+  --muted-foreground: oklch(0.7 0 0);
+  
+  /* Accent: Cyan (#22D3EE) for hover states or highlights */
+  --accent: oklch(0.75 0.18 220);
+  --accent-foreground: oklch(0.1 0.05 260);
+  
+  --destructive: oklch(0.6 0.2 25);
+  --destructive-foreground: oklch(0.95 0 0);
+  
+  /* Borders: Subtle blue-grey */
+  --border: oklch(0.3 0.05 260);
+  --input: oklch(0.25 0.05 260);
+  --ring: oklch(0.58 0.23 290);
+
+  /* Sidebar specific (matches dark card) */
+  --sidebar: oklch(0.15 0.04 265);
+  --sidebar-foreground: oklch(0.95 0 0);
+  --sidebar-primary: oklch(0.58 0.23 290);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.22 0.06 265);
+  --sidebar-accent-foreground: oklch(0.95 0 0);
+  --sidebar-border: oklch(0.3 0.05 260);
+  --sidebar-ring: oklch(0.58 0.23 290);
+  
+  /* Charts */
+  --chart-1: oklch(0.58 0.23 290); /* Purple */
+  --chart-2: oklch(0.55 0.25 260); /* Blue */
+  --chart-3: oklch(0.75 0.18 220); /* Cyan */
+  --chart-4: oklch(0.65 0.25 320); /* Pink */
+  --chart-5: oklch(0.75 0.12 120); /* Green */
 }
 
-h1,
-h2,
-h3,
-h4 {
-  font-family: var(--font-title); /* ✅ HEADINGS FONT */
+/* 4. Tailwind Theme Configuration */
+@theme inline {
+  /* Fonts */
+  --font-sans: "Inter", sans-serif;
+  --font-heading: "Lexend", sans-serif;
+
+  /* Semantic Colors (Mapped to Variables) */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  
+  /* Chart Colors */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Radius */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Sidebar */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* --- Custom Repurfy Specific Colors --- */
+  /* These allow you to recreate the exact background gradient */
+  --color-midnight-light: #202B4B;
+  --color-midnight-medium: #1A2439;
+  --color-midnight-dark: #0A0F1A;
+  --color-brand-purple: #7C3AED;
+  --color-brand-blue: #2563EB;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* 5. Base Styles */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+/* 6. Custom Utilities */
+@layer utilities {
+  /* Main background gradient from your design */
+  .bg-main-gradient {
+    @apply bg-linear-to-br from-midnight-light via-midnight-medium to-midnight-dark;
+  }
+
+  /* Text gradient (Next-Gen AI) */
+  .text-brand-gradient {
+    @apply bg-linear-to-r from-cyan-400 via-pink-400 to-brand-blue bg-clip-text text-transparent;
+  }
+
+  /* Button gradient */
+  .bg-btn-gradient {
+    @apply bg-linear-to-r from-brand-purple to-brand-blue hover:opacity-90;
+  }
+
+  /* Glassmorphism */
+  .glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+  
+  .glass-card {
+    @apply border border-slate-700/50 bg-linear-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm;
+  }
+
+  /* Effects */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  .glow {
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.3); /* Brand Purple Glow */
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
   }
 }

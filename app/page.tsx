@@ -2,10 +2,15 @@ import Image from 'next/image'
 import React from 'react'
 
 const Home = () => {
+  const currentYear = new Date().getFullYear()
+
   return (
-    <div className="min-h-screen overflow-hidden bg-linear-to-br from-[#202B4B] via-[#1A2439] to-[#0A0F1A]">
+    // 1. Replaced arbitrary gradient with the custom utility class
+    <div className="bg-main-gradient min-h-screen overflow-hidden">
       {/* --- Background Orbs --- */}
       <div className="pointer-events-none fixed inset-0">
+        {/* Note: Orbs use standard Tailwind colors (indigo, purple) 
+            which are already defined in the default v4 config. */}
         <div className="absolute top-0 left-1/4 h-96 w-96 animate-pulse rounded-full bg-indigo-600/20 blur-3xl"></div>
         <div
           className="absolute right-1/4 bottom-0 h-96 w-96 animate-pulse rounded-full bg-purple-600/20 blur-3xl"
@@ -24,7 +29,11 @@ const Home = () => {
           {/* Logo / Title */}
           <div className="mb-4 flex items-center justify-center gap-4">
             <Image src="/logo.svg" alt="logo" width={80} height={80} />
-            <h1 className="text-5xl font-semibold text-white sm:text-6xl"> Repurfy </h1>
+            {/* 2. Added font-heading for Lexend font on the main title */}
+            <h1 className="font-heading text-5xl font-semibold text-white sm:text-6xl">
+              {' '}
+              Repurfy{' '}
+            </h1>
           </div>
 
           {/* Coming Soon Tag */}
@@ -39,7 +48,8 @@ const Home = () => {
           {/* Subtitle */}
           <p className="mx-auto mb-10 max-w-2xl text-xl leading-relaxed text-slate-300 md:text-2xl">
             Bring your content to life on every platform—fuelled by our{' '}
-            <span className="bg-linear-to-r from-cyan-400 via-pink-400 to-blue-400 bg-clip-text text-3xl font-bold text-transparent">
+            {/* 3. Replaced arbitrary text gradient with the custom utility class */}
+            <span className="text-brand-gradient text-3xl font-bold">
               next-gen AI content engine.
             </span>
           </p>
@@ -49,7 +59,8 @@ const Home = () => {
             href="https://forms.gle/53BNApyitQJJdnCQ9"
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-xl bg-linear-to-r from-[#7C3AED] to-[#2563EB] px-7 py-3 font-semibold text-white shadow-lg transition hover:opacity-90"
+            // 4. Replaced arbitrary button gradient with the custom utility class
+            className="bg-btn-gradient rounded-xl px-7 py-3 font-semibold text-white shadow-lg transition"
           >
             Join Waitlist
           </a>
@@ -87,7 +98,7 @@ const Home = () => {
 
         {/* --- Footer --- */}
         <footer className="mb-6 text-sm text-slate-500">
-          &copy; {new Date().getFullYear()} Repurfy. All rights reserved.
+          &copy; {currentYear} Repurfy. All rights reserved.
         </footer>
       </div>
     </div>
