@@ -27,16 +27,16 @@ const Home = () => {
           {/* Logo / Title */}
           <div className="flex items-center justify-center gap-4 mb-4">
             <Image src="/logo.svg" alt="logo" width={80} height={80} />
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white trackin-wider"> Repurfy </h1>
+            <h1 className="text-5xl sm:text-6xl font-semibold text-white"> Repurfy </h1>
           </div>
 
           {/* Coming Soon Tag */}
           <div className="flex items-center justify-center gap-3 mt-4 mb-6">
-            <div className="h-px w-12 bg-linear-to-r from-transparent to-cyan-500"></div>
-            <p className="text-cyan-400 text-sm uppercase tracking-wider font-medium">
+            <div className="h-0.5 w-32 bg-linear-to-r from-transparent to-cyan-500"></div>
+            <p className="text-cyan-400 text-sm uppercase font-semibold tracking-wide">
               Coming Soon
             </p>
-            <div className="h-px w-12 bg-linear-to-l from-transparent to-cyan-500"></div>
+            <div className="h-0.5 w-32 bg-linear-to-l from-transparent to-cyan-500"></div>
           </div>
 
           {/* Subtitle */}
