@@ -1,16 +1,12 @@
 import Image from 'next/image'
-import React from 'react'
 
 const Home = () => {
   const currentYear = new Date().getFullYear()
 
   return (
-    // 1. Replaced arbitrary gradient with the custom utility class
-    <div className="bg-main-gradient min-h-screen overflow-hidden">
-      {/* --- Background Orbs --- */}
-      <div className="pointer-events-none fixed inset-0">
-        {/* Note: Orbs use standard Tailwind colors (indigo, purple) 
-            which are already defined in the default v4 config. */}
+    <div className="bg-bg-secondary dark:bg-main-gradient min-h-screen overflow-hidden">
+      {/* --- Background Orbs (Only visible in dark mode) --- */}
+      <div className="pointer-events-none fixed inset-0 opacity-0 dark:opacity-100">
         <div className="absolute top-0 left-1/4 h-96 w-96 animate-pulse rounded-full bg-indigo-600/20 blur-3xl"></div>
         <div
           className="absolute right-1/4 bottom-0 h-96 w-96 animate-pulse rounded-full bg-purple-600/20 blur-3xl"
@@ -25,30 +21,27 @@ const Home = () => {
       {/* --- Main Layout --- */}
       <div className="relative z-10 flex min-h-screen flex-col px-4 text-center">
         {/* --- Hero Section --- */}
-        <section className="mx-auto max-w-4xl grow px-6 py-20 md:px-12 md:py-28">
+        <section className="mx-auto max-w-4xl grow px-6 py-20 md:px-12 md:py-24">
           {/* Logo / Title */}
           <div className="mb-4 flex items-center justify-center gap-4">
             <Image src="/logo.svg" alt="logo" width={80} height={80} />
-            {/* 2. Added font-heading for Lexend font on the main title */}
-            <h1 className="font-heading text-5xl font-semibold text-white sm:text-6xl">
-              {' '}
-              Repurfy{' '}
+            <h1 className="font-heading text-brand-navy text-5xl font-semibold sm:text-6xl dark:text-white">
+              Repurfy
             </h1>
           </div>
 
           {/* Coming Soon Tag */}
           <div className="mt-4 mb-6 flex items-center justify-center gap-3">
-            <div className="h-0.5 w-32 bg-linear-to-r from-transparent to-cyan-500"></div>
-            <p className="text-sm font-semibold tracking-wide text-cyan-400 uppercase">
+            <div className="to-brand-teal h-0.5 w-32 bg-linear-to-r from-transparent"></div>
+            <p className="text-brand-teal text-sm font-semibold tracking-wide uppercase">
               Coming Soon
             </p>
-            <div className="h-0.5 w-32 bg-linear-to-l from-transparent to-cyan-500"></div>
+            <div className="to-brand-teal h-0.5 w-32 bg-linear-to-l from-transparent"></div>
           </div>
 
           {/* Subtitle */}
-          <p className="mx-auto mb-10 max-w-2xl text-xl leading-relaxed text-slate-300 md:text-2xl">
+          <p className="text-text-secondary mx-auto mb-10 max-w-2xl text-xl leading-relaxed md:text-2xl dark:text-slate-300">
             Bring your content to life on every platform—fuelled by our{' '}
-            {/* 3. Replaced arbitrary text gradient with the custom utility class */}
             <span className="text-brand-gradient text-3xl font-bold">
               next-gen AI content engine.
             </span>
@@ -59,8 +52,7 @@ const Home = () => {
             href="https://forms.gle/53BNApyitQJJdnCQ9"
             target="_blank"
             rel="noopener noreferrer"
-            // 4. Replaced arbitrary button gradient with the custom utility class
-            className="bg-btn-gradient rounded-xl px-7 py-3 font-semibold text-white shadow-lg transition"
+            className="bg-brand-gradient inline-block rounded-xl px-7 py-3 font-semibold text-white shadow-lg transition hover:scale-105 hover:shadow-xl"
           >
             Join Waitlist
           </a>
@@ -86,18 +78,20 @@ const Home = () => {
             ].map((feature, i) => (
               <div
                 key={i}
-                className="rounded-xl border border-slate-700/50 bg-linear-to-br from-slate-800/50 to-slate-900/50 p-3 backdrop-blur-sm transition-colors hover:border-indigo-500/50"
+                className="card-repurfy bg-surface-card border-border-subtle hover:border-brand-teal shadow-none dark:border-slate-700/50 dark:bg-slate-800/50 dark:hover:border-indigo-500/50"
               >
                 <div className="mb-3 text-3xl">{feature.icon}</div>
-                <h3 className="mb-2 font-semibold tracking-wide text-white">{feature.label}</h3>
-                <p className="text-sm text-gray-400">{feature.desc}</p>
+                <h3 className="text-text-primary mb-2 font-semibold tracking-wide dark:text-white">
+                  {feature.label}
+                </h3>
+                <p className="text-text-secondary text-sm dark:text-gray-400">{feature.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
         {/* --- Footer --- */}
-        <footer className="mb-6 text-sm text-slate-500">
+        <footer className="text-text-tertiary mb-6 text-sm dark:text-slate-500">
           &copy; {currentYear} Repurfy. All rights reserved.
         </footer>
       </div>

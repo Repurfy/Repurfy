@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300..900&family=Lexend:wght@300..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
 
 
 @import "tailwindcss";
@@ -9,105 +10,178 @@
 /* 2. Custom Variant for Dark Mode */
 @custom-variant dark (&:is(.dark *));
 
-/* 3. CSS Variables (Theming) */
+/* 3. CSS Variables (Theming) - Repurfy Brand Colors */
 :root {
-  /* --- Light Theme (Clean, Professional Fallback) --- */
-  --background: oklch(0.98 0 0);
-  --foreground: oklch(0.12 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.12 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.12 0 0);
+  /* === LIGHT MODE - Clean & Professional === */
   
-  /* Brand Purple/Blue as Primary in Light Mode */
-  --primary: oklch(0.45 0.19 260); /* Deep Blue/Purple */
-  --primary-foreground: oklch(1 0 0);
+  /* Base Colors */
+  --bg-primary: oklch(0.99 0 0);              /* Pure white background */
+  --bg-secondary: oklch(0.97 0.005 220);      /* Soft off-white */
+  --text-primary: oklch(0.20 0.02 240);       /* Deep navy text */
+  --text-secondary: oklch(0.50 0.01 240);     /* Muted gray text */
+  --text-tertiary: oklch(0.65 0.01 240);      /* Light gray text */
   
-  --secondary: oklch(0.96 0.01 260);
-  --secondary-foreground: oklch(0.12 0 0);
-  --muted: oklch(0.92 0 0);
-  --muted-foreground: oklch(0.55 0 0);
-  --accent: oklch(0.96 0.01 260);
-  --accent-foreground: oklch(0.45 0.19 260);
+  /* Brand Colors - From Logo */
+  --brand-navy: oklch(0.25 0.06 240);         /* Deep navy #2B3A5C */
+  --brand-teal: oklch(0.65 0.12 180);         /* Medium teal #5FB89A */
+  --brand-blue: oklch(0.60 0.15 240);         /* Vibrant blue #5B8FC9 */
+  --brand-cyan: oklch(0.70 0.10 200);         /* Light cyan/turquoise */
   
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.9 0 0);
-  --input: oklch(0.9 0 0);
-  --ring: oklch(0.45 0.19 260);
-  --radius: 0.625rem;
-
+  /* Accent Colors */
+  --accent-teal-light: oklch(0.85 0.08 180);  /* Soft teal for hover states */
+  --accent-blue-light: oklch(0.90 0.08 240);  /* Soft blue backgrounds */
+  --accent-gradient-start: oklch(0.65 0.12 180); /* Teal gradient start */
+  --accent-gradient-end: oklch(0.60 0.15 240);   /* Blue gradient end */
+  
+  /* UI Elements */
+  --surface-card: oklch(1 0 0);               /* White cards */
+  --surface-elevated: oklch(0.98 0.005 220);  /* Slightly elevated surfaces */
+  --border-subtle: oklch(0.92 0.005 240);     /* Light borders */
+  --border-medium: oklch(0.85 0.01 240);      /* Medium borders */
+  --border-strong: oklch(0.75 0.02 240);      /* Strong borders */
+  
+  /* Interactive States */
+  --interactive-primary: var(--brand-teal);
+  --interactive-primary-hover: oklch(0.58 0.14 180);
+  --interactive-primary-active: oklch(0.52 0.15 180);
+  --interactive-secondary: var(--brand-blue);
+  --interactive-secondary-hover: oklch(0.55 0.17 240);
+  
+  /* Status Colors */
+  --status-success: oklch(0.60 0.15 150);     /* Green */
+  --status-success-bg: oklch(0.95 0.05 150);
+  --status-warning: oklch(0.70 0.15 70);      /* Amber */
+  --status-warning-bg: oklch(0.95 0.05 70);
+  --status-error: oklch(0.55 0.22 25);        /* Red */
+  --status-error-bg: oklch(0.95 0.08 25);
+  --status-info: var(--brand-blue);
+  --status-info-bg: var(--accent-blue-light);
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(43, 58, 92, 0.08);
+  --shadow-md: 0 4px 12px rgba(43, 58, 92, 0.10);
+  --shadow-lg: 0 8px 24px rgba(43, 58, 92, 0.12);
+  --shadow-xl: 0 16px 48px rgba(43, 58, 92, 0.15);
+  
+  /* Legacy Tailwind Compatibility */
+  --background: var(--bg-primary);
+  --foreground: var(--text-primary);
+  --card: var(--surface-card);
+  --card-foreground: var(--text-primary);
+  --popover: var(--surface-card);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--brand-teal);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: var(--accent-blue-light);
+  --secondary-foreground: var(--brand-navy);
+  --muted: oklch(0.96 0.005 240);
+  --muted-foreground: var(--text-secondary);
+  --accent: var(--accent-teal-light);
+  --accent-foreground: var(--brand-navy);
+  --destructive: var(--status-error);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: var(--border-subtle);
+  --input: var(--surface-elevated);
+  --ring: var(--brand-teal);
+  --radius: 0.75rem;
+  
   /* Chart Colors */
-  --chart-1: oklch(0.5 0.22 260);
-  --chart-2: oklch(0.6 0.15 260);
-  --chart-3: oklch(0.7 0.1 260);
-  --chart-4: oklch(0.8 0.08 45);
-  --chart-5: oklch(0.75 0.12 120);
-
-  /* Sidebar */
-  --sidebar: oklch(0.98 0 0);
-  --sidebar-foreground: oklch(0.12 0 0);
-  --sidebar-primary: oklch(0.45 0.19 260);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.96 0.01 260);
-  --sidebar-accent-foreground: oklch(0.45 0.19 260);
-  --sidebar-border: oklch(0.9 0 0);
-  --sidebar-ring: oklch(0.45 0.19 260);
+  --chart-1: var(--brand-teal);
+  --chart-2: var(--brand-blue);
+  --chart-3: var(--brand-cyan);
+  --chart-4: var(--brand-navy);
+  --chart-5: oklch(0.75 0.12 160);
 }
 
 .dark {
-  /* --- Repurfy Dark Theme (Midnight Blues & Neon Purples) --- */
+  /* === DARK MODE - Premium & Modern === */
   
-  /* Base Background: Matches the darkest shade of your gradient (#0A0F1A) */
-  --background: oklch(0.15 0.04 265); 
-  --foreground: oklch(0.95 0 0);
+  /* Base Colors */
+  --bg-primary: oklch(0.15 0.04 240);         /* Deep navy background */
+  --bg-secondary: oklch(0.18 0.04 240);       /* Slightly lighter navy */
+  --text-primary: oklch(0.97 0.005 220);      /* Almost white text */
+  --text-secondary: oklch(0.75 0.01 220);     /* Light gray text */
+  --text-tertiary: oklch(0.60 0.01 220);      /* Muted gray text */
   
-  /* Cards: Slightly lighter midnight blue (#1A2439) */
-  --card: oklch(0.22 0.06 265);
-  --card-foreground: oklch(0.95 0 0);
+  /* Brand Colors - Enhanced for Dark Mode */
+  --brand-navy: oklch(0.22 0.06 240);         /* Lighter navy for surfaces */
+  --brand-teal: oklch(0.70 0.14 180);         /* Brighter teal #6ECFAE */
+  --brand-blue: oklch(0.65 0.17 240);         /* Brighter blue #6BA0E0 */
+  --brand-cyan: oklch(0.75 0.12 200);         /* Bright cyan/turquoise */
   
-  --popover: oklch(0.22 0.06 265);
-  --popover-foreground: oklch(0.95 0 0);
+  /* Accent Colors */
+  --accent-teal-light: oklch(0.28 0.08 180);  /* Dark teal for backgrounds */
+  --accent-blue-light: oklch(0.25 0.08 240);  /* Dark blue backgrounds */
+  --accent-gradient-start: oklch(0.70 0.14 180); /* Teal gradient start */
+  --accent-gradient-end: oklch(0.65 0.17 240);   /* Blue gradient end */
   
-  /* Primary: Your Brand Purple (#7C3AED) */
-  --primary: oklch(0.58 0.23 290);
-  --primary-foreground: oklch(1 0 0);
+  /* UI Elements */
+  --surface-card: oklch(0.20 0.05 240);       /* Elevated navy cards */
+  --surface-elevated: oklch(0.23 0.05 240);   /* More elevated surfaces */
+  --border-subtle: oklch(0.28 0.04 240);      /* Subtle borders */
+  --border-medium: oklch(0.35 0.04 240);      /* Medium borders */
+  --border-strong: oklch(0.45 0.04 240);      /* Strong borders */
   
-  /* Secondary: Deep Navy */
-  --secondary: oklch(0.25 0.05 265);
-  --secondary-foreground: oklch(0.95 0 0);
+  /* Interactive States */
+  --interactive-primary: var(--brand-teal);
+  --interactive-primary-hover: oklch(0.75 0.16 180);
+  --interactive-primary-active: oklch(0.68 0.18 180);
+  --interactive-secondary: var(--brand-blue);
+  --interactive-secondary-hover: oklch(0.70 0.19 240);
   
-  --muted: oklch(0.25 0.05 265);
-  --muted-foreground: oklch(0.7 0 0);
+  /* Status Colors */
+  --status-success: oklch(0.68 0.16 150);     /* Bright green */
+  --status-success-bg: oklch(0.25 0.08 150);
+  --status-warning: oklch(0.75 0.16 70);      /* Bright amber */
+  --status-warning-bg: oklch(0.25 0.08 70);
+  --status-error: oklch(0.60 0.22 25);        /* Bright red */
+  --status-error-bg: oklch(0.25 0.10 25);
+  --status-info: var(--brand-blue);
+  --status-info-bg: var(--accent-blue-light);
   
-  /* Accent: Cyan (#22D3EE) for hover states or highlights */
-  --accent: oklch(0.75 0.18 220);
-  --accent-foreground: oklch(0.1 0.05 260);
+  /* Shadows - Enhanced with glow */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.7);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.8);
+  --glow-teal: 0 0 20px rgba(110, 207, 174, 0.3);
+  --glow-blue: 0 0 20px rgba(107, 160, 224, 0.3);
   
-  --destructive: oklch(0.6 0.2 25);
-  --destructive-foreground: oklch(0.95 0 0);
+  /* Legacy Tailwind Compatibility */
+  --background: var(--bg-primary);
+  --foreground: var(--text-primary);
+  --card: var(--surface-card);
+  --card-foreground: var(--text-primary);
+  --popover: var(--surface-card);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--brand-teal);
+  --primary-foreground: oklch(0.15 0.04 240);
+  --secondary: var(--accent-blue-light);
+  --secondary-foreground: var(--text-primary);
+  --muted: oklch(0.24 0.04 240);
+  --muted-foreground: var(--text-secondary);
+  --accent: var(--accent-teal-light);
+  --accent-foreground: var(--text-primary);
+  --destructive: var(--status-error);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: var(--border-subtle);
+  --input: var(--bg-secondary);
+  --ring: var(--brand-teal);
   
-  /* Borders: Subtle blue-grey */
-  --border: oklch(0.3 0.05 260);
-  --input: oklch(0.25 0.05 260);
-  --ring: oklch(0.58 0.23 290);
+  /* Chart Colors - Brighter for dark mode */
+  --chart-1: var(--brand-teal);
+  --chart-2: var(--brand-blue);
+  --chart-3: var(--brand-cyan);
+  --chart-4: oklch(0.55 0.12 280);
+  --chart-5: oklch(0.75 0.14 160);
+}
 
-  /* Sidebar specific (matches dark card) */
-  --sidebar: oklch(0.15 0.04 265);
-  --sidebar-foreground: oklch(0.95 0 0);
-  --sidebar-primary: oklch(0.58 0.23 290);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.22 0.06 265);
-  --sidebar-accent-foreground: oklch(0.95 0 0);
-  --sidebar-border: oklch(0.3 0.05 260);
-  --sidebar-ring: oklch(0.58 0.23 290);
-  
-  /* Charts */
-  --chart-1: oklch(0.58 0.23 290); /* Purple */
-  --chart-2: oklch(0.55 0.25 260); /* Blue */
-  --chart-3: oklch(0.75 0.18 220); /* Cyan */
-  --chart-4: oklch(0.65 0.25 320); /* Pink */
-  --chart-5: oklch(0.75 0.12 120); /* Green */
+body{
+  background-color: var(--bg-secondary);
+}
+
+dark body{
+  background-color: var(--main-gradient);
 }
 
 /* 4. Tailwind Theme Configuration */
@@ -115,14 +189,45 @@
   /* Fonts */
   --font-sans: "Inter", sans-serif;
   --font-heading: "Lexend", sans-serif;
+  --font-ai: "Sora", sans-serif;
 
-  /* Semantic Colors (Mapped to Variables) */
+
+  /* Container Configuration */
+  --container-center: true;
+  --container-padding: 1rem;
+  --container-padding-sm: 1.5rem;
+  --container-padding-md: 2rem;
+  --container-padding-lg: 2.5rem;
+  --container-padding-xl: 3rem;
+  --container-padding-2xl: 4rem;
+
+  /* Semantic Colors - Map to variables */
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-teal: var(--brand-teal);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-cyan: var(--brand-cyan);
+  
+  --color-surface-card: var(--surface-card);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-medium: var(--border-medium);
+  --color-border-strong: var(--border-strong);
+  
+  --color-interactive-primary: var(--interactive-primary);
+  --color-interactive-primary-hover: var(--interactive-primary-hover);
+  --color-interactive-secondary: var(--interactive-secondary);
+  
+  /* Legacy compatibility */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
@@ -132,12 +237,9 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
-  --color-input: var(--input);
   --color-ring: var(--ring);
   
-  /* Chart Colors */
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -149,83 +251,351 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-
-  /* Sidebar */
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-
-  /* --- Custom Repurfy Specific Colors --- */
-  /* These allow you to recreate the exact background gradient */
-  --color-midnight-light: #202B4B;
-  --color-midnight-medium: #1A2439;
-  --color-midnight-dark: #0A0F1A;
-  --color-brand-purple: #7C3AED;
-  --color-brand-blue: #2563EB;
+  --radius-2xl: calc(var(--radius) + 8px);
 }
 
 /* 5. Base Styles */
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--border-subtle);
+    outline-color: rgb(var(--ring) / 0.5);
   }
+
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--interactive-primary);
+    outline-offset: 2px;
+  }
+
+  /* Container Fix */
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
+  }
+
+  @media (min-width: 640px) {
+    .container {
+      max-width: 640px;
+      padding-left: var(--container-padding-sm);
+      padding-right: var(--container-padding-sm);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .container {
+      max-width: 768px;
+      padding-left: var(--container-padding-md);
+      padding-right: var(--container-padding-md);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      max-width: 1024px;
+      padding-left: var(--container-padding-lg);
+      padding-right: var(--container-padding-lg);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .container {
+      max-width: 1280px;
+      padding-left: var(--container-padding-xl);
+      padding-right: var(--container-padding-xl);
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .container {
+      max-width: 1536px;
+      padding-left: var(--container-padding-2xl);
+      padding-right: var(--container-padding-2xl);
+    }
   }
 }
 
-/* 6. Custom Utilities */
+/* 6. Custom Component Utilities */
 @layer utilities {
-  /* Main background gradient from your design */
-  .bg-main-gradient {
-    @apply bg-linear-to-br from-midnight-light via-midnight-medium to-midnight-dark;
+  /* Brand Gradients */
+  .bg-brand-gradient {
+    background: linear-gradient(135deg, var(--brand-teal), var(--brand-blue));
   }
 
-  /* Text gradient (Next-Gen AI) */
+  .bg-brand-gradient-reverse {
+    background: linear-gradient(135deg, var(--brand-blue), var(--brand-teal));
+  }
+
+  .bg-brand-gradient-soft {
+    background: linear-gradient(135deg, var(--accent-teal-light), var(--accent-blue-light));
+  }
+
+  /* Text Gradients */
   .text-brand-gradient {
-    @apply bg-linear-to-r from-cyan-400 via-pink-400 to-brand-blue bg-clip-text text-transparent;
+    background: linear-gradient(135deg, var(--brand-teal), var(--brand-blue), var(--brand-cyan));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% auto;
   }
 
-  /* Button gradient */
-  .bg-btn-gradient {
-    @apply bg-linear-to-r from-brand-purple to-brand-blue hover:opacity-90;
+  .text-gradient-teal-blue {
+    background: linear-gradient(135deg, var(--brand-teal), var(--brand-blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
-  /* Glassmorphism */
+  /* Glass Effects (Dark Mode) */
   .glass {
-    @apply bg-white/10 backdrop-blur-md border border-white/20;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
   }
   
   .glass-card {
-    @apply border border-slate-700/50 bg-linear-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+    backdrop-filter: blur(12px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  /* Effects */
+  .glass-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-hover:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(110, 207, 174, 0.4);
+    transform: translateY(-2px);
+  }
+
+  /* Buttons */
+  .btn-primary {
+    background: var(--interactive-primary);
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-lg);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-primary:hover {
+    background: var(--interactive-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .btn-gradient {
+    background: linear-gradient(135deg, var(--brand-teal), var(--brand-blue));
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-lg);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    filter: brightness(1.1);
+  }
+
+  .btn-secondary {
+    background: var(--surface-elevated);
+    color: var(--text-primary);
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-medium);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn-secondary:hover {
+    background: var(--surface-card);
+    border-color: var(--interactive-primary);
+    transform: translateY(-1px);
+  }
+
+  /* Cards */
+  .card-repurfy {
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-repurfy:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+    border-color: var(--interactive-primary);
+  }
+
+  .card-interactive {
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-interactive:hover {
+    background: var(--surface-elevated);
+    border-color: var(--interactive-primary);
+  }
+
+  /* Badges */
+  .badge-success {
+    background: var(--status-success-bg);
+    color: var(--status-success);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .badge-warning {
+    background: var(--status-warning-bg);
+    color: var(--status-warning);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .badge-error {
+    background: var(--status-error-bg);
+    color: var(--status-error);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .badge-info {
+    background: var(--status-info-bg);
+    color: var(--status-info);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .badge-teal {
+    background: var(--brand-teal);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  /* Glow Effects (Dark Mode) */
+  .glow-teal {
+    box-shadow: var(--glow-teal);
+  }
+
+  .glow-blue {
+    box-shadow: var(--glow-blue);
+  }
+
+  .glow-hover {
+    transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glow-hover:hover {
+    box-shadow: 0 0 30px rgba(110, 207, 174, 0.5);
+  }
+
+  /* Animations */
   .shimmer {
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(255, 255, 255, 0.2) 50%,
+      rgba(110, 207, 174, 0.3) 50%,
       transparent 100%
     );
     background-size: 200% 100%;
-    animation: shimmer 2s infinite;
+    animation: shimmer 2.5s infinite linear;
+    z-index: 1;
   }
-
-  .glow {
-    box-shadow: 0 0 20px rgba(124, 58, 237, 0.3); /* Brand Purple Glow */
-  }
-
+  
   @keyframes shimmer {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
+  }
+
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .fade-in-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fade-in-up 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes fade-in-up {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Link Styles */
+  .link:hover {
+    font-weight: 500;
+    color: var(--interactive-primary-hover);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+}
+
+/* 7. Dark Mode Enhancements */
+.dark {
+  .card-repurfy {
+    box-shadow: var(--shadow-lg), var(--glow-teal);
+  }
+
+  .card-repurfy:hover {
+    box-shadow: var(--shadow-xl), 0 0 30px rgba(110, 207, 174, 0.4);
+  }
+
+  .btn-primary:hover {
+    box-shadow: var(--shadow-lg), var(--glow-teal);
+  }
+
+  .btn-gradient:hover {
+    box-shadow: var(--shadow-lg), var(--glow-blue);
   }
 }

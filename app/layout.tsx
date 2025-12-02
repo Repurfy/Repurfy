@@ -1,10 +1,16 @@
 import type { Metadata } from 'next'
-// import { Geist, Geist_Mono } from "next/font/google";
 import { Lexend, Inter } from 'next/font/google'
+import { Providers } from './providers'
 import './globals.css'
 
+export const metadata: Metadata = {
+  title: 'Repurfy',
+  description:
+    'Create once. Publish everywhere. AI that repurposes your long-form content into platform-ready posts.',
+}
+
 const lexend = Lexend({
-  variable: '--font-lexned',
+  variable: '--font-lexend',
   subsets: ['latin'],
   weight: ['200', '300', '400', '500', '600', '700', '800', '900'],
 })
@@ -15,20 +21,12 @@ const inter = Inter({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 })
 
-export const metadata: Metadata = {
-  title: 'Repurfy',
-  description:
-    'Create once. Publish everywhere. AI that repurposes your long-form content into platform-ready posts.',
-}
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${lexend.variable} ${inter.variable} antialiased`}>{children}</body>
+    <html lang="en" suppressHydrationWarning className={`${lexend.variable} ${inter.variable}`}>
+      <body className="antialiased">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   )
 }
