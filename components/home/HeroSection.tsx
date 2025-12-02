@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from '../ui/button'
 import { Badge } from '../ui/badge'
-import { Check, Sparkles } from 'lucide-react'
+import { ArrowRightIcon, Check, Sparkles } from 'lucide-react'
 
 const HeroSection = () => {
   const featureArray = ['Auto Captioning', 'AI Hooks', 'Hashtag Generation']
@@ -9,22 +9,22 @@ const HeroSection = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-3 py-20 text-center">
       {/* <h1>Badge Content</h1> */}
-      <div className="from-brand-blue via-brand-teal to-brand-purple relative rounded-full bg-linear-to-r p-0.5">
-        <Badge className="bg-brand-gradient-reverse relative overflow-hidden rounded-full px-4 py-2 text-sm font-semibold text-white">
-          <span className="shimmer pointer-events-none absolute inset-0"></span>
+      <div className="from-brand-blue via-brand-teal to-brand-purple relative mt-12 mb-3 rounded-full bg-linear-to-r p-0.5">
+        <Badge className="shimmer bg-brand-gradient-reverse relative overflow-hidden rounded-full px-4 py-2 text-sm font-semibold text-white">
+          <span className="pointer-events-none absolute inset-0"></span>
           <span className="flex items-center gap-1">
-            <Sparkles className="h-4 w-4 text-yellow-500" />
+            <Sparkles className="h-4! w-4!" />
             AI‑Powered Content Repurposing
           </span>
         </Badge>
       </div>
 
-      <h1 className="font-ai text-2xl leading-8 font-semibold sm:text-5xl sm:leading-16 lg:text-7xl lg:leading-22">
+      <h1 className="font-ai text-2xl leading-10 font-semibold sm:text-5xl sm:leading-16 lg:text-7xl lg:leading-22">
         Create Once. <br />
         Publish Everywhere.
       </h1>
 
-      <p className="text-text-secondary max-w-3xl sm:text-xl">
+      <p className="text-text-secondary max-w-lg sm:max-w-3xl sm:text-xl">
         One post. Endless content. Instantly optimized for every platform. Stop creating more —
         repurpose smarter with AI
       </p>
@@ -42,12 +42,14 @@ const HeroSection = () => {
       </div>
 
       <div className="mt-10 flex gap-4 lg:gap-8">
-        <Button className="bg-brand-gradient-reverse dark:text-text-primary rounded-xl px-6 py-3 font-semibold">
-          Start for Free
+        <Button className="shimmer group bg-brand-gradient-reverse dark:text-text-primary focus:ring-brand-blue/30 flex w-[200px] items-center justify-center gap-2 rounded-full px-6 py-5 text-[16px] font-semibold transition-all hover:scale-[1.02] focus:ring-4 focus:outline-none active:scale-95">
+          Try Repurfy
+          <ArrowRightIcon className="transition-transform duration-200 group-hover:translate-x-1" />
         </Button>
-        <Button variant="outline" className="bg-card rounded-xl px-6 py-3 font-semibold">
+
+        {/* <Button variant="outline" className="bg-card rounded-xl px-6 py-3 font-semibold">
           Watch Demo
-        </Button>
+        </Button> */}
       </div>
     </div>
   )

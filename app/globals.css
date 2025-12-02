@@ -367,31 +367,73 @@ dark body{
   }
 
   /* Glass Effects (Dark Mode) */
+  /* Shared base styles */
   .glass {
-    background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-subtle);
   }
   
+  /* Light mode */
+  :root .glass {
+    background: rgba(255, 255, 255, 0.6); /* Light glass */
+    border-color: rgba(0, 0, 0, 0.06);    /* Subtle dark border */
+  }
+  
+  /* Dark mode */
+  .dark .glass {
+    background: rgba(255, 255, 255, 0.08); /* Soft white glow in dark backgrounds */
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+  
+  /* Card Variant */
   .glass-card {
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    border-radius: var(--radius-xl);
+    transition: all 0.3s ease;
+  }
+  
+  /* Light mode card */
+  :root .glass-card {
     background: linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.1) 0%,
-      rgba(255, 255, 255, 0.05) 100%
+      rgba(0, 0, 0, 0.05),
+      rgba(0, 0, 0, 0.02)
     );
-    backdrop-filter: blur(12px) saturate(150%);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  
+  /* Dark mode card */
+  .dark .glass-card {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.05)
+    );
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
-
+  
+  /* Hover variant */
   .glass-hover {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
   }
-
-  .glass-hover:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(110, 207, 174, 0.4);
+  
+  /* Light mode hover */
+  :root .glass-hover:hover {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: var(--interactive-primary);
     transform: translateY(-2px);
   }
+  
+  /* Dark mode hover */
+  .dark .glass-hover:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(110, 207, 174, 0.4); /* teal glow */
+    transform: translateY(-2px);
+  }
+  
 
   /* Buttons */
   .btn-primary {
@@ -533,23 +575,36 @@ dark body{
 
   /* Animations */
   .shimmer {
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+  }
+  
+  .shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(110, 207, 174, 0.3) 50%,
+      rgba(110, 207, 174, 0.4) 50%,
       transparent 100%
     );
-    background-size: 200% 100%;
-    animation: shimmer 2.5s infinite linear;
-    z-index: 1;
+    background-size: 300% 100%;
+    animation: shimmer 3.8s linear infinite;
+    z-index: -1; /* ⭐ FIX: place behind text */
   }
   
   @keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+    0% {
+      background-position: -150% 0;
+    }
+    100% {
+      background-position: 150% 0;
+    }
   }
-
-
+  
+  
   @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
