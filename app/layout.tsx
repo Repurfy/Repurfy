@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Lexend, Inter } from 'next/font/google'
 import { Providers } from './providers'
 import './globals.css'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 export const metadata: Metadata = {
   title: 'Repurfy',
@@ -26,6 +27,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning className={`${lexend.variable} ${inter.variable}`}>
       <body className="antialiased">
         <Providers>{children}</Providers>
+
+        <SpeedInsights />
       </body>
     </html>
   )
