@@ -87,7 +87,7 @@ const ImpFeatures = () => {
             variants={fadeUp(index * 0.1)}
           >
             <Card className="bg-surface-card border-border-subtle hover:border-brand-teal flex border-2 p-5 shadow-none transition-all duration-300 sm:p-6 dark:border-slate-700/50 dark:bg-slate-800/50 dark:hover:border-teal-500/50 dark:hover:shadow-[0_15px_45px_rgba(99,102,241,0.25)]">
-              <div className="p-6">
+              <div className="p-6 text-left">
                 <div className="bg-brand-teal/10 text-brand-teal mb-4 flex h-12 w-12 items-center justify-center rounded-full">
                   {item.icon}
                 </div>
