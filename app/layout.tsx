@@ -24,7 +24,11 @@ const inter = Inter({
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${lexend.variable} ${inter.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning={true}
+      className={`${lexend.variable} ${inter.variable}`}
+    >
       <body className="antialiased">
         <Providers>{children}</Providers>
 

@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300..900&family=Lexend:wght@300..900&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
 
-
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -13,40 +12,40 @@
 /* 3. CSS Variables (Theming) - Repurfy Brand Colors */
 :root {
   /* === LIGHT MODE - Clean & Professional === */
-  
+
   /* Base Colors */
   --bg-primary: oklch(0.99 0 0);              /* Pure white background */
   --bg-secondary: oklch(0.97 0.005 220);      /* Soft off-white */
   --text-primary: oklch(0.20 0.02 240);       /* Deep navy text */
   --text-secondary: oklch(0.50 0.01 240);     /* Muted gray text */
   --text-tertiary: oklch(0.65 0.01 240);      /* Light gray text */
-  
+
   /* Brand Colors - From Logo */
   --brand-navy: oklch(0.25 0.06 240);         /* Deep navy #2B3A5C */
   --brand-teal: oklch(0.65 0.12 180);         /* Medium teal #5FB89A */
   --brand-blue: oklch(0.60 0.15 240);         /* Vibrant blue #5B8FC9 */
   --brand-cyan: oklch(0.70 0.10 200);         /* Light cyan/turquoise */
-  
+
   /* Accent Colors */
   --accent-teal-light: oklch(0.85 0.08 180);  /* Soft teal for hover states */
   --accent-blue-light: oklch(0.90 0.08 240);  /* Soft blue backgrounds */
   --accent-gradient-start: oklch(0.65 0.12 180); /* Teal gradient start */
   --accent-gradient-end: oklch(0.60 0.15 240);   /* Blue gradient end */
-  
+
   /* UI Elements */
   --surface-card: oklch(1 0 0);               /* White cards */
   --surface-elevated: oklch(0.98 0.005 220);  /* Slightly elevated surfaces */
   --border-subtle: oklch(0.92 0.005 240);     /* Light borders */
   --border-medium: oklch(0.85 0.01 240);      /* Medium borders */
   --border-strong: oklch(0.75 0.02 240);      /* Strong borders */
-  
+
   /* Interactive States */
   --interactive-primary: var(--brand-teal);
   --interactive-primary-hover: oklch(0.58 0.14 180);
   --interactive-primary-active: oklch(0.52 0.15 180);
   --interactive-secondary: var(--brand-blue);
   --interactive-secondary-hover: oklch(0.55 0.17 240);
-  
+
   /* Status Colors */
   --status-success: oklch(0.60 0.15 150);     /* Green */
   --status-success-bg: oklch(0.95 0.05 150);
@@ -56,13 +55,13 @@
   --status-error-bg: oklch(0.95 0.08 25);
   --status-info: var(--brand-blue);
   --status-info-bg: var(--accent-blue-light);
-  
+
   /* Shadows */
   --shadow-sm: 0 1px 2px rgba(43, 58, 92, 0.08);
   --shadow-md: 0 4px 12px rgba(43, 58, 92, 0.10);
   --shadow-lg: 0 8px 24px rgba(43, 58, 92, 0.12);
   --shadow-xl: 0 16px 48px rgba(43, 58, 92, 0.15);
-  
+
   /* Legacy Tailwind Compatibility */
   --background: var(--bg-primary);
   --foreground: var(--text-primary);
@@ -84,51 +83,59 @@
   --input: var(--surface-elevated);
   --ring: var(--brand-teal);
   --radius: 0.75rem;
-  
+
   /* Chart Colors */
   --chart-1: var(--brand-teal);
   --chart-2: var(--brand-blue);
   --chart-3: var(--brand-cyan);
   --chart-4: var(--brand-navy);
   --chart-5: oklch(0.75 0.12 160);
+  --sidebar: hsl(0 0% 98%);
+  --sidebar-foreground: hsl(240 5.3% 26.1%);
+  --sidebar-primary: hsl(240 5.9% 10%);
+  --sidebar-primary-foreground: hsl(0 0% 98%);
+  --sidebar-accent: hsl(240 4.8% 95.9%);
+  --sidebar-accent-foreground: hsl(240 5.9% 10%);
+  --sidebar-border: hsl(220 13% 91%);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
 }
 
 .dark {
   /* === DARK MODE - Premium & Modern === */
-  
+
   /* Base Colors */
   --bg-primary: oklch(0.15 0.04 240);         /* Deep navy background */
   --bg-secondary: oklch(0.18 0.04 240);       /* Slightly lighter navy */
   --text-primary: oklch(0.97 0.005 220);      /* Almost white text */
   --text-secondary: oklch(0.75 0.01 220);     /* Light gray text */
   --text-tertiary: oklch(0.60 0.01 220);      /* Muted gray text */
-  
+
   /* Brand Colors - Enhanced for Dark Mode */
   --brand-navy: oklch(0.22 0.06 240);         /* Lighter navy for surfaces */
   --brand-teal: oklch(0.70 0.14 180);         /* Brighter teal #6ECFAE */
   --brand-blue: oklch(0.65 0.17 240);         /* Brighter blue #6BA0E0 */
   --brand-cyan: oklch(0.75 0.12 200);         /* Bright cyan/turquoise */
-  
+
   /* Accent Colors */
   --accent-teal-light: oklch(0.28 0.08 180);  /* Dark teal for backgrounds */
   --accent-blue-light: oklch(0.25 0.08 240);  /* Dark blue backgrounds */
   --accent-gradient-start: oklch(0.70 0.14 180); /* Teal gradient start */
   --accent-gradient-end: oklch(0.65 0.17 240);   /* Blue gradient end */
-  
+
   /* UI Elements */
   --surface-card: oklch(0.20 0.05 240);       /* Elevated navy cards */
   --surface-elevated: oklch(0.23 0.05 240);   /* More elevated surfaces */
   --border-subtle: oklch(0.28 0.04 240);      /* Subtle borders */
   --border-medium: oklch(0.35 0.04 240);      /* Medium borders */
   --border-strong: oklch(0.45 0.04 240);      /* Strong borders */
-  
+
   /* Interactive States */
   --interactive-primary: var(--brand-teal);
   --interactive-primary-hover: oklch(0.75 0.16 180);
   --interactive-primary-active: oklch(0.68 0.18 180);
   --interactive-secondary: var(--brand-blue);
   --interactive-secondary-hover: oklch(0.70 0.19 240);
-  
+
   /* Status Colors */
   --status-success: oklch(0.68 0.16 150);     /* Bright green */
   --status-success-bg: oklch(0.25 0.08 150);
@@ -138,7 +145,7 @@
   --status-error-bg: oklch(0.25 0.10 25);
   --status-info: var(--brand-blue);
   --status-info-bg: var(--accent-blue-light);
-  
+
   /* Shadows - Enhanced with glow */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.6);
@@ -146,7 +153,7 @@
   --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.8);
   --glow-teal: 0 0 20px rgba(110, 207, 174, 0.3);
   --glow-blue: 0 0 20px rgba(107, 160, 224, 0.3);
-  
+
   /* Legacy Tailwind Compatibility */
   --background: var(--bg-primary);
   --foreground: var(--text-primary);
@@ -167,13 +174,21 @@
   --border: var(--border-subtle);
   --input: var(--bg-secondary);
   --ring: var(--brand-teal);
-  
+
   /* Chart Colors - Brighter for dark mode */
   --chart-1: var(--brand-teal);
   --chart-2: var(--brand-blue);
   --chart-3: var(--brand-cyan);
   --chart-4: oklch(0.55 0.12 280);
   --chart-5: oklch(0.75 0.14 160);
+  --sidebar: hsl(240 5.9% 10%);
+  --sidebar-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-primary: hsl(224.3 76.3% 48%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(240 3.7% 15.9%);
+  --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-border: hsl(240 3.7% 15.9%);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
 }
 
 body{
@@ -191,7 +206,6 @@ dark body{
   --font-heading: "Lexend", sans-serif;
   --font-ai: "Sora", sans-serif;
 
-
   /* Container Configuration */
   --container-center: true;
   --container-padding: 1rem;
@@ -207,22 +221,22 @@ dark body{
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-tertiary: var(--text-tertiary);
-  
+
   --color-brand-navy: var(--brand-navy);
   --color-brand-teal: var(--brand-teal);
   --color-brand-blue: var(--brand-blue);
   --color-brand-cyan: var(--brand-cyan);
-  
+
   --color-surface-card: var(--surface-card);
   --color-surface-elevated: var(--surface-elevated);
   --color-border-subtle: var(--border-subtle);
   --color-border-medium: var(--border-medium);
   --color-border-strong: var(--border-strong);
-  
+
   --color-interactive-primary: var(--interactive-primary);
   --color-interactive-primary-hover: var(--interactive-primary-hover);
   --color-interactive-secondary: var(--interactive-secondary);
-  
+
   /* Legacy compatibility */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -239,7 +253,7 @@ dark body{
   --color-destructive: var(--destructive);
   --color-border: var(--border);
   --color-ring: var(--ring);
-  
+
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -252,6 +266,14 @@ dark body{
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
 }
 
 /* 5. Base Styles */
@@ -374,19 +396,19 @@ dark body{
     transition: all 0.3s ease;
     border: 1px solid var(--border-subtle);
   }
-  
+
   /* Light mode */
   :root .glass {
     background: rgba(255, 255, 255, 0.6); /* Light glass */
     border-color: rgba(0, 0, 0, 0.06);    /* Subtle dark border */
   }
-  
+
   /* Dark mode */
   .dark .glass {
     background: rgba(255, 255, 255, 0.08); /* Soft white glow in dark backgrounds */
     border-color: rgba(255, 255, 255, 0.12);
   }
-  
+
   /* Card Variant */
   .glass-card {
     backdrop-filter: blur(12px) saturate(150%);
@@ -394,7 +416,7 @@ dark body{
     border-radius: var(--radius-xl);
     transition: all 0.3s ease;
   }
-  
+
   /* Light mode card */
   :root .glass-card {
     background: linear-gradient(
@@ -404,7 +426,7 @@ dark body{
     );
     border: 1px solid rgba(0, 0, 0, 0.08);
   }
-  
+
   /* Dark mode card */
   .dark .glass-card {
     background: linear-gradient(
@@ -414,26 +436,25 @@ dark body{
     );
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
-  
+
   /* Hover variant */
   .glass-hover {
     transition: all 0.3s ease;
   }
-  
+
   /* Light mode hover */
   :root .glass-hover:hover {
     background: rgba(255, 255, 255, 0.85);
     border-color: var(--interactive-primary);
     transform: translateY(-2px);
   }
-  
+
   /* Dark mode hover */
   .dark .glass-hover:hover {
     background: rgba(255, 255, 255, 0.12);
     border-color: rgba(110, 207, 174, 0.4); /* teal glow */
     transform: translateY(-2px);
   }
-  
 
   /* Buttons */
   .btn-primary {
@@ -579,7 +600,7 @@ dark body{
     overflow: hidden;
     z-index: 0;
   }
-  
+
   .shimmer::after {
     content: "";
     position: absolute;
@@ -594,7 +615,7 @@ dark body{
     animation: shimmer 3.8s linear infinite;
     z-index: -1; /* ⭐ FIX: place behind text */
   }
-  
+
   @keyframes shimmer {
     0% {
       background-position: -150% 0;
@@ -603,8 +624,7 @@ dark body{
       background-position: 150% 0;
     }
   }
-  
-  
+
   @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
@@ -654,3 +674,13 @@ dark body{
     box-shadow: var(--shadow-lg), var(--glow-blue);
   }
 }
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
