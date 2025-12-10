@@ -8,8 +8,8 @@ import {
   ChevronsUpDown,
   LayoutDashboard,
   Sparkles,
-  ClipboardClock,
   CreditCard,
+  History,
 } from 'lucide-react'
 
 import {
@@ -21,7 +21,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarTrigger,
 } from '@/components/ui/sidebar'
 import {
   DropdownMenu,
@@ -46,26 +45,31 @@ const navItems = [
     title: 'Dashboard',
     href: '/dashboard', // Use specific paths
     icon: LayoutDashboard,
+    color: 'text-teal-500',
   },
   {
     title: 'Create Content',
-    href: '/dashboard/create-content',
+    href: '/create-content',
     icon: Sparkles,
+    color: 'text-yellow-500',
   },
   {
     title: 'History',
     href: '/history',
-    icon: ClipboardClock,
+    icon: History,
+    color: 'text-orange-500',
   },
   {
     title: 'Pricing',
     href: '/pricing',
     icon: CreditCard,
+    color: 'text-blue-500',
   },
   {
     title: 'Settings',
     href: '/settings',
     icon: Settings,
+    color: 'text-purple-500',
   },
 ]
 
@@ -74,11 +78,10 @@ const AppSidebar = () => {
 
   // Helper function to check if a link is active
   const isLinkActive = (href: string) => {
-    // Check if the current pathname matches the href
-    // For the dashboard, check for exact match or root path if applicable
-    if (href === '/') return pathname === '/'
-    // Check for start of path to highlight parent routes (e.g., /settings/profile active for /settings)
-    return pathname.startsWith(href)
+    if (href !== '/dashboard') {
+      return pathname === href
+    }
+    return pathname === href
   }
 
   return (
@@ -88,10 +91,10 @@ const AppSidebar = () => {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem className="h-13.75 py-1">
+              <SidebarMenuItem className="h-14 py-1">
                 <SidebarMenuButton asChild tooltip="Repurfy">
-                  <Link href={'/'} className="flex items-center gap-2">
-                    <Image src="/logo.svg" alt="logo" width={35} height={35} />
+                  <Link href={'/'}>
+                    <Image src="/logo.svg" alt="logo" width={30} height={30} />
                     <h1 className="text-text-primary text-2xl font-medium">Repurfy</h1>
                   </Link>
                 </SidebarMenuButton>
@@ -106,30 +109,22 @@ const AppSidebar = () => {
           <SidebarGroupContent className="my-3">
             <SidebarMenu className="gap-6">
               {navItems.map((item) => {
-                // Determine if the item is active
                 const isActive = isLinkActive(item.href)
-
-                // Define the class string with conditional active style.
-                // Note: Assuming your sidebar component uses `data-[active=true]`
-                // or a simple class like 'active' for styling.
-                // I'm using a simple active Tailwind class for demonstration.
                 const activeClass = isActive
-                  ? 'bg-brand-cyan/80! hover:bg-brand-cyan/50! h-10! transition-colors duration-150'
-                  : 'text-muted-foreground hover:bg-brand-cyan hover:font-medium hover:text-accent-foreground h-10! transition-all duration-300'
+                  ? 'dark:bg-slate-700! bg-zinc-200 h-10! transition-all duration-50 '
+                  : 'text-text-primary dark:hover:bg-slate-600 hover:bg-zinc-100 h-10! transition-all duration-100'
 
                 return (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       asChild
                       tooltip={item.title}
-                      // Inject the active class here.
                       className={activeClass}
-                      // Optionally use a data attribute for component styling
                       data-active={isActive}
                     >
                       <Link href={item.href} className="flex items-center gap-2">
-                        <item.icon className="h-5! w-5!" />
-                        <span className="font-sans text-[16px]">{item.title}</span>
+                        <item.icon className={`-ml-0.5 h-5! w-5! ${item.color}`} />
+                        <span className={`font-sans text-[16px]`}>{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

@@ -372,6 +372,15 @@ dark body{
     background: linear-gradient(135deg, var(--accent-teal-light), var(--accent-blue-light));
   }
 
+  .bg-light-banner-gradient {
+    background-image: linear-gradient(
+      135deg, /* Diagonal direction */
+      #f0e5ff 0%, /* Very light purple/pink start */
+      #f9f3ff 40%, /* Mid-point soft transition */
+      #ffffff 100% /* White end */
+    );
+  }
+
   /* Text Gradients */
   .text-brand-gradient {
     background: linear-gradient(135deg, var(--brand-teal), var(--brand-blue), var(--brand-cyan));
@@ -683,4 +692,3 @@ dark body{
     @apply bg-background text-foreground;
   }
 }
-
