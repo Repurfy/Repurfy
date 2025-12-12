@@ -141,7 +141,7 @@ export const PricingSection = ({
           </motion.h2>
 
           <motion.p
-            className="text-muted-foreground lg:text-xl"
+            className={`text-muted-foreground lg:text-xl ${description.length > 0 ? 'block' : 'hidden'}`}
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}

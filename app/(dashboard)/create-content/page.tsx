@@ -23,9 +23,9 @@ export default function CreateContentPage() {
   return (
     <div>
       {/* Heading Section */}
-      <h1 className="text-3xl font-bold tracking-tight">Repurpose Content Across All Platforms</h1>
+      <h1 className="text-2xl font-bold tracking-tight">Repurpose Content Across All Platforms</h1>
 
-      <p className="text-text-secondary mt-2 mb-10 max-w-xl leading-relaxed">
+      <p className="text-text-secondary mt-2 mb-10 leading-relaxed">
         Upload your image and content, then get AI-optimized posts for LinkedIn, X, YouTube,
         Instagram and more.
       </p>
@@ -40,7 +40,7 @@ export default function CreateContentPage() {
             </h3>
 
             {!imagePreview ? (
-              <label className="flex h-60 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-slate-400 bg-white transition hover:border-slate-500 hover:bg-slate-50/40 dark:border-slate-500 dark:bg-slate-800 dark:hover:bg-slate-900">
+              <label className="flex h-60 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-slate-400 bg-white transition hover:border-slate-500 hover:bg-slate-50/40 dark:border-slate-500 dark:bg-slate-800/40 dark:hover:bg-slate-900">
                 <Input
                   type="file"
                   accept="image/*"
