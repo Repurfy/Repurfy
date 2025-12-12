@@ -111,8 +111,8 @@ const AppSidebar = () => {
               {navItems.map((item) => {
                 const isActive = isLinkActive(item.href)
                 const activeClass = isActive
-                  ? 'dark:bg-slate-700! bg-zinc-200 h-10! transition-all duration-50 '
-                  : 'text-text-primary dark:hover:bg-slate-600 hover:bg-zinc-100 h-10! transition-all duration-100'
+                  ? 'dark:bg-slate-700! bg-slate-200! h-10! transition-all duration-50 font-normal!'
+                  : 'text-text-primary dark:hover:bg-slate-600 hover:bg-slate-100 h-10! transition-all duration-100'
 
                 return (
                   <SidebarMenuItem key={item.title}>

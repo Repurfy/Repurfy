@@ -5,10 +5,10 @@ import { Sun, Moon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export function ThemeToggler() {
-  const { theme, setTheme } = useTheme()
+  const { resolvedTheme, setTheme } = useTheme()
 
   const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark')
+    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
   }
 
   return (
@@ -18,7 +18,9 @@ export function ThemeToggler() {
       onClick={toggleTheme}
       className="bg-bg-secondary dark:bg-main-gradient border-border-medium"
     >
-      {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+      {/* Both icons exist in DOM → No mismatch */}
+      <Sun className="hidden h-5 w-5 dark:block" suppressHydrationWarning />
+      <Moon className="block h-5 w-5 dark:hidden" suppressHydrationWarning />
     </Button>
   )
 }
