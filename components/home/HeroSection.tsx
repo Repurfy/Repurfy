@@ -31,8 +31,8 @@ export default function HeroSection() {
     >
       {/* Badge Animation*/}
       <motion.div variants={fadeUp}>
-        <Badge className="shimmer bg-brand-gradient-reverse rounded-full px-6 py-2 text-white shadow-lg">
-          <span className="flex items-center gap-2 text-[0.80rem] font-semibold">
+        <Badge className="shimmer bg-brand-gradient-reverse/20 dark:bg-brand-gradient-reverse/80 text-brand-teal border-brand-teal/30 rounded-full border px-6 py-2">
+          <span className="flex items-center gap-2 text-sm font-semibold">
             <Sparkles className="animate-pulse" size={16} />
             AI-Powered Content Repurposing
           </span>
@@ -42,7 +42,7 @@ export default function HeroSection() {
       {/* Heading */}
       <motion.h1
         variants={fadeUp}
-        className="font-ai max-w-4xl text-3xl leading-[1.2] font-bold sm:text-5xl lg:text-7xl"
+        className="font-ai max-w-4xl text-3xl leading-[1.2] font-semibold sm:text-5xl lg:text-7xl"
       >
         Create Once. <br />
         Publish <span className="text-brand-teal">Everywhere.</span>
@@ -53,8 +53,8 @@ export default function HeroSection() {
         variants={fadeUp}
         className="text-text-secondary max-w-xl text-base sm:max-w-3xl sm:text-lg"
       >
-        One post. Endless content. Instantly optimized for every platform. Stop creating more —
-        repurpose smarter with AI.
+        Turn your long-form content into high-performing posts for LinkedIn, X, Instagram, TikTok,
+        YouTube Shorts, and Facebook — all in seconds.
       </motion.p>
 
       {/* Feature badges */}

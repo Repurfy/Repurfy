@@ -5,9 +5,38 @@ import './globals.css'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
 export const metadata: Metadata = {
-  title: 'Repurfy',
+  metadataBase: new URL('https://repurfy.com'),
+
+  title: {
+    default: 'Repurfy',
+    template: '%s | Repurfy',
+  },
+
   description:
     'Create once. Publish everywhere. AI that repurposes your long-form content into platform-ready posts.',
+
+  openGraph: {
+    title: 'Repurfy – Create once. Publish everywhere.',
+    description: 'AI that repurposes your long-form content into platform-ready posts in seconds.',
+    url: 'https://repurfy.com',
+    siteName: 'Repurfy',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Repurfy Dashboard Preview',
+      },
+    ],
+    type: 'website',
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Repurfy – Create once. Publish everywhere.',
+    description: 'AI that repurposes your long-form content into platform-ready posts in seconds.',
+    images: ['/og-image.png'],
+  },
 }
 
 const lexend = Lexend({
@@ -24,14 +53,9 @@ const inter = Inter({
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning={true}
-      className={`${lexend.variable} ${inter.variable}`}
-    >
+    <html lang="en" suppressHydrationWarning className={`${lexend.variable} ${inter.variable}`}>
       <body className="antialiased">
         <Providers>{children}</Providers>
-
         <SpeedInsights />
       </body>
     </html>

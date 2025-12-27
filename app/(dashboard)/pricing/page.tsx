@@ -36,7 +36,7 @@ const Pricing = () => {
 
       {/* Upgrade Plans Section */}
       <div className="-mx-6">
-        <PricingSection heading="Upgrade Your Plan" description="" />
+        <PricingSection heading="" description="" />
       </div>
     </div>
   )

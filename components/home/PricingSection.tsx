@@ -180,7 +180,10 @@ export const PricingSection = ({
                 viewport={{ once: true, margin: '-50px' }} // allows retrigger when scrolling
                 whileHover={{ scale: 1.03, transition: { duration: 0.18 } }}
               >
-                <Card className="relative flex w-80 flex-col justify-between text-left shadow-sm transition-shadow hover:shadow-xl">
+                {/* <Card className="border-brand-teal relative flex w-80 flex-col justify-between overflow-hidden border text-left shadow-sm transition-shadow hover:shadow-xl"> */}
+                <Card
+                  className={`relative flex w-80 flex-col justify-between overflow-hidden text-left shadow-sm transition-shadow hover:shadow-xl ${i === 1 ? 'border-brand-teal border-2' : 'border border-transparent'} `}
+                >
                   {plan.recommended && (
                     <motion.div
                       className="bg-brand-teal absolute top-0 right-0 rounded-bl-md px-3 py-1 text-sm font-semibold text-white"
