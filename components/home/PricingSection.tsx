@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { use, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Check } from 'lucide-react'
 
@@ -9,6 +9,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
 import { Variants } from 'framer-motion'
+import { usePathname } from 'next/navigation'
 
 /* ---------------------------
    Types
@@ -120,6 +121,8 @@ export const PricingSection = ({
 }) => {
   const [isYearly, setIsYearly] = useState(false)
 
+  const pathname = usePathname()
+
   return (
     <section id="pricing" className="py-20">
       <motion.div
@@ -131,7 +134,7 @@ export const PricingSection = ({
       >
         <div className="mx-auto flex max-w-5xl flex-col items-center gap-6 text-center">
           <motion.h2
-            className="font-ai text-3xl font-semibold sm:text-4xl"
+            className={`${pathname !== '/home' ? 'font-sans' : 'font-ai'} text-3xl font-bold sm:text-4xl`}
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
