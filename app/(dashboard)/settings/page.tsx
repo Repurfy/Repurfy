@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Camera, Cookie, CookieIcon, User } from 'lucide-react'
+import { Camera, Cookie, User } from 'lucide-react'
 import { motion, type Variants } from 'framer-motion'
 
 const pageVariants: Variants = {
