@@ -12,7 +12,7 @@ const AddImageForm = ({ onNext, onBack }: Props) => {
       {/* Header */}
       <div className="mb-6 text-center sm:text-left">
         <h2 className="text-text-primary flex items-center justify-center gap-1 text-xl font-semibold sm:justify-start dark:text-white">
-          <ImagePlus className="text-brand-teal h-5 w-5" /> Add Media{' '}
+          <ImagePlus className="text-brand-teal h-8 w-8" /> Add Media{' '}
           <span className="text-text-primary text-xl font-semibold dark:text-white">
             (Optional)
           </span>
@@ -25,7 +25,7 @@ const AddImageForm = ({ onNext, onBack }: Props) => {
       {/* Upload Area */}
       <div className="border-border-subtle bg-surface-elevated text-text-secondary hover:border-brand-teal group mb-6 flex h-44 cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border border-dashed p-4 text-center transition-all dark:bg-slate-900/60 dark:text-slate-400">
         <div className="bg-brand-gradient/10 group-hover:bg-brand-gradient/20 flex h-10 w-10 items-center justify-center rounded-full">
-          <ImagePlus className="text-brand-teal h-5 w-5" />
+          <ImagePlus className="text-brand-teal h-10 w-10" />
         </div>
 
         <p className="font-medium">Drag & drop an image here</p>

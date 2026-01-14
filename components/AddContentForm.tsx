@@ -14,7 +14,7 @@ const AddContentForm = ({ onNext }: Props) => {
       {/* Header */}
       <div className="mb-6 text-center sm:text-left">
         <h2 className="text-text-primary flex items-center justify-center gap-1 text-xl font-semibold sm:justify-start dark:text-white">
-          <FileText className="text-brand-teal h-5 w-5" />
+          <FileText className="text-brand-teal h-8 w-8" />
           Add Your Content
         </h2>
         <p className="text-text-secondary mt-1 text-sm dark:text-slate-400">
@@ -67,7 +67,7 @@ const AddContentForm = ({ onNext }: Props) => {
       </div>
 
       {/* Footer CTA */}
-      <div className="mt-6 flex justify-end">
+      <div className="flex justify-end">
         <Button
           onClick={onNext}
           className="bg-brand-gradient rounded-lg font-semibold text-white shadow-md transition-all hover:scale-[1.02] hover:shadow-lg"

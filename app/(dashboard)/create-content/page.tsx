@@ -14,8 +14,6 @@ export default function CreateContentPage() {
 
       {/* Main container check temp.tsx to get previouos code */}
 
-      <p>Building Tommorow</p>
-
       <CreatePostForm />
     </div>
   )
