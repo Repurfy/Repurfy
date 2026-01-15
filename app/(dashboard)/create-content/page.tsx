@@ -13,6 +13,7 @@ export default function CreateContentPage() {
       </p>
 
       {/* Main container check temp.tsx to get previouos code */}
+      <p>Testing Folder structure</p>
 
       <CreatePostForm />
     </div>
