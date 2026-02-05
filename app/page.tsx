@@ -54,11 +54,15 @@ const Home = () => {
             rel="noopener noreferrer"
             className="bg-brand-gradient inline-block rounded-xl px-6 py-3 font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl"
           >
-            Join Waitlist
+            🚀 Get Early Access Free
           </a>
 
+          <p className="text-text-tertiary mt-3 text-xs sm:text-sm dark:text-slate-500">
+            Join 100+ creators waiting for the revolution.
+          </p>
+
           {/* --- Feature Cards --- */}
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
             {[
               {
                 icon: '♻️',
@@ -66,8 +70,8 @@ const Home = () => {
                 desc: 'Turn any content into ready-to-post formats',
               },
               {
-                icon: '🌐',
-                label: 'Multi-Platform Output',
+                icon: '📱',
+                label: 'Multi-Platform Ready',
                 desc: 'Get platform-ready posts in one click',
               },
               {
@@ -81,7 +85,7 @@ const Home = () => {
                 className="card-repurfy bg-surface-card border-border-subtle hover:border-brand-teal p-5 shadow-none sm:p-6 dark:border-slate-700/50 dark:bg-slate-800/50 dark:hover:border-indigo-500/50"
               >
                 <div className="mb-3 text-3xl">{feature.icon}</div>
-                <h3 className="text-text-primary mb-2 font-semibold tracking-wide dark:text-white">
+                <h3 className="text-text-primary mb-2 font-sans font-semibold tracking-wide dark:text-white">
                   {feature.label}
                 </h3>
                 <p className="text-text-secondary text-sm dark:text-gray-400">{feature.desc}</p>
@@ -91,7 +95,7 @@ const Home = () => {
         </section>
 
         {/* --- Footer --- */}
-        <footer className="text-text-tertiary mb-6 text-xs sm:text-sm dark:text-slate-500">
+        <footer className="text-text-tertiary text-xs sm:text-sm dark:text-slate-500">
           &copy; {currentYear} Repurfy. All rights reserved.
         </footer>
       </div>

@@ -103,10 +103,15 @@ const cardVariants = {
   }),
 } as const satisfies Variants
 
-const badgeFloat = {
+const badgePop = {
   animate: {
-    y: [-2, 2, -2],
-    transition: { duration: 2.5, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut' },
+    scale: [1, 1.08, 1],
+    transition: {
+      duration: 2.5,
+      repeat: Infinity,
+      repeatType: 'loop',
+      ease: 'easeInOut',
+    },
   },
 } as const satisfies Variants
 
@@ -190,7 +195,7 @@ export const PricingSection = ({
                   {plan.recommended && (
                     <motion.div
                       className="bg-brand-teal absolute top-0 right-0 rounded-bl-md px-3 py-1 text-sm font-semibold text-white"
-                      variants={badgeFloat}
+                      variants={badgePop}
                       animate="animate"
                     >
                       Recommended
