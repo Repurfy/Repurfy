@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
+import Image from 'next/image'
 
 const fadeUp = (delay: number = 0): Variants => ({
   hidden: { opacity: 0, y: 40 },
@@ -29,7 +30,6 @@ const DemoSection = () => {
       >
         See Repurfy in Action
       </motion.h2>
-
       {/* Subtitle */}
       <motion.p
         initial="hidden"
@@ -41,9 +41,8 @@ const DemoSection = () => {
         Watch how Repurfy transforms a single piece of content into a multitude of optimized posts
         for various platforms, saving you time and effort.
       </motion.p>
-
       {/* Video */}
-      <motion.div
+      {/* <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.4 }}
@@ -57,7 +56,16 @@ const DemoSection = () => {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
         ></iframe>
-      </motion.div>
+      </motion.div> */}
+      <div className="bg-brand-gradient relative my-4 h-screen w-full rounded-lg">
+        <Image
+          src="/hero-mockup.png"
+          alt="hero-img"
+          fill
+          className="oobject-contain object-contain"
+          priority
+        />
+      </div>
     </section>
   )
 }

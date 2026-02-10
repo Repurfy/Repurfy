@@ -28,7 +28,7 @@ const Header = () => {
       initial="hidden"
       animate="visible"
       variants={fadeDown}
-      className="bg-background/70 sticky top-0 z-50 container mx-auto flex h-16 items-center justify-between shadow-md backdrop-blur-xl"
+      className="repurfy-bg/80 sticky top-0 z-50 container mx-auto flex h-16 items-center justify-between shadow-md backdrop-blur-xl"
     >
       {/* Logo */}
       <motion.div

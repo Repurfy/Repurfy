@@ -4,9 +4,9 @@ const Home = () => {
   const currentYear = new Date().getFullYear()
 
   return (
-    <div className="bg-bg-secondary dark:bg-main-gradient min-h-screen overflow-hidden">
-      {/* --- Background Orbs (Dark Mode Only) --- */}
-      <div className="pointer-events-none fixed inset-0 opacity-0 dark:opacity-100">
+    <div className="repurfy-bg min-h-screen overflow-hidden text-white">
+      {/* --- Background Orbs --- */}
+      <div className="pointer-events-none fixed inset-0">
         <div className="absolute top-0 left-1/4 h-72 w-72 animate-pulse rounded-full bg-indigo-600/20 blur-3xl sm:h-96 sm:w-96"></div>
         <div
           className="absolute right-1/4 bottom-0 h-72 w-72 animate-pulse rounded-full bg-purple-600/20 blur-3xl sm:h-96 sm:w-96"
@@ -21,33 +21,31 @@ const Home = () => {
       {/* --- Main Layout --- */}
       <div className="relative z-10 flex min-h-screen flex-col px-4 text-center">
         {/* --- Hero Section --- */}
-        <section className="mx-auto max-w-4xl grow px-4 py-16 sm:px-6 sm:py-20 md:px-12 md:py-24">
+        <section className="mx-auto max-w-7xl grow px-4 py-16 sm:px-6 sm:py-20 md:px-12 md:py-20">
           {/* Logo / Title */}
           <div className="mb-4 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
             <Image src="/logo.svg" alt="logo" width={70} height={70} />
-            <h1 className="font-heading text-brand-navy text-4xl font-semibold sm:text-6xl dark:text-white">
-              Repurfy
-            </h1>
+            <h1 className="font-heading text-4xl font-semibold text-white sm:text-6xl">Repurfy</h1>
           </div>
 
-          {/* Coming Soon Tag */}
+          {/* Coming Soon */}
           <div className="mt-4 mb-6 flex items-center justify-center gap-3 px-2">
-            <div className="to-brand-teal h-0.5 w-20 bg-linear-to-r from-transparent sm:w-32"></div>
-            <p className="text-brand-teal text-xs font-semibold tracking-wide uppercase sm:text-sm">
+            <div className="h-0.5 w-20 bg-linear-to-r from-transparent to-teal-400 sm:w-32"></div>
+            <p className="text-xs font-semibold tracking-wide text-teal-400 uppercase sm:text-sm">
               Coming Soon
             </p>
-            <div className="to-brand-teal h-0.5 w-20 bg-linear-to-l from-transparent sm:w-32"></div>
+            <div className="h-0.5 w-20 bg-linear-to-l from-transparent to-teal-400 sm:w-32"></div>
           </div>
 
           {/* Subtitle */}
-          <p className="text-text-secondary mx-auto mb-10 max-w-2xl text-lg leading-relaxed sm:text-xl md:text-2xl dark:text-slate-300">
+          <p className="mx-auto my-6 max-w-2xl text-lg leading-relaxed text-slate-300 sm:text-xl md:text-2xl">
             Bring your content to life on every platform—fuelled by our{' '}
-            <span className="text-brand-gradient text-xl font-bold sm:text-3xl">
+            <span className="text-brand-gradient text-xl font-bold text-transparent sm:text-3xl">
               next-gen AI content engine.
             </span>
           </p>
 
-          {/* Waitlist Button */}
+          {/* CTA */}
           <a
             href="https://forms.gle/53BNApyitQJJdnCQ9"
             target="_blank"
@@ -57,12 +55,12 @@ const Home = () => {
             🚀 Get Early Access Free
           </a>
 
-          <p className="text-text-tertiary mt-3 text-xs sm:text-sm dark:text-slate-500">
+          <p className="mt-4 mb-8 text-xs text-slate-400 sm:text-sm">
             Join 100+ creators waiting for the revolution.
           </p>
 
           {/* --- Feature Cards --- */}
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+          <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-3">
             {[
               {
                 icon: '♻️',
@@ -82,20 +80,20 @@ const Home = () => {
             ].map((feature, i) => (
               <div
                 key={i}
-                className="card-repurfy bg-surface-card border-border-subtle hover:border-brand-teal p-5 shadow-none sm:p-6 dark:border-slate-700/50 dark:bg-slate-800/50 dark:hover:border-indigo-500/50"
+                className="w-80 rounded-xl border border-slate-700 bg-slate-900/40 p-5 backdrop-blur-md transition hover:border-indigo-500 sm:p-6"
               >
                 <div className="mb-3 text-3xl">{feature.icon}</div>
-                <h3 className="text-text-primary mb-2 font-sans font-semibold tracking-wide dark:text-white">
+                <h3 className="mb-2 text-xl font-semibold tracking-wide text-white">
                   {feature.label}
                 </h3>
-                <p className="text-text-secondary text-sm dark:text-gray-400">{feature.desc}</p>
+                <p className="text-sm text-slate-400">{feature.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* --- Footer --- */}
-        <footer className="text-text-tertiary text-xs sm:text-sm dark:text-slate-500">
+        {/* Footer */}
+        <footer className="mb-8 text-xs text-slate-500 sm:text-sm">
           &copy; {currentYear} Repurfy. All rights reserved.
         </footer>
       </div>

@@ -1,8 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300..900&family=Lexend:wght@300..900&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');  */
 
-@import "tailwindcss";
-@import "tw-animate-css";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 /* 1. Import Fonts: Inter & Lexend */
 
@@ -14,30 +16,30 @@
   /* === LIGHT MODE - Clean & Professional === */
 
   /* Base Colors */
-  --bg-primary: oklch(0.99 0 0);              /* Pure white background */
-  --bg-secondary: oklch(0.97 0.005 220);      /* Soft off-white */
-  --text-primary: oklch(0.20 0.02 240);       /* Deep navy text */
-  --text-secondary: oklch(0.50 0.01 240);     /* Muted gray text */
-  --text-tertiary: oklch(0.65 0.01 240);      /* Light gray text */
+  --bg-primary: oklch(0.99 0 0); /* Pure white background */
+  --bg-secondary: oklch(0.97 0.005 220); /* Soft off-white */
+  --text-primary: oklch(0.2 0.02 240); /* Deep navy text */
+  --text-secondary: oklch(0.5 0.01 240); /* Muted gray text */
+  --text-tertiary: oklch(0.65 0.01 240); /* Light gray text */
 
   /* Brand Colors - From Logo */
-  --brand-navy: oklch(0.25 0.06 240);         /* Deep navy #2B3A5C */
-  --brand-teal: oklch(0.65 0.12 180);         /* Medium teal #5FB89A */
-  --brand-blue: oklch(0.60 0.15 240);         /* Vibrant blue #5B8FC9 */
-  --brand-cyan: oklch(0.70 0.10 200);         /* Light cyan/turquoise */
+  --brand-navy: oklch(0.25 0.06 240); /* Deep navy #2B3A5C */
+  --brand-teal: oklch(0.65 0.12 180); /* Medium teal #5FB89A */
+  --brand-blue: oklch(0.6 0.15 240); /* Vibrant blue #5B8FC9 */
+  --brand-cyan: oklch(0.7 0.1 200); /* Light cyan/turquoise */
 
   /* Accent Colors */
-  --accent-teal-light: oklch(0.85 0.08 180);  /* Soft teal for hover states */
-  --accent-blue-light: oklch(0.90 0.08 240);  /* Soft blue backgrounds */
+  --accent-teal-light: oklch(0.85 0.08 180); /* Soft teal for hover states */
+  --accent-blue-light: oklch(0.9 0.08 240); /* Soft blue backgrounds */
   --accent-gradient-start: oklch(0.65 0.12 180); /* Teal gradient start */
-  --accent-gradient-end: oklch(0.60 0.15 240);   /* Blue gradient end */
+  --accent-gradient-end: oklch(0.6 0.15 240); /* Blue gradient end */
 
   /* UI Elements */
-  --surface-card: oklch(1 0 0);               /* White cards */
-  --surface-elevated: oklch(0.98 0.005 220);  /* Slightly elevated surfaces */
-  --border-subtle: oklch(0.92 0.005 240);     /* Light borders */
-  --border-medium: oklch(0.85 0.01 240);      /* Medium borders */
-  --border-strong: oklch(0.75 0.02 240);      /* Strong borders */
+  --surface-card: oklch(1 0 0); /* White cards */
+  --surface-elevated: oklch(0.98 0.005 220); /* Slightly elevated surfaces */
+  --border-subtle: oklch(0.92 0.005 240); /* Light borders */
+  --border-medium: oklch(0.85 0.01 240); /* Medium borders */
+  --border-strong: oklch(0.75 0.02 240); /* Strong borders */
 
   /* Interactive States */
   --interactive-primary: var(--brand-teal);
@@ -47,18 +49,18 @@
   --interactive-secondary-hover: oklch(0.55 0.17 240);
 
   /* Status Colors */
-  --status-success: oklch(0.60 0.15 150);     /* Green */
+  --status-success: oklch(0.6 0.15 150); /* Green */
   --status-success-bg: oklch(0.95 0.05 150);
-  --status-warning: oklch(0.70 0.15 70);      /* Amber */
+  --status-warning: oklch(0.7 0.15 70); /* Amber */
   --status-warning-bg: oklch(0.95 0.05 70);
-  --status-error: oklch(0.55 0.22 25);        /* Red */
+  --status-error: oklch(0.55 0.22 25); /* Red */
   --status-error-bg: oklch(0.95 0.08 25);
   --status-info: var(--brand-blue);
   --status-info-bg: var(--accent-blue-light);
 
   /* Shadows */
   --shadow-sm: 0 1px 2px rgba(43, 58, 92, 0.08);
-  --shadow-md: 0 4px 12px rgba(43, 58, 92, 0.10);
+  --shadow-md: 0 4px 12px rgba(43, 58, 92, 0.1);
   --shadow-lg: 0 8px 24px rgba(43, 58, 92, 0.12);
   --shadow-xl: 0 16px 48px rgba(43, 58, 92, 0.15);
 
@@ -104,45 +106,45 @@
   /* === DARK MODE - Premium & Modern === */
 
   /* Base Colors */
-  --bg-primary: oklch(0.15 0.04 240);         /* Deep navy background */
-  --bg-secondary: oklch(0.18 0.04 240);       /* Slightly lighter navy */
-  --text-primary: oklch(0.97 0.005 220);      /* Almost white text */
-  --text-secondary: oklch(0.75 0.01 220);     /* Light gray text */
-  --text-tertiary: oklch(0.60 0.01 220);      /* Muted gray text */
+  --bg-primary: oklch(0.15 0.04 240); /* Deep navy background */
+  --bg-secondary: oklch(0.18 0.04 240); /* Slightly lighter navy */
+  --text-primary: oklch(0.97 0.005 220); /* Almost white text */
+  --text-secondary: oklch(0.75 0.01 220); /* Light gray text */
+  --text-tertiary: oklch(0.6 0.01 220); /* Muted gray text */
 
   /* Brand Colors - Enhanced for Dark Mode */
-  --brand-navy: oklch(0.22 0.06 240);         /* Lighter navy for surfaces */
-  --brand-teal: oklch(0.70 0.14 180);         /* Brighter teal #6ECFAE */
-  --brand-blue: oklch(0.65 0.17 240);         /* Brighter blue #6BA0E0 */
-  --brand-cyan: oklch(0.75 0.12 200);         /* Bright cyan/turquoise */
+  --brand-navy: oklch(0.22 0.06 240); /* Lighter navy for surfaces */
+  --brand-teal: oklch(0.7 0.14 180); /* Brighter teal #6ECFAE */
+  --brand-blue: oklch(0.65 0.17 240); /* Brighter blue #6BA0E0 */
+  --brand-cyan: oklch(0.75 0.12 200); /* Bright cyan/turquoise */
 
   /* Accent Colors */
-  --accent-teal-light: oklch(0.28 0.08 180);  /* Dark teal for backgrounds */
-  --accent-blue-light: oklch(0.25 0.08 240);  /* Dark blue backgrounds */
-  --accent-gradient-start: oklch(0.70 0.14 180); /* Teal gradient start */
-  --accent-gradient-end: oklch(0.65 0.17 240);   /* Blue gradient end */
+  --accent-teal-light: oklch(0.28 0.08 180); /* Dark teal for backgrounds */
+  --accent-blue-light: oklch(0.25 0.08 240); /* Dark blue backgrounds */
+  --accent-gradient-start: oklch(0.7 0.14 180); /* Teal gradient start */
+  --accent-gradient-end: oklch(0.65 0.17 240); /* Blue gradient end */
 
   /* UI Elements */
-  --surface-card: oklch(0.20 0.05 240);       /* Elevated navy cards */
-  --surface-elevated: oklch(0.23 0.05 240);   /* More elevated surfaces */
-  --border-subtle: oklch(0.28 0.04 240);      /* Subtle borders */
-  --border-medium: oklch(0.35 0.04 240);      /* Medium borders */
-  --border-strong: oklch(0.45 0.04 240);      /* Strong borders */
+  --surface-card: oklch(0.2 0.05 240); /* Elevated navy cards */
+  --surface-elevated: oklch(0.23 0.05 240); /* More elevated surfaces */
+  --border-subtle: oklch(0.28 0.04 240); /* Subtle borders */
+  --border-medium: oklch(0.35 0.04 240); /* Medium borders */
+  --border-strong: oklch(0.45 0.04 240); /* Strong borders */
 
   /* Interactive States */
   --interactive-primary: var(--brand-teal);
   --interactive-primary-hover: oklch(0.75 0.16 180);
   --interactive-primary-active: oklch(0.68 0.18 180);
   --interactive-secondary: var(--brand-blue);
-  --interactive-secondary-hover: oklch(0.70 0.19 240);
+  --interactive-secondary-hover: oklch(0.7 0.19 240);
 
   /* Status Colors */
-  --status-success: oklch(0.68 0.16 150);     /* Bright green */
+  --status-success: oklch(0.68 0.16 150); /* Bright green */
   --status-success-bg: oklch(0.25 0.08 150);
-  --status-warning: oklch(0.75 0.16 70);      /* Bright amber */
+  --status-warning: oklch(0.75 0.16 70); /* Bright amber */
   --status-warning-bg: oklch(0.25 0.08 70);
-  --status-error: oklch(0.60 0.22 25);        /* Bright red */
-  --status-error-bg: oklch(0.25 0.10 25);
+  --status-error: oklch(0.6 0.22 25); /* Bright red */
+  --status-error-bg: oklch(0.25 0.1 25);
   --status-info: var(--brand-blue);
   --status-info-bg: var(--accent-blue-light);
 
@@ -191,20 +193,32 @@
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
 }
 
-body{
+/* ===== REPURFY PREMIUM AI GRADIENT ===== */
+.repurfy-bg {
+  background-color: #020617;
+  background-image:
+    radial-gradient(at 20% 0%, rgba(0, 255, 200, 0.25) 0px, transparent 50%),
+    radial-gradient(at 80% 100%, rgba(140, 0, 255, 0.25) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(0, 200, 255, 0.15) 0px, transparent 60%),
+    linear-gradient(180deg, #020617 0%, #020617 100%);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+body {
   background-color: var(--bg-secondary);
 }
 
-dark body{
+dark body {
   background-color: var(--main-gradient);
 }
 
 /* 4. Tailwind Theme Configuration */
 @theme inline {
   /* Fonts */
-  --font-sans: "Inter", sans-serif;
-  --font-heading: "Lexend", sans-serif;
-  --font-ai: "Sora", sans-serif;
+  --font-sans: 'Inter', sans-serif;
+  --font-heading: 'Lexend', sans-serif;
+  --font-ai: 'Space Grotesk', sans-serif;
 
   /* Container Configuration */
   --container-center: true;
@@ -291,8 +305,13 @@ dark body{
     -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-ai);
     font-weight: 600;
     letter-spacing: -0.02em;
     color: var(--text-primary);
@@ -374,10 +393,10 @@ dark body{
 
   .bg-light-banner-gradient {
     background-image: linear-gradient(
-      135deg, /* Diagonal direction */
-      #f0e5ff 0%, /* Very light purple/pink start */
-      #f9f3ff 40%, /* Mid-point soft transition */
-      #ffffff 100% /* White end */
+      135deg,
+      /* Diagonal direction */ #f0e5ff 0%,
+      /* Very light purple/pink start */ #f9f3ff 40%,
+      /* Mid-point soft transition */ #ffffff 100% /* White end */
     );
   }
 
@@ -409,7 +428,7 @@ dark body{
   /* Light mode */
   :root .glass {
     background: rgba(255, 255, 255, 0.6); /* Light glass */
-    border-color: rgba(0, 0, 0, 0.06);    /* Subtle dark border */
+    border-color: rgba(0, 0, 0, 0.06); /* Subtle dark border */
   }
 
   /* Dark mode */
@@ -428,21 +447,13 @@ dark body{
 
   /* Light mode card */
   :root .glass-card {
-    background: linear-gradient(
-      135deg,
-      rgba(0, 0, 0, 0.05),
-      rgba(0, 0, 0, 0.02)
-    );
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.02));
     border: 1px solid rgba(0, 0, 0, 0.08);
   }
 
   /* Dark mode card */
   .dark .glass-card {
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.1),
-      rgba(255, 255, 255, 0.05)
-    );
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
@@ -611,7 +622,7 @@ dark body{
   }
 
   .shimmer::after {
-    content: "";
+    content: '';
     position: absolute;
     inset: 0;
     background: linear-gradient(
@@ -635,8 +646,13 @@ dark body{
   }
 
   @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
   }
 
   .animate-float {
@@ -662,7 +678,6 @@ dark body{
     color: var(--interactive-primary-hover);
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
-
 }
 
 /* 7. Dark Mode Enhancements */
@@ -672,7 +687,9 @@ dark body{
   }
 
   .card-repurfy:hover {
-    box-shadow: var(--shadow-xl), 0 0 30px rgba(110, 207, 174, 0.4);
+    box-shadow:
+      var(--shadow-xl),
+      0 0 30px rgba(110, 207, 174, 0.4);
   }
 
   .btn-primary:hover {
@@ -692,3 +709,4 @@ dark body{
     @apply bg-background text-foreground;
   }
 }
+
