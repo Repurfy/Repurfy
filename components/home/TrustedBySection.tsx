@@ -44,7 +44,7 @@ const TrustedBySection = () => {
     {
       name: 'X',
       icon: (
-        <svg fill="currentColor" className="h-6 w-6 sm:h-8 sm:w-8" viewBox="0 0 24 24">
+        <svg fill="currentColor" className="h-6 w-6" viewBox="0 0 24 24">
           <title>X</title>
           <path d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z" />
         </svg>
@@ -71,7 +71,7 @@ const TrustedBySection = () => {
   ]
 
   return (
-    <section className="overflow-hidden py-8">
+    <section className="overflow-hidden bg-[#0B0C12] pt-4 md:pt-8 lg:pt-16">
       <div className="container mx-auto px-4">
         {/* Title */}
         <motion.h2
@@ -79,23 +79,23 @@ const TrustedBySection = () => {
           whileInView="visible"
           viewport={{ once: true, amount: 0.4 }}
           variants={fadeUp(0)}
-          className="font-ai text-center text-2xl font-semibold"
+          className="text-center font-sans text-xl font-medium text-[#858B99]"
         >
-          Trusted By Creators Worldwide
+          Trusted by <span className="text-white">100+</span> creators & agencies worldwide
         </motion.h2>
 
         {/* Logo List */}
-        <div className="relative my-14 flex flex-wrap justify-evenly gap-6 sm:gap-16 lg:gap-24">
+        <div className="relative my-4 flex flex-wrap justify-center gap-6 sm:gap-16 md:my-8 lg:my-16 lg:gap-24">
           {companies.map((company, index) => (
             <motion.div
               key={index}
-              className="text-text-secondary flex flex-col items-center gap-2"
+              className="text-text-secondary flex items-center gap-2"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
               variants={fadeUp(index * 0.12)}
             >
-              {company.icon}
+              {company.icon} <span className="text-lg font-medium">{company.name}</span>
             </motion.div>
           ))}
         </div>

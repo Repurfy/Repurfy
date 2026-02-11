@@ -26,9 +26,22 @@ const HowItWorksSection = () => {
         whileInView="visible"
         viewport={{ once: true, amount: 0.4 }}
         variants={fadeUp(0)}
-        className="font-ai text-3xl leading-10 font-semibold sm:text-4xl"
+        className="text-brand-gradient font-sans text-xl leading-10 font-semibold uppercase"
       >
-        How Repurfy Works
+        How It Works
+      </motion.h2>
+
+      <motion.h2
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.4 }}
+        variants={fadeUp(0)}
+        className="font-ai my-4 text-2xl font-semibold text-white sm:text-3xl lg:text-5xl lg:leading-14"
+      >
+        Three steps to{' '}
+        <span className="text-brand-teal">
+          content <br /> everywhere
+        </span>
       </motion.h2>
 
       {/* Cards Container */}

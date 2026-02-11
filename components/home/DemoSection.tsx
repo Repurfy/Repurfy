@@ -19,9 +19,9 @@ const fadeUp = (delay: number = 0): Variants => ({
 
 const DemoSection = () => {
   return (
-    <section className="bg-surface-card container mx-auto flex flex-col items-center justify-center gap-3 rounded-3xl px-4 pt-10 pb-20 text-center sm:px-8 lg:px-20">
+    <section className="flex flex-col items-center justify-center gap-3 rounded-3xl px-4 pb-20 text-center sm:px-10">
       {/* Heading */}
-      <motion.h2
+      {/* <motion.h2
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.5 }}
@@ -29,9 +29,9 @@ const DemoSection = () => {
         className="font-ai text-3xl leading-10 font-semibold sm:text-4xl sm:leading-16 lg:leading-22"
       >
         See Repurfy in Action
-      </motion.h2>
+      </motion.h2> */}
       {/* Subtitle */}
-      <motion.p
+      {/* <motion.p
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.5 }}
@@ -40,7 +40,7 @@ const DemoSection = () => {
       >
         Watch how Repurfy transforms a single piece of content into a multitude of optimized posts
         for various platforms, saving you time and effort.
-      </motion.p>
+      </motion.p> */}
       {/* Video */}
       {/* <motion.div
         initial="hidden"
@@ -57,12 +57,12 @@ const DemoSection = () => {
           allowFullScreen
         ></iframe>
       </motion.div> */}
-      <div className="bg-brand-gradient relative my-4 h-screen w-full rounded-lg">
+      <div className="relative w-full lg:-mt-24">
         <Image
           src="/hero-mockup.png"
           alt="hero-img"
           fill
-          className="oobject-contain object-contain"
+          className="rounded-lg object-contain"
           priority
         />
       </div>
