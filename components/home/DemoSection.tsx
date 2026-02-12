@@ -57,12 +57,12 @@ const DemoSection = () => {
           allowFullScreen
         ></iframe>
       </motion.div> */}
-      <div className="relative w-full lg:-mt-24">
+      <div className="relative h-auto w-full lg:h-180">
         <Image
           src="/hero-mockup.png"
           alt="hero-img"
           fill
-          className="rounded-lg object-contain"
+          className="rounded-lg object-cover lg:-mt-24"
           priority
         />
       </div>

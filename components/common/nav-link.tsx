@@ -20,9 +20,9 @@ const NavLink = ({
     <Link
       href={href}
       className={cn(
-        'text-muted-foreground hover:text-primary transition-colors',
+        'text-text-secondary hover:text-primary transition-colors',
         className,
-        isActive && 'text-primary font-semibold'
+        isActive && 'text-brand-gradient! font-semibold'
       )}
     >
       {children}

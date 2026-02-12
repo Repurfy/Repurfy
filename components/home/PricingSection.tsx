@@ -103,6 +103,19 @@ const cardVariants = {
   }),
 } as const satisfies Variants
 
+const fadeUp = (delay: number = 0): Variants => ({
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: 'easeOut',
+      delay,
+    },
+  },
+})
+
 const badgePop = {
   animate: {
     scale: [1, 1.08, 1],
@@ -138,7 +151,7 @@ export const PricingSection = ({
         transition={{ duration: 0.6 }}
       >
         <div className="mx-auto flex max-w-5xl flex-col items-center gap-6 text-center">
-          <motion.h2
+          {/* <motion.h2
             className={`${pathname !== '/home' ? 'font-sans' : 'font-ai'} text-3xl font-bold sm:text-4xl`}
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -156,7 +169,27 @@ export const PricingSection = ({
             transition={{ delay: 0.08, duration: 0.5 }}
           >
             {description}
-          </motion.p>
+          </motion.p> */}
+
+          <motion.h2
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.4 }}
+            variants={fadeUp(0)}
+            className="text-brand-gradient -mb-2 font-sans leading-10 font-bold tracking-wide uppercase"
+          >
+            Pricing
+          </motion.h2>
+
+          <motion.h2
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.4 }}
+            variants={fadeUp(0)}
+            className="font-ai text-center text-2xl font-bold text-white sm:text-3xl lg:text-6xl lg:leading-14"
+          >
+            Simple, transparent <span className="text-brand-teal">pricing</span>
+          </motion.h2>
 
           <motion.div
             className="flex items-center gap-3 text-lg"
@@ -165,7 +198,7 @@ export const PricingSection = ({
             viewport={{ once: true }}
             transition={{ delay: 0.12 }}
           >
-            <span>Monthly</span>
+            <span className="font-medium">Monthly</span>
 
             {/* Switch: ensure thumb is white in both states */}
             <Switch
@@ -173,11 +206,17 @@ export const PricingSection = ({
               onCheckedChange={() => setIsYearly(!isYearly)}
               className="bg-muted-foreground data-[state=checked]:bg-brand-teal cursor-pointer rounded-full p-0.5 [&_span]:bg-white! data-[state=checked]:[&_span]:bg-white!"
             />
-
-            <span>Yearly</span>
+            <div className="flex gap-2">
+              <span
+                className={`font-medium transition-colors ${isYearly ? 'text-white' : 'text-muted-foreground'}`}
+              >
+                Yearly
+              </span>
+              <span className="text-brand-gradient font-sans font-bold">Save 20%</span>
+            </div>
           </motion.div>
 
-          <div className="flex flex-col items-stretch gap-6 md:flex-row lg:gap-16">
+          <div className="my-6 flex flex-col items-stretch gap-6 md:flex-row lg:gap-16">
             {plans.map((plan, i) => (
               <motion.div
                 key={plan.id}

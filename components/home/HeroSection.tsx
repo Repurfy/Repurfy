@@ -3,7 +3,7 @@
 import { motion, Variants } from 'framer-motion'
 import { Button } from '../ui/button'
 import { Badge } from '../ui/badge'
-import { ArrowRightIcon, Check, Sparkles, Play } from 'lucide-react'
+import { ArrowRightIcon, Sparkles, Play, Hash, MessageSquareText } from 'lucide-react'
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 25 },
@@ -18,10 +18,22 @@ const staggerContainer: Variants = {
     },
   },
 }
+const featureArray = [
+  {
+    title: 'Auto Captioning',
+    icon: <MessageSquareText strokeWidth={3} className="h-4! w-4!" />,
+  },
+  {
+    title: 'AI Hooks',
+    icon: <Sparkles strokeWidth={3} className="h-4! w-4!" />,
+  },
+  {
+    title: 'Hashtag Generation',
+    icon: <Hash strokeWidth={3} className="h-4! w-4!" />,
+  },
+]
 
 export default function HeroSection() {
-  const featureArray = ['Auto Captioning', 'AI Hooks', 'Hashtag Generation']
-
   return (
     <motion.section
       initial="hidden"
@@ -42,7 +54,7 @@ export default function HeroSection() {
       {/* Features */}
       <motion.div
         variants={staggerContainer}
-        className="flex flex-wrap justify-center gap-3 md:my-2"
+        className="flex flex-wrap justify-center gap-6 md:my-2"
       >
         {featureArray.map((feature, index) => (
           <motion.div
@@ -51,9 +63,9 @@ export default function HeroSection() {
             whileHover={{ scale: 1.06 }}
             transition={{ duration: 0.2 }}
           >
-            <Badge className="flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-white backdrop-blur-lg">
-              <Check size={16} />
-              {feature}
+            <Badge className="flex items-center gap-2 rounded-lg border border-white/15 bg-white/10 px-4 py-1 text-[0.85rem] tracking-wide text-white/70 backdrop-blur-lg">
+              {feature.icon}
+              {feature.title}
             </Badge>
           </motion.div>
         ))}
@@ -65,7 +77,7 @@ export default function HeroSection() {
         className="font-ai -mt-4 max-w-4xl text-4xl leading-20 font-bold sm:text-6xl lg:text-8xl lg:leading-24"
       >
         Create Once. <br />
-        <span className="text-brand-teal">Publish Everywhere.</span>
+        <span className="text-brand-gradient">Publish Everywhere.</span>
       </motion.h1>
 
       {/* Subtext */}
@@ -81,22 +93,21 @@ export default function HeroSection() {
       <motion.div variants={fadeUp} className="mt-4 flex flex-col items-center gap-6 md:flex-row">
         {/* Primary */}
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.94 }}>
-          <Button className="group bg-brand-gradient flex w-64 items-center justify-center rounded-xl py-6 font-sans text-lg font-semibold text-white shadow-lg shadow-teal-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-teal-500/30">
+          <Button className="group bg-brand-teal flex w-56 items-center justify-center rounded-xl py-6 font-sans text-lg font-semibold text-white shadow-lg shadow-teal-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-teal-500/30">
             Try Repurfy Free
             <ArrowRightIcon
-              size={26}
-              className="ml-2 transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110"
+              strokeWidth={3}
+              className="ml-2 h-6! w-6! transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110"
             />
           </Button>
         </motion.div>
-
         {/* Secondary */}
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.94 }}>
-          <Button className="group flex w-64 flex-row-reverse items-center justify-center rounded-xl bg-black py-6 font-sans text-lg font-medium text-white transition-all duration-300 hover:bg-black/80 hover:shadow-lg hover:shadow-white/10">
+          <Button className="group flex w-56 flex-row-reverse items-center justify-center rounded-xl bg-black py-6 font-sans text-lg font-medium text-white transition-all duration-300 hover:bg-black/80 hover:shadow-lg hover:shadow-white/10">
             Watch Demo
             <Play
-              size={26}
-              className="ml-2 transition-all duration-300 group-hover:-translate-x-2 group-hover:scale-110"
+              strokeWidth={3}
+              className="ml-2 h-6! w-6! transition-all duration-300 group-hover:-translate-x-2 group-hover:scale-110"
             />
           </Button>
         </motion.div>

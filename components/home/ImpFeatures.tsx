@@ -55,7 +55,7 @@ const ImpFeatures = () => {
   return (
     <section id="features" className="py-20 text-center">
       {/* Heading */}
-      <motion.h2
+      {/* <motion.h2
         className="font-ai text-3xl leading-10 font-semibold sm:text-4xl"
         initial="hidden"
         whileInView="visible"
@@ -74,7 +74,28 @@ const ImpFeatures = () => {
       >
         Repurfy offers a suite of powerful features designed to help content creators maximize reach
         and engagement across all platforms.
-      </motion.p>
+      </motion.p> */}
+
+      <motion.h2
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.4 }}
+        variants={fadeUp(0)}
+        className="text-brand-gradient font-sans leading-10 font-bold tracking-wide uppercase"
+      >
+        Features
+      </motion.h2>
+
+      <motion.h2
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.4 }}
+        variants={fadeUp(0)}
+        className="font-ai my-4 text-center text-2xl font-bold text-white sm:text-3xl lg:text-6xl lg:leading-14"
+      >
+        Everything you need to <br />
+        <span className="text-brand-teal">repurpose at scale</span>
+      </motion.h2>
 
       {/* Card Grid */}
       <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

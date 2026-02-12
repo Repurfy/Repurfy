@@ -309,7 +309,6 @@ dark body {
   h4,
   h5,
   h6 {
-    font-family: var(--font-ai );
     font-weight: 600;
     letter-spacing: -0.02em;
     color: var(--text-primary);

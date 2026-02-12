@@ -38,9 +38,9 @@ const Home = () => {
           </div>
 
           {/* Subtitle */}
-          <p className="mx-auto my-6 max-w-2xl text-lg leading-relaxed text-slate-300 sm:text-xl md:text-2xl">
+          <p className="text-text-secondary mx-auto my-6 max-w-2xl text-lg leading-relaxed sm:text-xl md:text-2xl">
             Bring your content to life on every platform—fuelled by our{' '}
-            <span className="text-brand-gradient text-xl font-bold text-transparent sm:text-3xl">
+            <span className="font-ai text-brand-gradient text-xl font-bold text-transparent sm:text-4xl">
               next-gen AI content engine.
             </span>
           </p>
@@ -55,7 +55,7 @@ const Home = () => {
             🚀 Get Early Access Free
           </a>
 
-          <p className="mt-4 mb-8 text-xs text-slate-400 sm:text-sm">
+          <p className="mt-4 mb-8 text-xs text-slate-400 sm:text-[1.05rem]">
             Join 100+ creators waiting for the revolution.
           </p>
 
