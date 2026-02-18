@@ -260,7 +260,7 @@ const DashboardPage = () => {
         variants={cardVariants}
         className="bg-brand-gradient-soft flex items-center justify-between rounded-xl p-6 shadow-sm"
       >
-        <div>
+        <div className="">
           <h1 className="text-xl font-semibold md:text-2xl">Welcome back, Rahul! 👋</h1>
           <p className="pt-2">
             You have{' '}

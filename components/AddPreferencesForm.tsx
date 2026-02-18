@@ -1,138 +1,21 @@
-// import { useState } from 'react'
-// import { Button } from './ui/button'
-// import { Linkedin, Instagram, Twitter, Facebook, Youtube, Music2, Sparkles } from 'lucide-react'
-
-// interface Props {
-//   onBack: () => void
-// }
-
-// const PLATFORMS = [
-//   { id: 'linkedin', label: 'LinkedIn', icon: Linkedin },
-//   { id: 'twitter', label: 'X (Twitter)', icon: Twitter },
-//   { id: 'instagram', label: 'Instagram', icon: Instagram },
-//   // { id: 'tiktok', label: 'TikTok', icon: Music2 },
-//   // { id: 'youtube', label: 'YouTube Shorts', icon: Youtube },
-//   { id: 'facebook', label: 'Facebook', icon: Facebook },
-// ]
-
-// const AddPreferencesForm = ({ onBack }: Props) => {
-//   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([
-//     'linkedin',
-//     'twitter',
-//     'instagram',
-//   ])
-
-//   const togglePlatform = (id: string) => {
-//     setSelectedPlatforms((prev) =>
-//       prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
-//     )
-//   }
-
-//   return (
-//     <div className="border-border-subtle w-full rounded-2xl p-5 sm:p-6 dark:border-slate-700/60 dark:bg-slate-800/60">
-//       {/* Header */}
-//       <div className="mb-6 text-center sm:text-left">
-//         <div className="mb-2 flex items-center justify-center gap-2 sm:justify-start">
-//           <Sparkles className="text-brand-teal h-8 w-8" />
-//           <h2 className="text-text-primary flex items-center justify-center gap-1 text-xl font-semibold sm:justify-start dark:text-white">
-//             Customize & Generate
-//           </h2>
-//         </div>
-//         <p className="text-text-secondary text-sm dark:text-slate-400">
-//           Select platforms and add optional preferences
-//         </p>
-//       </div>
-
-//       {/* Platform Selection */}
-//       <div className="mb-6">
-//         <p className="text-text-primary mb-3 font-semibold dark:text-white">Select Platforms</p>
-
-//         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-//           {PLATFORMS.map(({ id, label, icon: Icon }) => {
-//             const active = selectedPlatforms.includes(id)
-
-//             return (
-//               <button
-//                 key={id}
-//                 onClick={() => togglePlatform(id)}
-//                 className={`flex cursor-pointer items-center justify-between rounded-lg border px-4 py-3 text-sm font-medium transition-all ${
-//                   active
-//                     ? 'border-brand-teal bg-brand-gradient/10 text-brand-teal'
-//                     : 'border-border-subtle bg-surface-elevated text-text-secondary hover:text-text-primary dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-400'
-//                 } `}
-//               >
-//                 <div className="flex items-center gap-2">
-//                   <Icon className="h-4 w-4" />
-//                   {label}
-//                 </div>
-
-//                 {active && <span className="text-brand-teal text-xs font-semibold">✓</span>}
-//               </button>
-//             )
-//           })}
-//         </div>
-//       </div>
-
-//       {/* Preferences */}
-//       <div className="mb-6">
-//         <p className="text-text-primary mb-3 font-semibold dark:text-white">
-//           Preferences <span className="text-text-tertiary">(Optional)</span>
-//         </p>
-
-//         <div className="grid gap-4 sm:grid-cols-2">
-//           {/* <input
-//             className="bg-surface-elevated text-text-primary placeholder:text-text-tertiary focus:ring-brand-teal border-border-subtle w-full rounded-lg border p-3 text-sm outline-none focus:ring-2 dark:bg-slate-900/60 dark:text-white dark:placeholder:text-slate-500"
-//             placeholder="Brand tone (Professional, Casual, Bold)"
-//           /> */}
-
-//           <select name="preferences" id="preferences">
-//             <option value="professional">
-//               <h3>Professional</h3>
-//               <p>Formal and business focused</p>
-//             </option>
-//             <option value="professional">
-//               <h3>Professional</h3>
-//               <p>Formal and business focused</p>
-//             </option>
-//           </select>
-
-//           <input
-//             className="bg-surface-elevated text-text-primary placeholder:text-text-tertiary focus:ring-brand-teal border-border-subtle w-full rounded-lg border p-3 text-sm outline-none focus:ring-2 dark:bg-slate-900/60 dark:text-white dark:placeholder:text-slate-500"
-//             placeholder="Target audience (Entrepreneurs, Marketers)"
-//           />
-//         </div>
-
-//         <input
-//           className="bg-surface-elevated text-text-primary placeholder:text-text-tertiary focus:ring-brand-teal border-border-subtle mt-4 w-full rounded-lg border p-3 text-sm outline-none focus:ring-2 dark:bg-slate-900/60 dark:text-white dark:placeholder:text-slate-500"
-//           placeholder="Keywords / CTA (AI, Productivity, Follow for more)"
-//         />
-//       </div>
-
-//       {/* Footer */}
-//       <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
-//         <Button
-//           variant="outline"
-//           onClick={onBack}
-//           className="border-border-subtle text-text-secondary hover:text-text-primary dark:border-slate-600 dark:text-slate-300"
-//         >
-//           ← Back
-//         </Button>
-
-//         <Button className="bg-brand-gradient rounded-lg font-semibold text-white shadow-md transition-all hover:scale-[1.02] hover:shadow-lg">
-//           ✨ Generate for {selectedPlatforms.length} Platforms
-//         </Button>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default AddPreferencesForm
-
 import { useState } from 'react'
 import { Button } from './ui/button'
 import { Linkedin, Instagram, Twitter, Facebook, Sparkles, ChevronDown, Check } from 'lucide-react'
+import axios from 'axios'
+
+interface FormDataType {
+  title: string
+  blogUrl: string
+  photoUrl: string
+  platforms: string[]
+  tone: string
+  audience: string
+  keywords: string[]
+}
 
 interface Props {
+  formData: FormDataType
+  setFormData: React.Dispatch<React.SetStateAction<FormDataType>>
   onBack: () => void
 }
 
@@ -144,62 +27,109 @@ const PLATFORMS = [
 ]
 
 const BRAND_TONES = [
-  {
-    value: 'professional',
-    label: 'Professional',
-    desc: 'Formal and business‑focused',
-  },
-  {
-    value: 'casual',
-    label: 'Casual',
-    desc: 'Friendly and conversational',
-  },
-  {
-    value: 'bold',
-    label: 'Bold',
-    desc: 'Confident and impactful',
-  },
-  {
-    value: 'friendly',
-    label: 'Friendly',
-    desc: 'Warm and approachable',
-  },
+  { value: 'professional', label: 'Professional', desc: 'Formal and business-focused' },
+  { value: 'casual', label: 'Casual', desc: 'Friendly and conversational' },
+  { value: 'bold', label: 'Bold', desc: 'Confident and impactful' },
+  { value: 'friendly', label: 'Friendly', desc: 'Warm and approachable' },
 ]
 
-const AddPreferencesForm = ({ onBack }: Props) => {
-  // ---------------- STATES ----------------
-  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([
-    'linkedin',
-    'twitter',
-    'instagram',
-  ])
-
+const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
   const [brandToneOpen, setBrandToneOpen] = useState(false)
-  const [brandTone, setBrandTone] = useState(BRAND_TONES[0])
 
-  const [targetAudience, setTargetAudience] = useState('')
-  const [keywords, setKeywords] = useState('')
+  const selectedPlatforms = formData.platforms
 
-  // ---------------- LOGIC ----------------
+  // correct tone logic
+  const brandTone = BRAND_TONES.find((t) => t.value === formData.tone) || BRAND_TONES[0]
+
+  const audience = formData.audience
+  const keywords = formData.keywords
+
+  // toggle platform
   const togglePlatform = (id: string) => {
-    setSelectedPlatforms((prev) =>
-      prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
-    )
+    setFormData((prev) => ({
+      ...prev,
+      platforms: prev.platforms.includes(id)
+        ? prev.platforms.filter((p) => p !== id)
+        : [...prev.platforms, id],
+    }))
+  }
+
+  // select tone
+  const selectBrandTone = (toneValue: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      tone: toneValue,
+    }))
+    setBrandToneOpen(false)
+  }
+
+  const handleTargetAudience = (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      audience: value,
+    }))
+  }
+
+  const handleKeywords = (value: string) => {
+    const arr = value
+      .split(',')
+      .map((k) => k.trim())
+      .filter((k) => k.length > 0)
+
+    setFormData((prev) => ({
+      ...prev,
+      keywords: arr,
+    }))
+  }
+
+  const sendData = async () => {
+    try {
+      const payload: any = {
+        title: formData.title,
+        platforms: formData.platforms,
+        tone: formData.tone,
+        audience: formData.audience,
+        keywords: formData.keywords,
+      }
+
+      // only send blogUrl if exists
+      if (formData.blogUrl && formData.blogUrl.trim() !== '') {
+        payload.blogUrl = formData.blogUrl
+      }
+
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/content/generate`,
+        payload,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+
+      console.log('✅ Response:', res.data)
+
+      // 🔥 CLEAR FORM AFTER SUCCESS
+      setFormData({
+        title: '',
+        blogUrl: '',
+        photoUrl: '',
+        platforms: [],
+        tone: '',
+        audience: '',
+        keywords: [],
+      })
+    } catch (err: any) {
+      console.log('❌ ERROR:', err?.response?.data || err.message)
+    }
   }
 
   const handleGenerate = () => {
-    const finalData = {
-      platforms: selectedPlatforms,
-      brandTone: brandTone.value,
-      targetAudience,
-      keywords,
-    }
-
-    console.log('FINAL FORM DATA 👉', finalData)
-    // send this to backend / next step
+    console.log('🔥 FINAL FORM DATA →', formData)
+    console.log('data send to server')
+    sendData()
   }
 
-  // ---------------- UI ----------------
   return (
     <div className="border-border-subtle w-full rounded-2xl p-5 sm:p-6 dark:border-slate-700/60 dark:bg-slate-800/60">
       {/* Header */}
@@ -251,7 +181,7 @@ const AddPreferencesForm = ({ onBack }: Props) => {
         </p>
 
         <div className="grid gap-4 sm:grid-cols-2">
-          {/* -------- Brand Tone Dropdown -------- */}
+          {/* Tone */}
           <div className="relative">
             <button
               onClick={() => setBrandToneOpen(!brandToneOpen)}
@@ -276,10 +206,7 @@ const AddPreferencesForm = ({ onBack }: Props) => {
                   return (
                     <button
                       key={tone.value}
-                      onClick={() => {
-                        setBrandTone(tone)
-                        setBrandToneOpen(false)
-                      }}
+                      onClick={() => selectBrandTone(tone.value)}
                       className={`flex w-full items-start justify-between px-4 py-3 text-left transition ${
                         active
                           ? 'bg-brand-gradient/10'
@@ -300,10 +227,10 @@ const AddPreferencesForm = ({ onBack }: Props) => {
             )}
           </div>
 
-          {/* Target Audience */}
+          {/* Target audience */}
           <input
-            value={targetAudience}
-            onChange={(e) => setTargetAudience(e.target.value)}
+            value={audience}
+            onChange={(e) => handleTargetAudience(e.target.value)}
             className="bg-surface-elevated border-border-subtle focus:ring-brand-teal w-full rounded-lg border p-3 text-sm outline-none focus:ring-2 dark:bg-slate-900/60 dark:text-white"
             placeholder="Target audience (Entrepreneurs, Marketers)"
           />
@@ -311,8 +238,8 @@ const AddPreferencesForm = ({ onBack }: Props) => {
 
         {/* Keywords */}
         <input
-          value={keywords}
-          onChange={(e) => setKeywords(e.target.value)}
+          value={keywords.join(', ')}
+          onChange={(e) => handleKeywords(e.target.value)}
           className="bg-surface-elevated border-border-subtle focus:ring-brand-teal mt-4 w-full rounded-lg border p-3 text-sm outline-none focus:ring-2 dark:bg-slate-900/60 dark:text-white"
           placeholder="Keywords / CTA (AI, Productivity, Follow for more)"
         />
@@ -320,18 +247,11 @@ const AddPreferencesForm = ({ onBack }: Props) => {
 
       {/* Footer */}
       <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
-        <Button
-          variant="outline"
-          onClick={onBack}
-          className="border-border-subtle text-text-secondary hover:text-text-primary dark:border-slate-600 dark:text-slate-300"
-        >
+        <Button variant="outline" onClick={onBack}>
           ← Back
         </Button>
 
-        <Button
-          onClick={handleGenerate}
-          className="bg-brand-gradient rounded-lg font-semibold text-white shadow-md transition-all hover:scale-[1.02] hover:shadow-lg"
-        >
+        <Button onClick={handleGenerate}>
           ✨ Generate for {selectedPlatforms.length} Platforms
         </Button>
       </div>

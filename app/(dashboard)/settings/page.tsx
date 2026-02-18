@@ -2,8 +2,10 @@
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Camera, Cookie, User } from 'lucide-react'
+import { Camera, Cookie, Sun, User } from 'lucide-react'
 import { motion, type Variants } from 'framer-motion'
+import { ThemeToggler } from '@/components/common/ThemeToggle'
+import { Switch } from '@/components/ui/switch'
 
 const pageVariants: Variants = {
   hidden: { opacity: 0 },
@@ -47,7 +49,7 @@ const Settings = () => {
         Manage your account and preferences
       </motion.p>
 
-      <div className="space-y-10">
+      <div className="mx-auto max-w-5xl space-y-10">
         <motion.div
           variants={itemVariants}
           className="rounded-xl bg-white p-6 shadow-sm dark:bg-slate-800"
@@ -95,6 +97,89 @@ const Settings = () => {
                 type="email"
                 className="bg-surface-elevated text-text-primary placeholder:text-text-tertiary focus:ring-brand-teal border-border-subtle mt-1 w-full rounded-md border outline-none focus:ring-1 dark:bg-slate-900/60 dark:text-white dark:placeholder:text-slate-500"
               />
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          variants={itemVariants}
+          className="rounded-xl bg-white p-6 shadow-sm dark:bg-slate-800"
+        >
+          <div className="mb-6 flex items-center gap-4">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/20 text-indigo-500">
+              <Cookie className="h-7 w-7" />
+            </div>
+
+            <div>
+              <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+                Brand Defaults
+              </h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                Default settings for content generation
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 grid-rows-2 gap-2">
+            <div className="space-y-2">
+              <label className="text-text-primary font-semibold">Default Tone</label>
+              <Input
+                defaultValue=""
+                className="bg-surface-elevated text-text-primary placeholder:text-text-tertiary focus:ring-brand-teal border-border-subtle mt-1 w-full rounded-md border outline-none focus:ring-1 dark:bg-slate-900/60 dark:text-white dark:placeholder:text-slate-500"
+                placeholder="e.g., Professional yet approachable"
+              />
+              <p className="text-text-secondary text-xs">
+                This tone will be used as the default for all generated content
+              </p>
+            </div>
+
+            <div className="mt-2 space-y-2">
+              <label className="text-text-primary font-semibold">Default CTA</label>
+              <Input
+                defaultValue=""
+                className="bg-surface-elevated text-text-primary placeholder:text-text-tertiary focus:ring-brand-teal border-border-subtle mt-1 w-full rounded-md border outline-none focus:ring-1 dark:bg-slate-900/60 dark:text-white dark:placeholder:text-slate-500"
+                placeholder="e.g., Follow for more insights"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-text-primary font-semibold">Target Audience</label>
+              <textarea
+                className="bg-surface-elevated text-text-primary placeholder:text-text-tertiary focus:ring-brand-teal border-border-subtle mt-1 h-20 w-full resize-none rounded-md border p-4 text-[14px] outline-none focus:ring-2 dark:bg-slate-900/60 dark:text-white dark:placeholder:text-slate-500"
+                placeholder="Entrepreneurs, marketers, and content creators…"
+              />
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          variants={itemVariants}
+          className="h-40 rounded-xl bg-white p-6 shadow-sm dark:bg-slate-800"
+        >
+          <div className="mb-6 flex items-center gap-4">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/20 text-indigo-500">
+              <Sun className="h-7 w-7" />
+            </div>
+
+            <div>
+              <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+                Appearance
+              </h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                Customize how Repurfy looks{' '}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-text-primary font-semibold">Dark Mode</h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                Toggle between light and dark theme
+              </p>
+            </div>
+            <div>
+              <ThemeToggler />
             </div>
           </div>
         </motion.div>

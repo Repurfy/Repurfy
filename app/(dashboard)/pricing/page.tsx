@@ -2,7 +2,7 @@
 
 import { PricingSection } from '@/components/home/PricingSection'
 import { Button } from '@/components/ui/button'
-import { Sparkles } from 'lucide-react'
+import { ArrowRightIcon, Sparkles } from 'lucide-react'
 import { motion, type Variants } from 'framer-motion'
 
 const pageVariants: Variants = {
@@ -60,7 +60,12 @@ const Pricing = () => {
             <p className="text-sm">12 of 25 posts used this month</p>
           </div>
         </div>
-        <Button>Upgrade Plan</Button>
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.94 }}>
+          <Button className="group bg-brand-gradient font-medoum flex items-center justify-center rounded-lg py-5 font-sans text-[14px] text-white shadow-lg shadow-teal-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-teal-500/30">
+            Upgrade Plan
+            <ArrowRightIcon className="ml-2 h-5! w-5! transition-all duration-300 group-hover:translate-x-1 group-hover:scale-110" />
+          </Button>
+        </motion.div>
       </motion.div>
 
       <motion.div variants={itemVariants} className="-m-6 -my-16">

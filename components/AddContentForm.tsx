@@ -2,12 +2,32 @@ import { ClipboardList, FileText, Link } from 'lucide-react'
 import { Button } from './ui/button'
 import { useState } from 'react'
 
+interface FormDataType {
+  title: string
+  blogUrl: string
+  photoUrl: string
+  platforms: string[]
+  tone: string
+  audience: string
+  keywords: string[]
+}
+
 interface Props {
+  formData: FormDataType
+  setFormData: React.Dispatch<React.SetStateAction<FormDataType>>
   onNext: () => void
 }
 
-const AddContentForm = ({ onNext }: Props) => {
+const AddContentForm = ({ onNext, formData, setFormData }: Props) => {
   const [showContentInput, setShowContentInput] = useState(true)
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
 
   return (
     <div className="border-border-subtle w-full rounded-2xl p-5 sm:p-6 dark:border-slate-700/60 dark:bg-slate-800/60">
@@ -52,13 +72,19 @@ const AddContentForm = ({ onNext }: Props) => {
       {/* Input */}
       {showContentInput ? (
         <textarea
+          name="title"
           className="bg-surface-elevated text-text-primary placeholder:text-text-tertiary focus:ring-brand-teal border-border-subtle h-44 w-full resize-none rounded-xl border p-4 text-[14px] outline-none focus:ring-2 dark:bg-slate-900/60 dark:text-white dark:placeholder:text-slate-500"
           placeholder="Paste your long‑form content here…"
+          value={formData.title}
+          onChange={(e) => handleChange(e)}
         />
       ) : (
         <input
+          name="blogUrl"
           className="bg-surface-elevated text-text-primary placeholder:text-text-tertiary focus:ring-brand-teal border-border-subtle w-full rounded-xl border p-4 outline-none focus:ring-2 dark:bg-slate-900/60 dark:text-white dark:placeholder:text-slate-500"
           placeholder="https://youtube.com/… or podcast link"
+          value={formData.blogUrl}
+          onChange={(e) => handleChange(e)}
         />
       )}
 
@@ -69,7 +95,9 @@ const AddContentForm = ({ onNext }: Props) => {
       {/* Footer CTA */}
       <div className="flex justify-end">
         <Button
-          onClick={onNext}
+          onClick={() => {
+            onNext()
+          }}
           className="bg-brand-gradient rounded-lg font-semibold text-white shadow-md transition-all hover:scale-[1.02] hover:shadow-lg"
         >
           Continue

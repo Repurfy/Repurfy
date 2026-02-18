@@ -116,21 +116,27 @@ const fadeUp = (delay: number = 0): Variants => ({
   },
 })
 
-const badgePop = {
+const badgePop: Variants = {
   animate: {
-    scale: [1, 1.08, 1],
+    scale: [1, 1.06, 1],
+    y: [0, -2, 0],
+    boxShadow: [
+      '0 0 0px rgba(110,207,174,0.0)',
+      '0 0 14px rgba(110,207,174,0.45)',
+      '0 0 0px rgba(110,207,174,0.0)',
+    ],
     transition: {
-      duration: 2.5,
+      duration: 3.2,
+      ease: 'easeInOut',
       repeat: Infinity,
       repeatType: 'loop',
-      ease: 'easeInOut',
     },
   },
-} as const satisfies Variants
+}
 
 export const PricingSection = ({
-  heading = 'Pricing',
-  description = 'Check out our affordable pricing plans',
+  // heading = 'Pricing',
+  // description = 'Check out our affordable pricing plans',
   plans = defaultPlans,
 }: {
   heading?: string
@@ -139,7 +145,7 @@ export const PricingSection = ({
 }) => {
   const [isYearly, setIsYearly] = useState(false)
 
-  const pathname = usePathname()
+  // const pathname = usePathname()
 
   return (
     <section id="pricing" className="py-20">
@@ -151,26 +157,6 @@ export const PricingSection = ({
         transition={{ duration: 0.6 }}
       >
         <div className="mx-auto flex max-w-5xl flex-col items-center gap-6 text-center">
-          {/* <motion.h2
-            className={`${pathname !== '/home' ? 'font-sans' : 'font-ai'} text-3xl font-bold sm:text-4xl`}
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            {heading}
-          </motion.h2>
-
-          <motion.p
-            className={`text-muted-foreground lg:text-xl ${description.length > 0 ? 'block' : 'hidden'}`}
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.08, duration: 0.5 }}
-          >
-            {description}
-          </motion.p> */}
-
           <motion.h2
             initial="hidden"
             whileInView="visible"
@@ -216,7 +202,7 @@ export const PricingSection = ({
             </div>
           </motion.div>
 
-          <div className="my-6 flex flex-col items-stretch gap-6 md:flex-row lg:gap-16">
+          <div className="my-6 flex flex-col items-stretch gap-6 md:flex-row lg:my-24 lg:gap-16">
             {plans.map((plan, i) => (
               <motion.div
                 key={plan.id}
@@ -229,7 +215,7 @@ export const PricingSection = ({
               >
                 {/* <Card className="border-brand-teal relative flex w-80 flex-col justify-between overflow-hidden border text-left shadow-sm transition-shadow hover:shadow-xl"> */}
                 <Card
-                  className={`relative flex w-80 flex-col justify-between overflow-hidden text-left shadow-sm transition-shadow hover:shadow-xl ${i === 1 ? 'border-brand-teal border-2' : 'border border-transparent'} `}
+                  className={`relative flex w-80 flex-col justify-between overflow-hidden text-left shadow-sm transition-shadow hover:shadow-xl ${plan.recommended ? 'border-brand-teal glow-hover shadow-[0_0_30px_rgba(110,207,174,0.5)] lg:-my-12' : 'glow-hover border border-transparent'} `}
                 >
                   {plan.recommended && (
                     <motion.div
@@ -255,7 +241,7 @@ export const PricingSection = ({
                       <span className="text-brand-teal text-4xl font-semibold">
                         {isYearly ? plan.yearlyPrice : plan.monthlyPrice}
                       </span>
-                      <span className="text-muted-foreground ml-2 text-2xl font-semibold">
+                      <span className="text-muted-foreground text-xl">
                         {isYearly ? '/yr' : '/mo'}
                       </span>
                     </motion.div>

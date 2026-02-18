@@ -4,6 +4,9 @@ import { motion, Variants } from 'framer-motion'
 import { Button } from '../ui/button'
 import { Badge } from '../ui/badge'
 import { ArrowRightIcon, Sparkles, Play, Hash, MessageSquareText } from 'lucide-react'
+import { useAuth } from '@clerk/nextjs'
+import { useId } from 'react'
+import Link from 'next/link'
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 25 },
@@ -34,6 +37,10 @@ const featureArray = [
 ]
 
 export default function HeroSection() {
+  const { userId } = useAuth()
+
+  console.log('userId', userId)
+
   return (
     <motion.section
       initial="hidden"
@@ -81,10 +88,7 @@ export default function HeroSection() {
       </motion.h1>
 
       {/* Subtext */}
-      <motion.p
-        variants={fadeUp}
-        className="text-text-secondary max-w-xl text-base sm:max-w-2xl sm:text-lg"
-      >
+      <motion.p variants={fadeUp} className="text-text-secondary max-w-xl text-base sm:max-w-2xl">
         Turn your long-form content into high-performing posts for LinkedIn, X, Instagram, TikTok,
         YouTube Shorts, and Facebook — all in seconds.
       </motion.p>
@@ -93,21 +97,23 @@ export default function HeroSection() {
       <motion.div variants={fadeUp} className="mt-4 flex flex-col items-center gap-6 md:flex-row">
         {/* Primary */}
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.94 }}>
-          <Button className="group bg-brand-teal flex w-56 items-center justify-center rounded-xl py-6 font-sans text-lg font-semibold text-white shadow-lg shadow-teal-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-teal-500/30">
-            Try Repurfy Free
-            <ArrowRightIcon
-              strokeWidth={3}
-              className="ml-2 h-6! w-6! transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110"
-            />
-          </Button>
+          <Link href={userId !== null || undefined ? '/dashboard' : '#'}>
+            <Button className="group bg-brand-teal flex w-56 items-center justify-center rounded-xl py-6 font-sans text-lg font-medium text-black/70 shadow-lg shadow-teal-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-teal-500/30">
+              {userId !== null || undefined ? 'Go To Dashboard' : 'Try Repurfy Free'}
+              <ArrowRightIcon
+                strokeWidth={2}
+                className="h-5! w-5! transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110"
+              />
+            </Button>
+          </Link>
         </motion.div>
         {/* Secondary */}
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.94 }}>
           <Button className="group flex w-56 flex-row-reverse items-center justify-center rounded-xl bg-black py-6 font-sans text-lg font-medium text-white transition-all duration-300 hover:bg-black/80 hover:shadow-lg hover:shadow-white/10">
             Watch Demo
             <Play
-              strokeWidth={3}
-              className="ml-2 h-6! w-6! transition-all duration-300 group-hover:-translate-x-2 group-hover:scale-110"
+              strokeWidth={2}
+              className="h-5! w-5! transition-all duration-300 group-hover:scale-110"
             />
           </Button>
         </motion.div>
