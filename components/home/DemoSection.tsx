@@ -19,7 +19,7 @@ const fadeUp = (delay: number = 0): Variants => ({
 
 const DemoSection = () => {
   return (
-    <section className="flex flex-col items-center justify-center gap-3 rounded-3xl px-4 pb-20 text-center sm:px-10">
+    <section className="mb-20 flex flex-col items-center justify-center gap-3 rounded-3xl px-4 text-center sm:px-10">
       {/* Heading */}
       {/* <motion.h2
         initial="hidden"
@@ -57,12 +57,13 @@ const DemoSection = () => {
           allowFullScreen
         ></iframe>
       </motion.div> */}
-      <div className="relative h-auto w-full lg:h-180">
+      <div className="w-full">
         <Image
           src="/hero-mockup.png"
           alt="hero-img"
-          fill
-          className="rounded-lg object-cover lg:-mt-24"
+          width={1200}
+          height={700}
+          className="w-full rounded-lg object-cover lg:-mt-24"
           priority
         />
       </div>

@@ -21,12 +21,12 @@ const fadeUp = (delay: number = 0): Variants => ({
 const features = [
   {
     img: <Upload />,
-    title: 'Import or Paste Your Content',
+    title: 'Paste Your Content',
     desc: 'Upload or paste content from YouTube, Podcasts, Webinars, or any long-form content.',
   },
   {
     img: <Sparkles />,
-    title: 'Import or Paste Your Content',
+    title: 'AI Repurposes It',
     desc: 'Our AI analyzes your content and generates platform-optimized posts tailored to each network.',
   },
   {
@@ -38,7 +38,7 @@ const features = [
 
 const HowItWorksSection = () => {
   return (
-    <section className="py-20 text-center">
+    <section id="how-it-works" className="my-20 text-center lg:my-40">
       {/* Heading */}
       <motion.h2
         initial="hidden"

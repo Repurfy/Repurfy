@@ -15,7 +15,7 @@ const users = [
 
 export default function CTASection() {
   return (
-    <section className="bg-surface-card mb-20 flex items-center justify-center rounded-3xl px-4 py-24">
+    <section className="bg-surface-card mb-20 flex items-center justify-center px-4 py-24 lg:mb-40">
       <TooltipProvider>
         <motion.div
           initial={{ opacity: 0, y: 80 }}

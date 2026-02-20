@@ -24,15 +24,15 @@ const staggerContainer: Variants = {
 const featureArray = [
   {
     title: 'Auto Captioning',
-    icon: <MessageSquareText strokeWidth={3} className="h-4! w-4!" />,
+    icon: <MessageSquareText strokeWidth={3} className="text-brand-teal h-4! w-4!" />,
   },
   {
     title: 'AI Hooks',
-    icon: <Sparkles strokeWidth={3} className="h-4! w-4!" />,
+    icon: <Sparkles strokeWidth={3} className="text-brand-teal h-4! w-4!" />,
   },
   {
     title: 'Hashtag Generation',
-    icon: <Hash strokeWidth={3} className="h-4! w-4!" />,
+    icon: <Hash strokeWidth={3} className="text-brand-teal h-4! w-4!" />,
   },
 ]
 
@@ -51,18 +51,25 @@ export default function HeroSection() {
       {/* Badge */}
       <motion.div variants={fadeUp}>
         <Badge className="shimmer bg-brand-gradient-reverse/20 text-brand-teal border-brand-teal/30 rounded-full border px-6 py-2 backdrop-blur-md">
-          <span className="flex items-center gap-2 text-sm font-semibold">
+          <span className="flex items-center gap-2 text-sm font-medium">
             <Sparkles className="animate-pulse" size={16} />
             AI-Powered Content Repurposing
           </span>
         </Badge>
       </motion.div>
 
-      {/* Features */}
-      <motion.div
-        variants={staggerContainer}
-        className="flex flex-wrap justify-center gap-6 md:my-2"
+      {/* Heading */}
+      <motion.h1
+        variants={fadeUp}
+        className="font-ai mx-auto -mt-2 max-w-5xl text-center text-3xl leading-tight font-bold tracking-tight sm:-mt-4 sm:text-4xl sm:leading-tight md:text-5xl lg:text-6xl lg:leading-[1.1] xl:text-7xl 2xl:text-8xl"
       >
+        Create Once.
+        <br className="hidden sm:block" />
+        <span className="text-brand-gradient block sm:inline">Publish Everywhere.</span>
+      </motion.h1>
+
+      {/* Features */}
+      <motion.div variants={staggerContainer} className="flex flex-wrap justify-center gap-6">
         {featureArray.map((feature, index) => (
           <motion.div
             variants={fadeUp}
@@ -78,15 +85,6 @@ export default function HeroSection() {
         ))}
       </motion.div>
 
-      {/* Heading */}
-      <motion.h1
-        variants={fadeUp}
-        className="font-ai -mt-4 max-w-4xl text-4xl leading-20 font-bold sm:text-6xl lg:text-8xl lg:leading-24"
-      >
-        Create Once. <br />
-        <span className="text-brand-gradient">Publish Everywhere.</span>
-      </motion.h1>
-
       {/* Subtext */}
       <motion.p variants={fadeUp} className="text-text-secondary max-w-xl text-base sm:max-w-2xl">
         Turn your long-form content into high-performing posts for LinkedIn, X, Instagram, TikTok,
@@ -97,25 +95,29 @@ export default function HeroSection() {
       <motion.div variants={fadeUp} className="mt-4 flex flex-col items-center gap-6 md:flex-row">
         {/* Primary */}
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.94 }}>
-          <Link href={userId !== null || undefined ? '/dashboard' : '#'}>
-            <Button className="group bg-brand-teal flex w-56 items-center justify-center rounded-xl py-6 font-sans text-lg font-medium text-black/70 shadow-lg shadow-teal-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-teal-500/30">
-              {userId !== null || undefined ? 'Go To Dashboard' : 'Try Repurfy Free'}
+          <Link
+            href={
+              userId !== null || undefined ? '/dashboard' : 'https://forms.gle/53BNApyitQJJdnCQ9'
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button className="bg-brand-gradient inline-flex items-center gap-2 rounded-lg p-6 text-base font-medium text-white/90 shadow-lg shadow-teal-500/25 transition-all duration-300 hover:text-white">
+              {userId !== null || undefined ? 'Go To Dashboard' : 'Get Early Access Free'}
               <ArrowRightIcon
                 strokeWidth={2}
-                className="h-5! w-5! transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110"
+                className="h-5 w-5 transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110"
               />
             </Button>
           </Link>
         </motion.div>
         {/* Secondary */}
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.94 }}>
-          <Button className="group flex w-56 flex-row-reverse items-center justify-center rounded-xl bg-black py-6 font-sans text-lg font-medium text-white transition-all duration-300 hover:bg-black/80 hover:shadow-lg hover:shadow-white/10">
-            Watch Demo
-            <Play
-              strokeWidth={2}
-              className="h-5! w-5! transition-all duration-300 group-hover:scale-110"
-            />
-          </Button>
+          <Link href={'/#how-it-works'}>
+            <Button className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 p-6 text-base font-medium text-white/80 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white">
+              See How It Works
+            </Button>
+          </Link>
         </motion.div>
       </motion.div>
     </motion.section>

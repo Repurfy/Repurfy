@@ -148,7 +148,7 @@ export const PricingSection = ({
   // const pathname = usePathname()
 
   return (
-    <section id="pricing" className="py-20">
+    <section id="pricing" className="mb-20">
       <motion.div
         className="container"
         initial={{ opacity: 0, y: 28 }}

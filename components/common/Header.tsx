@@ -8,6 +8,7 @@ import { ThemeToggler } from './ThemeToggle'
 import Link from 'next/link'
 import { Variants } from 'framer-motion'
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
+import { ArrowRightIcon } from 'lucide-react'
 
 const fadeDown = {
   hidden: { opacity: 0, y: -20 },
@@ -27,7 +28,7 @@ const Header = () => {
       initial="hidden"
       animate="visible"
       variants={fadeDown}
-      className="repurfy-bg/80 sticky top-0 z-50 container mx-auto flex h-16 items-center justify-between shadow-md backdrop-blur-xl"
+      className="repurfy-bg/80 sticky top-0 z-50 container mx-auto flex h-20 items-center justify-between shadow-md backdrop-blur-xl"
     >
       {/* Logo */}
       <motion.div
@@ -39,7 +40,7 @@ const Header = () => {
 
         <Link
           href="/"
-          className="font-heading font-sans text-xl font-semibold tracking-wide lg:text-3xl"
+          className="font-heading font-ai text-xl font-semibold tracking-tighter lg:text-3xl"
         >
           Repurfy
         </Link>
@@ -52,9 +53,9 @@ const Header = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15 }}
       >
+        <NavLink href="/#how-it-works">How it Works</NavLink>
         <NavLink href="/#features">Features</NavLink>
         <NavLink href="/#pricing">Pricing</NavLink>
-        <NavLink href="/#about">About</NavLink>
       </motion.div>
 
       {/* Auth Section */}
@@ -64,8 +65,8 @@ const Header = () => {
         transition={{ delay: 0.25 }}
         className="flex items-center gap-2 lg:gap-4"
       >
-        <ThemeToggler />
-
+        {/* <ThemeToggler /> */}
+        {/* 
         <SignedOut>
           <SignInButton mode="modal">
             <Button
@@ -87,7 +88,17 @@ const Header = () => {
 
         <SignedIn>
           <UserButton />
-        </SignedIn>
+        </SignedIn> */}
+
+        <Link
+          href={'https://forms.gle/53BNApyitQJJdnCQ9'}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Button className="bg-brand-gradient inline-flex items-center gap-2 rounded-xl text-white shadow-lg shadow-teal-500/25 transition-all hover:shadow-xl">
+            Get Early Access
+          </Button>
+        </Link>
       </motion.div>
     </motion.nav>
   )

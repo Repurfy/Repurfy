@@ -16,7 +16,7 @@ const HomeLayout = ({
 
         <main className="">{children}</main>
 
-        <div className="bg-surface-card container w-full shadow-md dark:border dark:shadow-md">
+        <div className="bg-surface-card w-full shadow-md dark:border dark:shadow-md">
           <FooterSection />
         </div>
       </ThemeProvider>

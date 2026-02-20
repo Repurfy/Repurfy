@@ -173,9 +173,9 @@ const Settings = () => {
 
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-text-primary font-semibold">Dark Mode</h2>
+              <h2 className="text-text-primary font-semibold">Appearance</h2>
               <p className="text-sm text-slate-500 dark:text-slate-400">
-                Toggle between light and dark theme
+                Customize how Repurfy looks{' '}
               </p>
             </div>
             <div>

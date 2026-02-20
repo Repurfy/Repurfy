@@ -69,9 +69,10 @@ const TrustedBySection = () => {
       ),
     },
   ]
+  // bg-[#0B0C12]
 
   return (
-    <section className="overflow-hidden bg-[#0B0C12] pt-4 md:pt-8 lg:pt-16">
+    <section className="bg-surface-card overflow-hidden pt-4 md:pt-8 lg:pt-16">
       <div className="container mx-auto px-4">
         {/* Title */}
         <motion.h2

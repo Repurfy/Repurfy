@@ -53,7 +53,7 @@ const ImpFeatures = () => {
   ]
 
   return (
-    <section id="features" className="py-20 text-center">
+    <section id="features" className="mb-20 text-center lg:my-40">
       {/* Heading */}
       {/* <motion.h2
         className="font-ai text-3xl leading-10 font-semibold sm:text-4xl"
