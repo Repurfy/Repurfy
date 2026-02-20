@@ -159,7 +159,7 @@ export default function Footer() {
                 placeholder="you@example.com"
                 className="focus:border-brand-teal/50 border-white/10 bg-white/5 text-sm placeholder:text-gray-600"
               />
-              <Button className="bg-brand-gradient w-full rounded-lg text-sm font-semibold text-white">
+              <Button className="bg-brand-gradient w-full rounded-lg text-sm font-semibold text-white shadow-teal-500/25 hover:shadow-xl">
                 Subscribe
               </Button>
             </div>

@@ -53,8 +53,8 @@ const Header = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15 }}
       >
-        <NavLink href="/#how-it-works">How it Works</NavLink>
         <NavLink href="/#features">Features</NavLink>
+        <NavLink href="/#how-it-works">How it Works</NavLink>
         <NavLink href="/#pricing">Pricing</NavLink>
       </motion.div>
 

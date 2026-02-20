@@ -4,6 +4,8 @@ import { motion } from 'framer-motion'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+import { ArrowRightIcon } from 'lucide-react'
 
 const users = [
   { name: 'Alex', src: '/avatars/1.png' },
@@ -97,9 +99,19 @@ export default function CTASection() {
             viewport={{ once: true }}
             transition={{ delay: 0.6 }}
           >
-            <Button size="lg" className="rounded-lg px-4 text-[16px] font-medium text-white">
-              Get Started
-            </Button>
+            <Link
+              href={'https://forms.gle/53BNApyitQJJdnCQ9'}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button className="bg-brand-gradient group hover:text-whitel inline-flex items-center gap-2 rounded-lg p-6 text-base font-medium text-white shadow-lg shadow-teal-500/25 transition-all duration-300 hover:scale-105">
+                Get Early Access
+                <ArrowRightIcon
+                  strokeWidth={2}
+                  className="h-5 w-5 transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110"
+                />
+              </Button>
+            </Link>
           </motion.div>
         </motion.div>
       </TooltipProvider>

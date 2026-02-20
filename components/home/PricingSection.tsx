@@ -1,6 +1,6 @@
 'use client'
 
-import { use, useState } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Check } from 'lucide-react'
 
@@ -135,8 +135,6 @@ const badgePop: Variants = {
 }
 
 export const PricingSection = ({
-  // heading = 'Pricing',
-  // description = 'Check out our affordable pricing plans',
   plans = defaultPlans,
 }: {
   heading?: string
@@ -145,10 +143,11 @@ export const PricingSection = ({
 }) => {
   const [isYearly, setIsYearly] = useState(false)
 
-  // const pathname = usePathname()
+  const pathname = usePathname()
+  console.log(pathname)
 
   return (
-    <section id="pricing" className="mb-20">
+    <section id="pricing" className="my-20">
       <motion.div
         className="container"
         initial={{ opacity: 0, y: 28 }}
@@ -162,7 +161,7 @@ export const PricingSection = ({
             whileInView="visible"
             viewport={{ once: true, amount: 0.4 }}
             variants={fadeUp(0)}
-            className="text-brand-gradient -mb-2 font-sans leading-10 font-bold tracking-wide uppercase"
+            className={`${pathname === '/pricing' ? 'hidden' : 'text-brand-gradient -mb-2 font-sans leading-10 font-bold tracking-wide uppercase'}`}
           >
             Pricing
           </motion.h2>
@@ -172,7 +171,7 @@ export const PricingSection = ({
             whileInView="visible"
             viewport={{ once: true, amount: 0.4 }}
             variants={fadeUp(0)}
-            className="font-ai text-center text-2xl font-bold text-white sm:text-3xl lg:text-6xl lg:leading-14"
+            className={`${pathname === '/pricing' ? 'hidden' : 'font-ai text-center text-2xl font-bold text-white sm:text-3xl lg:text-6xl lg:leading-14'}`}
           >
             Simple, transparent <span className="text-brand-teal">pricing</span>
           </motion.h2>

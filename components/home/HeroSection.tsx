@@ -77,7 +77,7 @@ export default function HeroSection() {
             whileHover={{ scale: 1.06 }}
             transition={{ duration: 0.2 }}
           >
-            <Badge className="flex items-center gap-2 rounded-lg border border-white/15 bg-white/10 px-4 py-1 text-[0.85rem] tracking-wide text-white/70 backdrop-blur-lg">
+            <Badge className="flex items-center gap-2 rounded-lg border border-white/15 bg-white/10 px-4 py-2 text-xs tracking-wide text-white/90 backdrop-blur-lg">
               {feature.icon}
               {feature.title}
             </Badge>
@@ -102,7 +102,7 @@ export default function HeroSection() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Button className="bg-brand-gradient inline-flex items-center gap-2 rounded-lg p-6 text-base font-medium text-white/90 shadow-lg shadow-teal-500/25 transition-all duration-300 hover:text-white">
+            <Button className="bg-brand-gradient group inline-flex items-center gap-2 rounded-lg p-6 text-base font-medium text-white/90 shadow-lg shadow-teal-500/25 transition-all duration-300 hover:text-white">
               {userId !== null || undefined ? 'Go To Dashboard' : 'Get Early Access Free'}
               <ArrowRightIcon
                 strokeWidth={2}

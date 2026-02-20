@@ -68,8 +68,8 @@ const Pricing = () => {
         </motion.div>
       </motion.div>
 
-      <motion.div variants={itemVariants} className="-m-6 -my-16">
-        <PricingSection heading="" description="" />
+      <motion.div variants={itemVariants} className="my-10">
+        <PricingSection />
       </motion.div>
     </motion.div>
   )
