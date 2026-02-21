@@ -95,21 +95,31 @@ export default function HeroSection() {
       <motion.div variants={fadeUp} className="mt-4 flex flex-col items-center gap-6 md:flex-row">
         {/* Primary */}
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.94 }}>
-          <Link
-            href={
-              userId !== null || undefined ? '/dashboard' : 'https://forms.gle/53BNApyitQJJdnCQ9'
-            }
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Button className="bg-brand-gradient group inline-flex items-center gap-2 rounded-lg p-6 text-base font-medium text-white/90 shadow-lg shadow-teal-500/25 transition-all duration-300 hover:text-white">
-              {userId !== null || undefined ? 'Go To Dashboard' : 'Get Early Access Free'}
-              <ArrowRightIcon
-                strokeWidth={2}
-                className="h-5 w-5 transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110"
-              />
-            </Button>
-          </Link>
+          {userId !== null || undefined ? (
+            <Link href="/dashboard">
+              <Button className="bg-brand-gradient group inline-flex items-center gap-2 rounded-lg p-6 text-base font-medium text-white/90 shadow-lg shadow-teal-500/25 transition-all duration-300 hover:text-white">
+                {userId !== null || undefined ? 'Go To Dashboard' : 'Get Early Access Free'}
+                <ArrowRightIcon
+                  strokeWidth={2}
+                  className="h-5 w-5 transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110"
+                />
+              </Button>
+            </Link>
+          ) : (
+            <Link
+              href="https://forms.gle/53BNApyitQJJdnCQ9"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button className="bg-brand-gradient group inline-flex items-center gap-2 rounded-lg p-6 text-base font-medium text-white/90 shadow-lg shadow-teal-500/25 transition-all duration-300 hover:text-white">
+                {userId !== null || undefined ? 'Go To Dashboard' : 'Get Early Access Free'}
+                <ArrowRightIcon
+                  strokeWidth={2}
+                  className="h-5 w-5 transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110"
+                />
+              </Button>
+            </Link>
+          )}
         </motion.div>
         {/* Secondary */}
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.94 }}>

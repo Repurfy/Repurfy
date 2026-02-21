@@ -7,8 +7,9 @@ import Image from 'next/image'
 import { ThemeToggler } from './ThemeToggle'
 import Link from 'next/link'
 import { Variants } from 'framer-motion'
-import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
+import { SignedIn, SignedOut, SignInButton, SignUpButton, useAuth, UserButton } from '@clerk/nextjs'
 import { ArrowRightIcon } from 'lucide-react'
+import { useEffect } from 'react'
 
 const fadeDown = {
   hidden: { opacity: 0, y: -20 },
@@ -23,18 +24,20 @@ const fadeDown = {
 } as const satisfies Variants
 
 const Header = () => {
+  const { userId } = useAuth()
+
   return (
     <motion.nav
       initial="hidden"
       animate="visible"
       variants={fadeDown}
-      className="repurfy-bg/80 sticky top-0 z-50 container mx-auto flex h-20 items-center justify-between shadow-md backdrop-blur-xl"
+      className="repurfy-bg/80 sticky top-0 z-50 container mx-auto flex h-20 w-full items-center justify-between shadow-md backdrop-blur-xl"
     >
       {/* Logo */}
       <motion.div
-        whileHover={{ scale: 1.06 }}
+        whileHover={{ scale: 1.02 }}
         transition={{ type: 'spring', stiffness: 300 }}
-        className="flex items-center gap-1"
+        className="flex items-center gap-1 lg:w-1/3"
       >
         <Image src="/logo.svg" alt="Repurfy Logo" width={40} height={40} />
 
@@ -48,7 +51,7 @@ const Header = () => {
 
       {/* Navbar Links */}
       <motion.div
-        className="flex items-center justify-center gap-4 tracking-wide lg:gap-12"
+        className="flex items-center justify-center gap-4 tracking-wide lg:w-1/3 lg:gap-12"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15 }}
@@ -63,42 +66,56 @@ const Header = () => {
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.25 }}
-        className="flex items-center gap-2 lg:gap-4"
+        className="flex items-center justify-end gap-2 lg:w-1/3 lg:gap-4"
       >
         {/* <ThemeToggler /> */}
-        {/* 
-        <SignedOut>
-          <SignInButton mode="modal">
-            <Button
-              variant="ghost"
-              className="text-brand-teal hover:bg-brand-teal hover:text-white"
+
+        {(userId && userId !== null) || undefined ? (
+          <>
+            <SignedIn>
+              <UserButton
+                appearance={{
+                  elements: {
+                    avatarBox: 'w-8! h-8!',
+                  },
+                }}
+              />
+            </SignedIn>
+          </>
+        ) : (
+          <>
+            <SignedOut>
+              <SignInButton mode="modal">
+                <Button
+                  variant="ghost"
+                  className="text-brand-teal hover:bg-brand-teal hover:text-white"
+                >
+                  Log in
+                </Button>
+              </SignInButton>
+
+              <SignUpButton mode="modal">
+                <motion.div whileHover={{ scale: 1.05 }}>
+                  <Button
+                    variant="secondary"
+                    className="bg-brand-teal hover:bg-primary/90 text-white"
+                  >
+                    Sign up
+                  </Button>
+                </motion.div>
+              </SignUpButton>
+            </SignedOut>
+            <Link
+              href={'https://forms.gle/53BNApyitQJJdnCQ9'}
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Log in
-            </Button>
-          </SignInButton>
-
-          <SignUpButton mode="modal">
-            <motion.div whileHover={{ scale: 1.05 }}>
-              <Button variant="secondary" className="bg-brand-teal hover:bg-primary/90 text-white">
-                Sign up
+              <Button className="bg-brand-gradient inline-flex items-center gap-2 rounded-xl text-white shadow-lg shadow-teal-500/25 transition-all hover:shadow-xl">
+                Get Early Access
               </Button>
-            </motion.div>
-          </SignUpButton>
-        </SignedOut>
-
-        <SignedIn>
-          <UserButton />
-        </SignedIn> */}
-
-        <Link
-          href={'https://forms.gle/53BNApyitQJJdnCQ9'}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Button className="bg-brand-gradient inline-flex items-center gap-2 rounded-xl text-white shadow-lg shadow-teal-500/25 transition-all hover:shadow-xl">
-            Get Early Access
-          </Button>
-        </Link>
+            </Link>
+          </>
+        )}
       </motion.div>
     </motion.nav>
   )

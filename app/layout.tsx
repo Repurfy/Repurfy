@@ -78,7 +78,7 @@ const inter = Inter({
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider signInForceRedirectUrl={'/dashboard'} signUpForceRedirectUrl={'/dashboard'}>
       <html lang="en" suppressHydrationWarning className={`${lexend.variable} ${inter.variable}`}>
         <body className="antialiased">
           <Providers>{children}</Providers>
