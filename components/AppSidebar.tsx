@@ -37,7 +37,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 const navItems = [
   { title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { title: 'Create', href: '/create-content', icon: CirclePlus },
+  { title: 'Create', href: '/create', icon: CirclePlus },
   { title: 'History', href: '/history', icon: History },
   { title: 'Pricing', href: '/pricing', icon: CreditCard },
   { title: 'Settings', href: '/settings', icon: Settings },

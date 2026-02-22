@@ -271,7 +271,7 @@ const DashboardPage = () => {
           </p>
         </div>
 
-        <Link href="/create-content">
+        <Link href="/create">
           <Button className="text-white transition-transform hover:scale-105">
             <Edit />
             Create Post

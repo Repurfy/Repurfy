@@ -71,7 +71,7 @@ const CreatePostForm = () => {
   const activeStep = formSteps.find((step) => step.id === currentStep)
 
   return (
-    <div className="w-full">
+    <div className="w-full pb-10">
       {/* Stepper Header */}
       <div className="mb-8 flex w-full items-center justify-center gap-16">
         {formSteps.map((step) => {

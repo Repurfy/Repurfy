@@ -1,7 +1,7 @@
-import { useState } from 'react'
 import { Button } from './ui/button'
-import { Linkedin, Instagram, Twitter, Facebook, Sparkles, ChevronDown, Check } from 'lucide-react'
+import { Linkedin, Instagram, Twitter, Facebook, Sparkles } from 'lucide-react'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
 interface FormDataType {
   title: string
@@ -11,6 +11,15 @@ interface FormDataType {
   tone: string
   audience: string
   keywords: string[]
+}
+
+interface Payload {
+  title: string
+  platforms: string[]
+  tone: string
+  audience: string
+  keywords: string[]
+  blogUrl?: string
 }
 
 interface Props {
@@ -33,18 +42,20 @@ const BRAND_TONES = [
   { value: 'friendly', label: 'Friendly', desc: 'Warm and approachable' },
 ]
 
+const EMPTY_FORM: FormDataType = {
+  title: '',
+  blogUrl: '',
+  photoUrl: '',
+  platforms: [],
+  tone: '',
+  audience: '',
+  keywords: [],
+}
+
 const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
-  const [brandToneOpen, setBrandToneOpen] = useState(false)
+  const { platforms: selectedPlatforms, tone, audience, keywords } = formData
+  const router = useRouter()
 
-  const selectedPlatforms = formData.platforms
-
-  // correct tone logic
-  const brandTone = BRAND_TONES.find((t) => t.value === formData.tone) || BRAND_TONES[0]
-
-  const audience = formData.audience
-  const keywords = formData.keywords
-
-  // toggle platform
   const togglePlatform = (id: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -54,37 +65,27 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
     }))
   }
 
-  // select tone
   const selectBrandTone = (toneValue: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      tone: toneValue,
-    }))
-    setBrandToneOpen(false)
+    setFormData((prev) => ({ ...prev, tone: toneValue }))
   }
 
   const handleTargetAudience = (value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      audience: value,
-    }))
+    setFormData((prev) => ({ ...prev, audience: value }))
   }
 
   const handleKeywords = (value: string) => {
-    const arr = value
-      .split(',')
-      .map((k) => k.trim())
-      .filter((k) => k.length > 0)
-
     setFormData((prev) => ({
       ...prev,
-      keywords: arr,
+      keywords: value
+        .split(',')
+        .map((k) => k.trim())
+        .filter(Boolean),
     }))
   }
 
   const sendData = async () => {
     try {
-      const payload: any = {
+      const payload: Payload = {
         title: formData.title,
         platforms: formData.platforms,
         tone: formData.tone,
@@ -92,41 +93,31 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
         keywords: formData.keywords,
       }
 
-      // only send blogUrl if exists
-      if (formData.blogUrl && formData.blogUrl.trim() !== '') {
+      if (formData.blogUrl?.trim()) {
         payload.blogUrl = formData.blogUrl
       }
 
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/content/generate`,
         payload,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
+        { headers: { 'Content-Type': 'application/json' } }
       )
 
-      console.log('✅ Response:', res.data)
-
-      // 🔥 CLEAR FORM AFTER SUCCESS
-      setFormData({
-        title: '',
-        blogUrl: '',
-        photoUrl: '',
-        platforms: [],
-        tone: '',
-        audience: '',
-        keywords: [],
-      })
-    } catch (err: any) {
-      console.log('❌ ERROR:', err?.response?.data || err.message)
+      // Store result in sessionStorage and navigate to results page
+      sessionStorage.setItem('generatedContent', JSON.stringify(res.data))
+      setFormData(EMPTY_FORM)
+      router.push('/results')
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        console.error('❌ ERROR:', err.response?.data || err.message)
+      } else {
+        console.error('❌ Unexpected error:', err)
+      }
     }
   }
 
   const handleGenerate = () => {
-    console.log('🔥 FINAL FORM DATA →', formData)
-    console.log('data send to server')
+    if (selectedPlatforms.length === 0) return
     sendData()
   }
 
@@ -148,11 +139,9 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
       {/* Platforms */}
       <div className="mb-6">
         <p className="text-text-primary mb-3 font-semibold dark:text-white">Select Platforms</p>
-
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {PLATFORMS.map(({ id, label, icon: Icon }) => {
             const active = selectedPlatforms.includes(id)
-
             return (
               <button
                 key={id}
@@ -174,75 +163,58 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
         </div>
       </div>
 
-      {/* Preferences */}
+      {/* Brand Tone */}
       <div className="mb-6">
-        <p className="text-text-primary mb-3 font-semibold dark:text-white">
-          Preferences <span className="text-text-tertiary">(Optional)</span>
-        </p>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          {/* Tone */}
-          <div className="relative">
-            <button
-              onClick={() => setBrandToneOpen(!brandToneOpen)}
-              className="border-border-subtle bg-surface-elevated hover:border-brand-teal flex w-full items-center justify-between rounded-lg border p-3 text-left dark:bg-slate-900/60"
-            >
-              <div>
-                <p className="text-text-primary text-sm font-semibold dark:text-white">
-                  {brandTone.label}
+        <p className="text-text-primary mb-3 font-semibold dark:text-white">Brand Tone</p>
+        <div className="mb-6 grid grid-cols-2 gap-3">
+          {BRAND_TONES.map((t) => {
+            const active = t.value === tone
+            return (
+              <button
+                key={t.value}
+                onClick={() => selectBrandTone(t.value)}
+                className={`flex flex-col items-start rounded-lg border px-4 py-3 text-left transition-all ${
+                  active
+                    ? 'border-teal-400 bg-teal-50 dark:bg-teal-900/10'
+                    : 'border-border-subtle bg-surface-elevated hover:border-teal-300 dark:border-slate-700 dark:bg-slate-900/50'
+                }`}
+              >
+                <p
+                  className={`text-sm font-semibold ${active ? 'text-teal-500' : 'dark:text-white'}`}
+                >
+                  {t.label}
                 </p>
-                <p className="text-text-secondary text-xs dark:text-slate-400">{brandTone.desc}</p>
-              </div>
-              <ChevronDown
-                className={`h-4 w-4 transition-transform ${brandToneOpen ? 'rotate-180' : ''}`}
-              />
-            </button>
+                <p className="text-text-secondary text-xs dark:text-slate-400">{t.desc}</p>
+              </button>
+            )
+          })}
+        </div>
 
-            {brandToneOpen && (
-              <div className="border-border-subtle bg-surface-card absolute z-50 mt-2 w-full overflow-hidden rounded-lg border shadow-xl backdrop-blur dark:bg-slate-800/90">
-                {BRAND_TONES.map((tone) => {
-                  const active = tone.value === brandTone.value
-
-                  return (
-                    <button
-                      key={tone.value}
-                      onClick={() => selectBrandTone(tone.value)}
-                      className={`flex w-full items-start justify-between px-4 py-3 text-left transition ${
-                        active
-                          ? 'bg-brand-gradient/10'
-                          : 'hover:bg-surface-elevated dark:hover:bg-slate-700/40'
-                      }`}
-                    >
-                      <div>
-                        <p className="text-sm font-semibold dark:text-white">{tone.label}</p>
-                        <p className="text-text-secondary text-xs dark:text-slate-400">
-                          {tone.desc}
-                        </p>
-                      </div>
-                      {active && <Check className="text-brand-teal mt-1 h-4 w-4" />}
-                    </button>
-                  )
-                })}
-              </div>
-            )}
-          </div>
-
-          {/* Target audience */}
+        {/* Target Audience */}
+        <div className="mb-6">
+          <p className="text-text-primary mb-2 text-sm font-semibold dark:text-white">
+            Target Audience
+          </p>
           <input
             value={audience}
             onChange={(e) => handleTargetAudience(e.target.value)}
             className="bg-surface-elevated border-border-subtle focus:ring-brand-teal w-full rounded-lg border p-3 text-sm outline-none focus:ring-2 dark:bg-slate-900/60 dark:text-white"
-            placeholder="Target audience (Entrepreneurs, Marketers)"
+            placeholder="e.g., Tech founders, Marketing professionals"
           />
         </div>
 
-        {/* Keywords */}
-        <input
-          value={keywords.join(', ')}
-          onChange={(e) => handleKeywords(e.target.value)}
-          className="bg-surface-elevated border-border-subtle focus:ring-brand-teal mt-4 w-full rounded-lg border p-3 text-sm outline-none focus:ring-2 dark:bg-slate-900/60 dark:text-white"
-          placeholder="Keywords / CTA (AI, Productivity, Follow for more)"
-        />
+        {/* Keywords / CTA */}
+        <div>
+          <p className="text-text-primary mb-2 text-sm font-semibold dark:text-white">
+            Keywords / CTA <span className="text-text-tertiary font-normal">(Optional)</span>
+          </p>
+          <input
+            value={keywords.join(', ')}
+            onChange={(e) => handleKeywords(e.target.value)}
+            className="bg-surface-elevated border-border-subtle focus:ring-brand-teal w-full rounded-lg border p-3 text-sm outline-none focus:ring-2 dark:bg-slate-900/60 dark:text-white"
+            placeholder="e.g., AI, productivity, sign up now"
+          />
+        </div>
       </div>
 
       {/* Footer */}
@@ -250,9 +222,9 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
         <Button variant="outline" onClick={onBack}>
           ← Back
         </Button>
-
-        <Button onClick={handleGenerate}>
-          ✨ Generate for {selectedPlatforms.length} Platforms
+        <Button onClick={handleGenerate} disabled={selectedPlatforms.length === 0}>
+          ✨ Generate for {selectedPlatforms.length} Platform
+          {selectedPlatforms.length !== 1 ? 's' : ''}
         </Button>
       </div>
     </div>
