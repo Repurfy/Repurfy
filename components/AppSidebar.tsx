@@ -74,7 +74,12 @@ const itemVariants: Variants = {
 const AppSidebar = () => {
   const pathname = usePathname()
 
-  const isLinkActive = (href: string) => pathname === href
+  const isLinkActive = (href: string) => {
+    if (href === '/history' && pathname.startsWith('/results/')) {
+      return true
+    }
+    return pathname === href
+  }
 
   return (
     <Sidebar collapsible="icon">
@@ -101,7 +106,7 @@ const AppSidebar = () => {
                           alt="logo"
                           width={40}
                           height={40}
-                          className="transition-all group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:scale-125"
+                          className="transition-all group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:scale-150"
                         />
                         <h1 className="text-2xl font-medium group-data-[collapsible=icon]:hidden">
                           Repurfy
@@ -137,7 +142,7 @@ const AppSidebar = () => {
                           className={
                             isActive
                               ? 'text-brand-teal! h-10 bg-slate-200 dark:bg-slate-700'
-                              : 'h-10 text-slate-800 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-600'
+                              : 'h-10 text-slate-800 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600'
                           }
                         >
                           <Link href={item.href} className="flex items-center gap-2">

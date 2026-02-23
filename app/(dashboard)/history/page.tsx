@@ -214,6 +214,7 @@ import { Input } from '@/components/ui/input'
 import axios from 'axios'
 import { Facebook, Instagram, Linkedin, Search, Twitter } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { useAuth } from '@clerk/nextjs'
 
 interface ContentItem {
   _id: string
@@ -240,10 +241,16 @@ const History = () => {
   const [activeFilter, setActiveFilter] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
+  const { getToken } = useAuth()
+
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/content/history`)
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/content/history`, {
+          headers: {
+            Authorization: `Bearer ${await getToken()}`, // Clerk token
+          },
+        })
         setHistory(res.data.data || [])
       } catch (error) {
         console.error('History fetch error:', error)
@@ -253,7 +260,7 @@ const History = () => {
     }
 
     fetchHistory()
-  }, [])
+  }, [getToken])
 
   const filtered = history.filter((item) => {
     const matchesSearch =
@@ -371,7 +378,7 @@ const History = () => {
                       {p}
                     </span>
                   ))}
-                  <Button size="sm" onClick={() => router.push(`/results?id=${item._id}`)}>
+                  <Button size="sm" onClick={() => router.push(`/results/${item._id}`)}>
                     View
                   </Button>
                 </div>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation' // useParams instead of useSearchParams
 import {
   Linkedin,
   Twitter,
@@ -15,6 +15,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import axios from 'axios'
+import { useAuth } from '@clerk/nextjs'
 
 interface GeneratedContent {
   data: {
@@ -50,38 +51,43 @@ const PLATFORM_CONFIG: Record<
 }
 
 export default function ResultsPage() {
+  const { getToken } = useAuth()
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const contentId = searchParams.get('id')
+  const { contentId } = useParams() as { contentId: string } // 👈 key change
 
-  const [content, setContent] = useState<GeneratedContent | null>(() => {
-    // If no ID param, load from sessionStorage
-    if (typeof window === 'undefined') return null
-    if (new URLSearchParams(window.location.search).get('id')) return null
-    const stored = sessionStorage.getItem('generatedContent')
-    return stored ? (JSON.parse(stored) as GeneratedContent) : null
-  })
-
-  const [loading, setLoading] = useState(!!contentId)
+  const [content, setContent] = useState<GeneratedContent | null>(null)
+  const [loading, setLoading] = useState(true)
   const [copied, setCopied] = useState<string | null>(null)
   const [editingPlatform, setEditingPlatform] = useState<string | null>(null)
   const [editedTexts, setEditedTexts] = useState<Record<string, string>>({})
 
-  // Fetch from backend if contentId is present
   useEffect(() => {
-    if (!contentId) return
-
     const fetchContent = async () => {
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/content/${contentId}`)
-        // Map history response shape to GeneratedContent shape
+        // First try sessionStorage (fresh generation — faster)
+        const stored = sessionStorage.getItem('generatedContent')
+        if (stored) {
+          const parsed = JSON.parse(stored) as GeneratedContent
+          // Only use if contentId matches
+          if (parsed.contentId === contentId) {
+            setContent(parsed)
+            sessionStorage.removeItem('generatedContent') // clean up
+            setLoading(false)
+            return
+          }
+        }
+
+        // Otherwise fetch from backend (history view or page refresh)
+        const token = await getToken()
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/content/${contentId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+
         const item = res.data.data
         setContent({
           contentId: item._id,
-          creditsRemaining: 0, // not relevant for history view
-          data: {
-            ...item.generatedContent,
-          },
+          creditsRemaining: 0,
+          data: { ...item.generatedContent },
         })
       } catch (err) {
         console.error('Failed to fetch content:', err)
@@ -91,15 +97,8 @@ export default function ResultsPage() {
       }
     }
 
-    fetchContent()
-  }, [contentId, router])
-
-  // Redirect if no content and no ID
-  useEffect(() => {
-    if (!contentId && !content) {
-      router.push('/')
-    }
-  }, [content, contentId, router])
+    if (contentId) fetchContent()
+  }, [contentId])
 
   const handleCopy = async (text: string, key: string) => {
     await navigator.clipboard.writeText(text)
@@ -145,11 +144,11 @@ export default function ResultsPage() {
       <div>
         {/* Back button */}
         <button
-          onClick={() => (contentId ? router.push('/history') : router.back())}
+          onClick={() => router.push('/history')}
           className="mb-6 flex items-center gap-1 text-sm text-slate-500 transition hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
         >
           <ArrowLeft className="h-4 w-4" />
-          {contentId ? 'Back to History' : 'Back to editor'}
+          Back to History
         </button>
 
         {/* Header */}
@@ -180,7 +179,6 @@ export default function ResultsPage() {
             if (!config) return null
             const Icon = config.icon
             const text = getDisplayText(platform)
-            const charCount = text.length
             const isEditing = editingPlatform === platform
             const isCopied = copied === platform
 
@@ -189,7 +187,6 @@ export default function ResultsPage() {
                 key={platform}
                 className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800"
               >
-                {/* Card Header */}
                 <div className="flex items-center justify-between px-5 pt-5 pb-3">
                   <div className="flex items-center gap-3">
                     <div
@@ -200,7 +197,7 @@ export default function ResultsPage() {
                     <div>
                       <p className="text-sm font-semibold dark:text-white">{config.label}</p>
                       <p className="text-xs text-slate-400">
-                        {charCount} / {config.maxChars} chars
+                        {text.length} / {config.maxChars} chars
                       </p>
                     </div>
                   </div>
@@ -208,7 +205,6 @@ export default function ResultsPage() {
 
                 <div className="mx-5 border-t border-slate-100 dark:border-slate-700" />
 
-                {/* Content */}
                 <div className="flex-1 px-5 py-4">
                   {isEditing ? (
                     <textarea
@@ -225,7 +221,6 @@ export default function ResultsPage() {
                   )}
                 </div>
 
-                {/* Action Buttons */}
                 <div className="flex items-center gap-2 px-5 pt-2 pb-5">
                   <button
                     onClick={() => handleCopy(text, platform)}
@@ -283,7 +278,7 @@ export default function ResultsPage() {
                     onClick={() => handleCopy(`#${tag}`, `tag-${i}`)}
                     className="cursor-pointer rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-600 transition hover:bg-teal-50 hover:text-teal-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
                   >
-                    #{tag}
+                    {tag}
                   </span>
                 ))}
               </div>

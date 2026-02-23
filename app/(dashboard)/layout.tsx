@@ -3,6 +3,7 @@
 import AppSidebar from '@/components/AppSidebar'
 import { ThemeToggler } from '@/components/common/ThemeToggle'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { SignedIn, UserButton } from '@clerk/nextjs'
 import { motion, type Variants } from 'framer-motion'
 
 const layoutVariants: Variants = {
@@ -32,7 +33,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <motion.div variants={layoutVariants} className="flex flex-1 flex-col">
           <header className="bg-card sticky top-0 z-50 flex h-14 w-full items-center justify-between gap-6 border-b px-4 sm:px-6">
             <SidebarTrigger className="[&_svg]:size-5!" />
-            <ThemeToggler />
+            <div className="flex flex-row gap-6">
+              <ThemeToggler />
+              <SignedIn>
+                <UserButton
+                  appearance={{
+                    elements: {
+                      avatarBox: 'w-8! h-8!',
+                    },
+                  }}
+                />
+              </SignedIn>
+            </div>
           </header>
 
           <main className="flex-1 overflow-y-auto px-6 py-4">{children}</main>
