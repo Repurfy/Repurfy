@@ -15,7 +15,7 @@ const fadeUp = {
 const socialIcons = [
   {
     name: 'YouTube',
-    href: '#',
+    href: 'https://www.youtube.com/@Repurfy',
     icon: (
       <svg role="img" fill="currentColor" className="h-4 w-4" viewBox="0 0 24 24">
         <title>YouTube</title>
@@ -25,7 +25,7 @@ const socialIcons = [
   },
   {
     name: 'LinkedIn',
-    href: '#',
+    href: 'https://www.linkedin.com/company/repurfy',
     icon: (
       <svg fill="currentColor" className="h-4 w-4" role="img" viewBox="0 0 24 24">
         <title>LinkedIn</title>
@@ -35,7 +35,7 @@ const socialIcons = [
   },
   {
     name: 'X',
-    href: '#',
+    href: 'https://x.com/repurfy',
     icon: (
       <svg fill="currentColor" className="h-4 w-4" role="img" viewBox="0 0 24 24">
         <title>X</title>
@@ -45,7 +45,7 @@ const socialIcons = [
   },
   {
     name: 'Instagram',
-    href: '#',
+    href: 'https://www.instagram.com/repurfy',
     icon: (
       <svg fill="currentColor" className="h-4 w-4" role="img" viewBox="0 0 24 24">
         <title>Instagram</title>

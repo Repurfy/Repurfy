@@ -519,6 +519,7 @@ const AddImageForm = ({ onNext, onBack, formData, setFormData }: Props) => {
   const [prompt, setPrompt] = useState('')
   const [generating, setGenerating] = useState(false)
   const [error, setError] = useState('')
+  const [imageSource, setImageSource] = useState<'upload' | 'ai' | null>(null)
   const { getToken } = useAuth()
 
   // Auto resize textarea
@@ -527,15 +528,19 @@ const AddImageForm = ({ onNext, onBack, formData, setFormData }: Props) => {
     if (!el) return
     el.style.height = 'auto'
     el.style.height = `${el.scrollHeight}px`
-  }, [prompt])
+  }, [prompt, mode]) // 👈 added mode to fix shrink bug
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
+    setImageSource('upload')
     setFormData((p) => ({ ...p, photoUrl: URL.createObjectURL(file) }))
   }
 
-  const clearImage = () => setFormData((p) => ({ ...p, photoUrl: '' }))
+  const clearImage = () => {
+    setFormData((p) => ({ ...p, photoUrl: '' }))
+    setImageSource(null)
+  }
 
   const generateImage = async () => {
     if (!prompt.trim()) return
@@ -549,6 +554,7 @@ const AddImageForm = ({ onNext, onBack, formData, setFormData }: Props) => {
         { prompt },
         { headers: { Authorization: `Bearer ${token}` } }
       )
+      setImageSource('ai')
       setFormData((p) => ({ ...p, photoUrl: res.data.imageUrl }))
     } catch (err) {
       setError('Failed to generate image. Please try again.')
@@ -557,6 +563,31 @@ const AddImageForm = ({ onNext, onBack, formData, setFormData }: Props) => {
       setGenerating(false)
     }
   }
+
+  // Preview shown in both tabs if image exists
+  const PreviewImage = () => (
+    <div className="relative mx-auto h-auto w-full overflow-hidden rounded-xl border border-slate-700">
+      <div className="flex items-center justify-center">
+        <img src={formData.photoUrl} alt="preview" className="lg:h-xl object-cover lg:w-xl" />
+      </div>
+      <button
+        onClick={clearImage}
+        className="absolute top-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-slate-900/80 text-white transition-colors hover:bg-red-500"
+      >
+        <X className="h-4 w-4" />
+      </button>
+      {imageSource === 'ai' && (
+        <div className="absolute bottom-2 left-2 rounded-full bg-teal-500/90 px-2 py-0.5 text-xs text-white">
+          ✨ AI Generated
+        </div>
+      )}
+      {imageSource === 'upload' && (
+        <div className="absolute bottom-2 left-2 rounded-full bg-slate-700/90 px-2 py-0.5 text-xs text-white">
+          📁 Uploaded
+        </div>
+      )}
+    </div>
+  )
 
   return (
     <div className="space-y-5">
@@ -576,10 +607,7 @@ const AddImageForm = ({ onNext, onBack, formData, setFormData }: Props) => {
       {/* Mode Toggle */}
       <div className="flex gap-1 rounded-xl bg-slate-900/60 p-1">
         <button
-          onClick={() => {
-            setMode('upload')
-            clearImage()
-          }}
+          onClick={() => setMode('upload')} // 👈 no clearImage on tab switch
           className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium transition-all ${
             mode === 'upload'
               ? 'bg-teal-500 text-white shadow'
@@ -589,10 +617,7 @@ const AddImageForm = ({ onNext, onBack, formData, setFormData }: Props) => {
           <ImagePlus className="h-4 w-4" /> Upload Image
         </button>
         <button
-          onClick={() => {
-            setMode('generate')
-            clearImage()
-          }}
+          onClick={() => setMode('generate')} // 👈 no clearImage on tab switch
           className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium transition-all ${
             mode === 'generate'
               ? 'bg-teal-500 text-white shadow'
@@ -614,19 +639,11 @@ const AddImageForm = ({ onNext, onBack, formData, setFormData }: Props) => {
             className="hidden"
           />
           {formData.photoUrl ? (
-            <div className="relative h-44 overflow-hidden rounded-xl border border-slate-700">
-              <img src={formData.photoUrl} alt="preview" className="h-full w-full object-cover" />
-              <button
-                onClick={clearImage}
-                className="absolute top-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-slate-900/80 text-white transition-colors hover:bg-red-500"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
+            <PreviewImage />
           ) : (
             <div
               onClick={() => fileRef.current?.click()}
-              className="group flex h-44 cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-slate-700 bg-slate-900/40 transition-all hover:border-teal-500 hover:bg-teal-500/5"
+              className="group flex h-52 cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-slate-700 bg-slate-900/40 transition-all hover:border-teal-500 hover:bg-teal-500/5"
             >
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-800 transition-colors group-hover:bg-teal-500/10">
                 <ImagePlus className="h-6 w-6 text-slate-400 transition-colors group-hover:text-teal-400" />
@@ -645,26 +662,10 @@ const AddImageForm = ({ onNext, onBack, formData, setFormData }: Props) => {
       {/* Generate Mode */}
       {mode === 'generate' && (
         <div className="space-y-3">
-          {/* Preview */}
           {formData.photoUrl ? (
-            <div className="relative h-44 overflow-hidden rounded-xl border border-slate-700">
-              <img
-                src={formData.photoUrl}
-                alt="AI generated"
-                className="h-full w-full object-cover"
-              />
-              <button
-                onClick={clearImage}
-                className="absolute top-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-slate-900/80 text-white transition-colors hover:bg-red-500"
-              >
-                <X className="h-4 w-4" />
-              </button>
-              <div className="absolute bottom-2 left-2 rounded-full bg-teal-500/90 px-2 py-0.5 text-xs text-white">
-                ✨ AI Generated
-              </div>
-            </div>
+            <PreviewImage />
           ) : (
-            <div className="flex h-44 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-slate-700 bg-slate-900/40">
+            <div className="flex h-52 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-slate-700 bg-slate-900/40">
               {generating ? (
                 <>
                   <Loader2 className="h-8 w-8 animate-spin text-teal-400" />

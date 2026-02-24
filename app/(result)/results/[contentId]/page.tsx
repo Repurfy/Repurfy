@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter, useParams } from 'next/navigation' // useParams instead of useSearchParams
+import { useRouter, useParams } from 'next/navigation'
+import { LucideIcon } from 'lucide-react'
 import {
   Linkedin,
   Twitter,
@@ -27,6 +28,7 @@ interface GeneratedContent {
     hashtags: string[]
   }
   contentId: string
+  imageUrl?: string | null // 👈 added
   creditsRemaining: number
 }
 
@@ -34,7 +36,7 @@ const PLATFORM_CONFIG: Record<
   string,
   {
     label: string
-    icon: React.ElementType
+    icon: LucideIcon
     maxChars: number
     bg: string
   }
@@ -53,7 +55,7 @@ const PLATFORM_CONFIG: Record<
 export default function ResultsPage() {
   const { getToken } = useAuth()
   const router = useRouter()
-  const { contentId } = useParams() as { contentId: string } // 👈 key change
+  const { contentId } = useParams() as { contentId: string }
 
   const [content, setContent] = useState<GeneratedContent | null>(null)
   const [loading, setLoading] = useState(true)
@@ -68,10 +70,9 @@ export default function ResultsPage() {
         const stored = sessionStorage.getItem('generatedContent')
         if (stored) {
           const parsed = JSON.parse(stored) as GeneratedContent
-          // Only use if contentId matches
           if (parsed.contentId === contentId) {
             setContent(parsed)
-            sessionStorage.removeItem('generatedContent') // clean up
+            sessionStorage.removeItem('generatedContent')
             setLoading(false)
             return
           }
@@ -87,6 +88,7 @@ export default function ResultsPage() {
         setContent({
           contentId: item._id,
           creditsRemaining: 0,
+          imageUrl: item.imageUrl ?? null, // 👈 added
           data: { ...item.generatedContent },
         })
       } catch (err) {
@@ -160,7 +162,7 @@ export default function ResultsPage() {
         </div>
 
         {/* Banner */}
-        <div className="mb-8 flex items-center gap-3 rounded-xl border border-teal-200 bg-teal-50 px-5 py-4 dark:border-teal-800 dark:bg-teal-900/20">
+        <div className="mb-6 flex items-center gap-3 rounded-xl border border-teal-200 bg-teal-50 px-5 py-4 dark:border-teal-800 dark:bg-teal-900/20">
           <Sparkles className="h-5 w-5 shrink-0 text-teal-500" />
           <div>
             <p className="text-sm font-semibold text-teal-700 dark:text-teal-300">
@@ -171,6 +173,34 @@ export default function ResultsPage() {
             </p>
           </div>
         </div>
+
+        {/* Image Preview — shown if imageUrl exists */}
+        {content.imageUrl && (
+          <div className="mb-6 overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700">
+            <div className="flex items-center justify-center">
+              <img
+                src={content.imageUrl}
+                alt="Post image"
+                className="lg:h-xl object-cover lg:w-xl"
+              />
+            </div>
+            <div className="flex items-center justify-between px-4 py-2 dark:bg-slate-800">
+              <p className="text-xs text-slate-400">✨ AI Generated Image</p>
+              <button
+                onClick={() => {
+                  const a = document.createElement('a')
+                  a.href = content.imageUrl!
+                  a.download = 'repurfy-image.jpg'
+                  a.target = '_blank'
+                  a.click()
+                }}
+                className="flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-xs text-slate-500 transition hover:text-slate-700 dark:border-slate-600 dark:hover:text-slate-200"
+              >
+                <Download className="h-3 w-3" /> Download
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Platform Cards Grid */}
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -288,7 +318,7 @@ export default function ResultsPage() {
 
         {/* Footer */}
         <div className="mt-8 flex justify-center">
-          <Button onClick={() => router.push('/')} variant="outline">
+          <Button onClick={() => router.push('/create')} variant="outline">
             ← Generate More Content
           </Button>
         </div>

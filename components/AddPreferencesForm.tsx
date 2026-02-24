@@ -276,6 +276,7 @@ interface Payload {
   audience: string
   keywords: string[]
   blogUrl?: string
+  imageUrl?: string | null // 👈 add this
 }
 interface Props {
   formData: FormDataType
@@ -332,6 +333,7 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
         tone: formData.tone,
         audience: formData.audience,
         keywords: formData.keywords,
+        imageUrl: formData.photoUrl ?? null, // 👈 add this
       }
       if (formData.blogUrl?.trim()) payload.blogUrl = formData.blogUrl
 
@@ -340,7 +342,13 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
         payload,
         { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } }
       )
-      sessionStorage.setItem('generatedContent', JSON.stringify(res.data))
+      sessionStorage.setItem(
+        'generatedContent',
+        JSON.stringify({
+          ...res.data,
+          imageUrl: res.data.imageUrl,
+        })
+      )
       setFormData(EMPTY_FORM)
       router.push(`/results/${res.data?.contentId}`)
     } catch (err: unknown) {

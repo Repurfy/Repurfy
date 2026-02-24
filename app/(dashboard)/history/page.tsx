@@ -205,14 +205,13 @@
 // }
 
 // export default History
-
 'use client'
 
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import axios from 'axios'
-import { Facebook, Instagram, Linkedin, Search, Twitter } from 'lucide-react'
+import { Facebook, Instagram, Linkedin, Search, Twitter, ImageIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useAuth } from '@clerk/nextjs'
 
@@ -224,6 +223,7 @@ interface ContentItem {
   creditsUsed: number
   createdAt: string
   platforms: string[]
+  imageUrl?: string | null // 👈 added
   generatedContent: Record<string, string | string[]>
 }
 
@@ -248,7 +248,7 @@ const History = () => {
       try {
         const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/content/history`, {
           headers: {
-            Authorization: `Bearer ${await getToken()}`, // Clerk token
+            Authorization: `Bearer ${await getToken()}`,
           },
         })
         setHistory(res.data.data || [])
@@ -351,36 +351,57 @@ const History = () => {
           filtered.map((item) => (
             <div
               key={item._id}
-              className="rounded-xl bg-white p-6 shadow-sm transition-all hover:shadow-md dark:bg-slate-800"
+              className="overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:shadow-md dark:bg-slate-800"
             >
-              <div className="flex flex-col gap-4 md:flex-row md:items-center">
-                {/* Left */}
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold">
-                    {item.originalInput?.slice(0, 90)}
-                    {item.originalInput?.length > 90 ? '...' : ''}
-                  </h3>
-                  <div className="text-text-secondary mt-1 flex flex-wrap gap-3 text-sm">
-                    <span>🎯 {item.tone}</span>
-                    <span>👥 {item.audience}</span>
-                    <span>⚡ {item.creditsUsed} credits</span>
-                    <span>📅 {new Date(item.createdAt).toLocaleDateString()}</span>
+              <div className="p-6">
+                <div className="flex flex-col gap-4 md:flex-row md:items-center">
+                  {/* Image thumbnail — shown if imageUrl exists */}
+                  {item.imageUrl && (
+                    <div className="relative h-20 w-20 overflow-hidden lg:h-28 lg:w-28">
+                      <img
+                        src={item.imageUrl}
+                        alt="content thumbnail"
+                        className="h-full w-full rounded-lg object-cover"
+                      />
+                      <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
+                    </div>
+                  )}
+                  {/* Left */}
+                  <div className="flex flex-1 items-start gap-3">
+                    {/* No image placeholder icon */}
+                    {!item.imageUrl && (
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-700">
+                        <ImageIcon className="h-5 w-5 text-slate-400" />
+                      </div>
+                    )}
+                    <div>
+                      <h3 className="text-lg font-semibold dark:text-white">
+                        {item.originalInput?.slice(0, 90)}
+                        {item.originalInput?.length > 90 ? '...' : ''}
+                      </h3>
+                      <div className="text-text-secondary mt-1 flex flex-wrap gap-3 text-sm">
+                        <span>🎯 {item.tone}</span>
+                        <span>👥 {item.audience}</span>
+                        <span>⚡ {item.creditsUsed} credits</span>
+                        <span>📅 {new Date(item.createdAt).toLocaleDateString()}</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
 
-                {/* Right */}
-                <div className="flex flex-wrap items-center gap-2">
-                  {item.platforms?.map((p) => (
-                    <span
-                      key={p}
-                      className="bg-brand-teal/10 text-brand-teal rounded-full px-3 py-1 text-xs font-medium capitalize"
-                    >
-                      {p}
-                    </span>
-                  ))}
-                  <Button size="sm" onClick={() => router.push(`/results/${item._id}`)}>
-                    View
-                  </Button>
+                  {/* Right */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    {item.platforms?.map((p) => (
+                      <span
+                        key={p}
+                        className="bg-brand-teal/10 text-brand-teal rounded-full px-3 py-1 text-xs font-medium capitalize"
+                      >
+                        {p}
+                      </span>
+                    ))}
+                    <Button size="sm" onClick={() => router.push(`/results/${item._id}`)}>
+                      View
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
