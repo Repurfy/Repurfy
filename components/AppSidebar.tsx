@@ -9,11 +9,10 @@ import {
   CreditCard,
   History,
 } from 'lucide-react'
-import { motion, type Variants } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Separator } from '@radix-ui/react-separator'
+import { Separator } from '@/components/ui/separator'
 
 import {
   Sidebar,
@@ -24,6 +23,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarHeader, // ✅ added
 } from '@/components/ui/sidebar'
 
 import {
@@ -43,167 +43,113 @@ const navItems = [
   { title: 'Settings', href: '/settings', icon: Settings },
 ]
 
-const sidebarVariants: Variants = {
-  hidden: { x: -20, opacity: 0 },
-  visible: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      type: 'spring',
-      stiffness: 260,
-      damping: 30,
-      when: 'beforeChildren',
-      staggerChildren: 0.06,
-    },
-  },
-}
-
-const itemVariants: Variants = {
-  hidden: { x: -12, opacity: 0 },
-  visible: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      type: 'spring',
-      stiffness: 300,
-      damping: 24,
-    },
-  },
-}
-
 const AppSidebar = () => {
   const pathname = usePathname()
 
   const isLinkActive = (href: string) => {
-    if (href === '/history' && pathname.startsWith('/results/')) {
-      return true
-    }
+    if (href === '/history' && pathname.startsWith('/results/')) return true
     return pathname === href
   }
 
   return (
     <Sidebar collapsible="icon">
-      <motion.div
-        variants={sidebarVariants}
-        // initial="hidden"
-        // animate="visible"
-        className="bg-card flex h-full flex-col"
-      >
-        <SidebarContent className="bg-card flex-1">
-          {/* Logo */}
-          <SidebarGroup>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <SidebarMenuItem className="h-14 py-1">
-                  <SidebarMenuButton asChild tooltip="Repurfy" className="hover:bg-transparent">
-                    <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-                      <Link
-                        href="/"
-                        className="flex items-center gap-2 group-data-[collapsible=icon]:justify-center"
-                      >
-                        <Image
-                          src="/logo.svg"
-                          alt="logo"
-                          width={40}
-                          height={40}
-                          className="transition-all group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:scale-150"
-                        />
-                        <h1 className="text-2xl font-medium group-data-[collapsible=icon]:hidden">
-                          Repurfy
-                        </h1>
-                      </Link>
-                    </motion.div>
-                  </SidebarMenuButton>
-                  <Separator className="bg-border my-3 h-px" />
-                </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
+      {/* ✅ FIXED LOGO (only change) */}
+      <SidebarHeader className="bg-card px-3 py-4 group-data-[collapsible=icon]:px-2">
+        <Link
+          href="/"
+          className="flex items-center justify-start gap-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
+        >
+          <Image src="/logo.svg" alt="Repurfy logo" width={30} height={30} className="shrink-0" />
 
-          {/* Navigation */}
-          <SidebarGroup>
-            <SidebarGroupContent className="my-3">
-              <SidebarMenu className="gap-6">
-                {navItems.map((item) => {
-                  const isActive = isLinkActive(item.href)
+          <h1 className="font-ai text-lg font-semibold group-data-[collapsible=icon]:hidden lg:text-2xl">
+            Repurfy
+          </h1>
+        </Link>
+      </SidebarHeader>
 
-                  return (
-                    <motion.div
-                      key={item.title}
-                      variants={itemVariants}
-                      whileHover={{ x: 6 }}
-                      whileTap={{ scale: 0.97 }}
-                    >
-                      <SidebarMenuItem>
-                        <SidebarMenuButton
-                          asChild
-                          tooltip={item.title}
-                          data-active={isActive}
-                          className={
-                            isActive
-                              ? 'text-brand-teal! h-10 bg-slate-200 dark:bg-slate-700'
-                              : 'h-10 text-slate-800 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600'
-                          }
-                        >
-                          <Link href={item.href} className="flex items-center gap-2">
-                            <motion.div
-                              animate={{ scale: isActive ? 1.1 : 1 }}
-                              transition={{ type: 'spring', stiffness: 400 }}
-                            >
-                              <item.icon className="-ml-0.5 h-5 w-5" />
-                            </motion.div>
-                            <span className="text-[16px]">{item.title}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    </motion.div>
-                  )
-                })}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
+      <SidebarContent className="bg-card flex flex-col">
+        <Separator className="bg-border h-px" />
 
-        {/* =============================== FOOTER =============================== */}
-        <SidebarFooter className="bg-card border-t shadow-inner">
-          <motion.div variants={itemVariants}>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
+        {/* ── Navigation (UNCHANGED UI) ── */}
+        <SidebarGroup className="flex-1">
+          <SidebarGroupContent className="mt-3">
+            <SidebarMenu className="gap-6">
+              {navItems.map((item) => {
+                const isActive = isLinkActive(item.href)
+
+                return (
+                  <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
-                      size="lg"
-                      className="cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700"
+                      asChild
+                      tooltip={item.title}
+                      data-active={isActive}
+                      className={
+                        isActive
+                          ? 'text-brand-teal! h-10 bg-slate-200 dark:bg-slate-700'
+                          : 'h-10 text-slate-800 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-600'
+                      }
                     >
-                      <Avatar className="h-8 w-8 rounded-lg">
-                        <AvatarImage src="https://github.com/shadcn.png" />
-                        <AvatarFallback>JD</AvatarFallback>
-                      </Avatar>
-                      <div className="grid flex-1 text-left text-sm leading-tight">
-                        <span className="truncate font-semibold">John Doe</span>
-                        <span className="truncate text-xs">john@example.com</span>
-                      </div>
-                      <ChevronsUpDown className="ml-auto size-4" />
-                    </SidebarMenuButton>
-                  </DropdownMenuTrigger>
+                      <Link
+                        href={item.href}
+                        className="flex items-center gap-3 px-2 group-data-[collapsible=icon]:justify-center"
+                      >
+                        {/* ✅ SAME ICON STYLE */}
+                        <item.icon className="-ml-0.5 h-6! w-6! shrink-0" />
 
-                  <DropdownMenuContent
-                    className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-                    side="bottom"
-                    align="end"
-                    sideOffset={4}
-                  >
-                    <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-600">
-                      <LogOut className="mr-2 h-4 w-4" />
-                      <span>Log out</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </SidebarMenuItem>
+                        {/* ✅ ONLY hide text in collapse */}
+                        <span className="text-[16px] group-data-[collapsible=icon]:hidden">
+                          {item.title}
+                        </span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )
+              })}
             </SidebarMenu>
-          </motion.div>
-        </SidebarFooter>
-      </motion.div>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+
+      {/* ── Footer (small fix for collapse) ── */}
+      <SidebarFooter className="bg-card border-t shadow-inner">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton
+                  size="lg"
+                  className="cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700"
+                >
+                  <Avatar className="h-8 w-8 rounded-lg">
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback>JD</AvatarFallback>
+                  </Avatar>
+
+                  {/* ✅ hide text when collapsed */}
+                  <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
+                    <span className="truncate font-semibold">John Doe</span>
+                    <span className="truncate text-xs">john@example.com</span>
+                  </div>
+
+                  <ChevronsUpDown className="ml-auto size-4 group-data-[collapsible=icon]:hidden" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent
+                className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+                side="bottom"
+                align="end"
+                sideOffset={4}
+              >
+                <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-600">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   )
 }

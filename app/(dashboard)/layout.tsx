@@ -63,8 +63,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <AppSidebar />
 
         <motion.div variants={layoutVariants} className="flex flex-1 flex-col">
-          <header className="bg-card sticky top-0 z-50 flex h-14 w-full items-center justify-between gap-6 border-b px-4 sm:px-6">
-            <SidebarTrigger className="[&_svg]:size-5!" />
+          <header className="bg-card sticky top-0 z-50 flex h-16 w-full items-center justify-between gap-6 border-b px-4 sm:px-6">
+            <SidebarTrigger aria-label="sidebar-toogle" className="flex [&_svg]:size-5!" />
             <div className="flex flex-row items-center gap-4">
               {/* <ThemeToggler /> */}
 

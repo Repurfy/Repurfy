@@ -185,10 +185,11 @@ const AddContentForm = ({ onNext, formData, setFormData }: Props) => {
           ref={textareaRef}
           name="title"
           rows={1}
+          cols={20}
           value={formData.title}
           onChange={(e) => setFormData((p) => ({ ...p, title: e.target.value }))}
           placeholder="Paste your blog post, article, or long-form content here…"
-          className="w-full resize-none rounded-xl border border-slate-700 bg-slate-900/60 p-4 text-sm text-white transition-all outline-none placeholder:text-slate-500 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/30"
+          className="h-40! w-full resize-none rounded-xl border border-slate-700 bg-slate-900/60 p-4 text-sm text-white transition-all outline-none placeholder:text-slate-500 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/30"
         />
       ) : (
         <input
