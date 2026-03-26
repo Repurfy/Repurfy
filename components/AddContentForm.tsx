@@ -137,15 +137,34 @@ const AddContentForm = ({ onNext, formData, setFormData }: Props) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   // Auto resize on value change
+  // useEffect(() => {
+  //   const el = textareaRef.current
+  //   if (!el) return
+  //   el.style.height = 'auto'
+  //   el.style.height = `${el.scrollHeight}px`
+  // }, [formData.title, mode])
+
   useEffect(() => {
     const el = textareaRef.current
     if (!el) return
+
     el.style.height = 'auto'
-    el.style.height = `${el.scrollHeight}px`
-  }, [formData.title, mode])
+
+    const maxHeight = 300 // 👈 limit like ChatGPT
+    const newHeight = Math.min(el.scrollHeight, maxHeight)
+
+    el.style.height = newHeight + 'px'
+
+    // enable scroll after limit
+    if (el.scrollHeight > maxHeight) {
+      el.style.overflowY = 'auto'
+    } else {
+      el.style.overflowY = 'hidden'
+    }
+  }, [formData.title])
 
   return (
-    <div className="space-y-5">
+    <div className="min-h-auto space-y-5">
       {/* Header */}
       <div className="flex items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-500/10">
@@ -158,21 +177,23 @@ const AddContentForm = ({ onNext, formData, setFormData }: Props) => {
       </div>
 
       {/* Toggle */}
-      <div className="flex gap-1 rounded-xl bg-slate-900/60 p-1">
+      <div className="flex gap-2 rounded-xl p-1">
         <button
           onClick={() => setMode('text')}
-          className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium transition-all ${
+          className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border-2 py-2 text-sm font-medium transition-all ${
             mode === 'text'
               ? 'bg-teal-500 text-white shadow'
-              : 'text-slate-400 hover:text-slate-200'
+              : 'bg-slate-900/60 text-slate-400 hover:text-slate-200'
           }`}
         >
           <ClipboardList className="h-4 w-4" /> Paste Text
         </button>
         <button
           onClick={() => setMode('url')}
-          className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium transition-all ${
-            mode === 'url' ? 'bg-teal-500 text-white shadow' : 'text-slate-400 hover:text-slate-200'
+          className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border-2 py-2 text-sm font-medium transition-all ${
+            mode === 'url'
+              ? 'bg-teal-500 text-white shadow'
+              : 'bg-slate-900/60 text-slate-400 hover:text-slate-200'
           }`}
         >
           <Link className="h-4 w-4" /> From URL
@@ -181,15 +202,23 @@ const AddContentForm = ({ onNext, formData, setFormData }: Props) => {
 
       {/* Input */}
       {mode === 'text' ? (
+        // <textarea
+        //   ref={textareaRef}
+        //   name="title"
+        //   rows={1}
+        //   cols={20}
+        //   value={formData.title}
+        //   onChange={(e) => setFormData((p) => ({ ...p, title: e.target.value }))}
+        //   placeholder="Paste your blog post, article, or long-form content here…"
+        //   className="min-h-40! w-full rounded-xl border border-slate-700 bg-slate-900/60 p-4 text-sm text-white transition-all outline-none placeholder:text-slate-500 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/30"
+        // />
         <textarea
           ref={textareaRef}
           name="title"
-          rows={1}
-          cols={20}
           value={formData.title}
           onChange={(e) => setFormData((p) => ({ ...p, title: e.target.value }))}
-          placeholder="Paste your blog post, article, or long-form content here…"
-          className="h-40! w-full resize-none rounded-xl border border-slate-700 bg-slate-900/60 p-4 text-sm text-white transition-all outline-none placeholder:text-slate-500 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/30"
+          placeholder="Paste your content here…"
+          className="min-h-30 w-full resize-none overflow-hidden rounded-xl border border-slate-700 bg-slate-900/60 p-4 text-sm text-white transition-[height] duration-150 ease-in-out outline-none placeholder:text-slate-500 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/30"
         />
       ) : (
         <input

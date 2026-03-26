@@ -1,7 +1,6 @@
 'use client'
 
 import AppSidebar from '@/components/AppSidebar'
-import { ThemeToggler } from '@/components/common/ThemeToggle'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { SignedIn, useAuth, UserButton } from '@clerk/nextjs'
 import axios from 'axios'

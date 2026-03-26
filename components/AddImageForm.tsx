@@ -494,6 +494,7 @@ import { ImagePlus, X, Sparkles, Loader2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useAuth } from '@clerk/nextjs'
 import axios from 'axios'
+import Image from 'next/image'
 
 interface FormDataType {
   title: string
@@ -568,7 +569,13 @@ const AddImageForm = ({ onNext, onBack, formData, setFormData }: Props) => {
   const PreviewImage = () => (
     <div className="relative mx-auto h-auto w-full overflow-hidden rounded-xl border border-slate-700">
       <div className="flex items-center justify-center">
-        <img src={formData.photoUrl} alt="preview" className="lg:h-xl object-cover lg:w-xl" />
+        <Image
+          src={formData.photoUrl}
+          width={300}
+          height={300}
+          alt="preview"
+          className="lg:h-md object-cover lg:w-md"
+        />
       </div>
       <button
         onClick={clearImage}
@@ -695,7 +702,7 @@ const AddImageForm = ({ onNext, onBack, formData, setFormData }: Props) => {
                 }
               }}
               placeholder="e.g., A futuristic workspace with glowing screens..."
-              className="flex-1 resize-none overflow-hidden rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-2.5 text-sm text-white transition-all outline-none placeholder:text-slate-500 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/30"
+              className="flex-1 resize-none overflow-hidden rounded-lg border border-slate-700 bg-slate-900/60 px-4 py-2.5 text-sm text-white transition-all outline-none placeholder:text-slate-500 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/30"
             />
             <Button
               onClick={generateImage}
@@ -726,10 +733,7 @@ const AddImageForm = ({ onNext, onBack, formData, setFormData }: Props) => {
         >
           ← Back
         </Button>
-        <Button
-          onClick={onNext}
-          className="rounded-xl bg-teal-500 px-6 text-white hover:bg-teal-600"
-        >
+        <Button onClick={onNext} className="bg-brand-gradient rounded-lg">
           Continue →
         </Button>
       </div>
