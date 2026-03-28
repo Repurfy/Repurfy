@@ -119,7 +119,7 @@ interface FormDataType {
   photoUrl: string
   platforms: string[]
   tone: string
-  audience: string
+  audience: string[]
   keywords: string[]
 }
 

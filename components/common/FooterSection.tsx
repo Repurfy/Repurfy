@@ -56,17 +56,17 @@ const socialIcons = [
 ]
 
 const companyLinks = [
-  { label: 'About', href: '#' },
-  { label: 'Features', href: '#' },
-  { label: 'Pricing', href: '#' },
-  { label: 'Demo', href: '#' },
+  { label: 'Early Access', href: 'https://forms.gle/53BNApyitQJJdnCQ9' },
+  { label: 'Features', href: '#features' },
+  { label: 'Pricing', href: '#pricing' },
+  { label: 'Demo', href: '#how-it-works' },
 ]
 
 const helpLinks = [
+  { label: 'Privacy Policy', href: '#' },
+  { label: 'Terms of Service', href: '#' },
   { label: 'Support', href: '#' },
-  { label: 'FAQ', href: '#' },
-  { label: 'Terms', href: '#' },
-  { label: 'Privacy', href: '#' },
+  { label: 'Refund Policy', href: '#' },
 ]
 
 export default function Footer() {
@@ -86,8 +86,8 @@ export default function Footer() {
               <span className="font-ai text-xl font-semibold tracking-tighter">Repurfy</span>
             </div>
             <p className="text-sm leading-relaxed text-gray-400">
-              AI-powered content repurposing to instantly transform videos, podcasts, and posts into
-              high-performing content for every social platform.
+              AI-powered content repurposing to transform blogs, podcasts, and posts into
+              high-performing content for every platform.
             </p>
 
             {/* Social Icons */}
@@ -109,15 +109,13 @@ export default function Footer() {
 
           {/* Company */}
           <motion.div variants={fadeUp}>
-            <h3 className="mb-5 text-sm font-semibold tracking-wide text-white/90 uppercase">
-              Company
-            </h3>
-            <ul className="space-y-3 text-sm">
+            <h3 className="mb-5 font-semibold tracking-wide text-white/90 uppercase">Company</h3>
+            <ul className="space-y-3">
               {companyLinks.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="hover:text-brand-teal text-gray-400 transition-all duration-150"
+                    className="hover:text-brand-teal text-gray-400 transition-all duration-150 hover:font-medium"
                   >
                     {link.label}
                   </Link>
@@ -128,15 +126,13 @@ export default function Footer() {
 
           {/* Help */}
           <motion.div variants={fadeUp}>
-            <h3 className="mb-5 text-sm font-semibold tracking-wide text-white/90 uppercase">
-              Help
-            </h3>
-            <ul className="space-y-3 text-sm">
+            <h3 className="mb-5 font-semibold tracking-wide text-white/90 uppercase">Legal</h3>
+            <ul className="space-y-3">
               {helpLinks.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="hover:text-brand-teal text-gray-400 transition-all duration-150"
+                    className="hover:text-brand-teal text-gray-400 transition-all duration-150 hover:font-medium"
                   >
                     {link.label}
                   </Link>

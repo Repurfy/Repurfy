@@ -39,55 +39,55 @@ const defaultPlans: PricingPlan[] = [
   {
     id: 'starter',
     name: 'Starter',
-    description: 'For new creators repurposing content occasionally.',
+    description: 'For creators just starting their repurposing journey',
     monthlyPrice: '$0',
     yearlyPrice: '$0',
     features: [
-      { text: '5 repurposed posts / month' },
+      { text: '5 repurposed posts/month' },
       { text: '1 content input per week' },
-      { text: 'AI Hooks & Captions Generator' },
+      { text: 'AI Hooks and Captions Generator' },
       { text: 'Auto-Resize for 2 Platforms' },
       { text: 'Basic Brand Voice Setting' },
-      { text: 'Watermarked Exports' },
+      // { text: 'Watermarked Exports' },
     ],
     button: { text: 'Get Started Free', url: '#' },
   },
   {
     id: 'creator',
     name: 'Creator',
-    description: 'For full-time creators who want to scale faster with automation.',
+    description: 'For full-time creators scaling their personal brand.',
     monthlyPrice: '$39',
     yearlyPrice: '$299',
     recommended: true,
     features: [
-      { text: 'Up to 120 repurposed posts / month' },
+      { text: 'Up to 120 repurposed posts/month' },
       { text: '10 content inputs per week' },
-      { text: 'Supports Shorts, Reels, TikTok, LinkedIn & X' },
+      { text: 'Supports Shorts, Reels, LinkedIn and X' },
       { text: 'Smart Content Calendar Export' },
       { text: 'AI Brand Voice Memory (stay consistent everywhere)' },
-      { text: 'Remove Watermark' },
+      // { text: 'Remove Watermark' },
       { text: 'Priority Support' },
     ],
     button: { text: 'Upgrade to Creator', url: '#' },
   },
-  {
-    id: 'agency',
-    name: 'Agency',
-    description: 'For agencies managing multiple clients and content workflows at scale.',
-    monthlyPrice: '$129',
-    yearlyPrice: '$999',
-    features: [
-      { text: 'Unlimited repurposed posts / month' },
-      { text: 'Unlimited content inputs' },
-      { text: 'Manage up to 10 clients' },
-      { text: 'Team Collaboration: Assign & Review' },
-      { text: 'Bulk Upload & Bulk Export' },
-      { text: 'Advanced Content Calendar Automation' },
-      { text: 'Dedicated Success Manager' },
-      { text: 'Priority AI Processing Queue' },
-    ],
-    button: { text: 'Book a Demo', url: '#' },
-  },
+  // {
+  //   id: 'agency',
+  //   name: 'Agency',
+  //   description: 'For teams managing multiple clients at scale.',
+  //   monthlyPrice: '$129',
+  //   yearlyPrice: '$999',
+  //   features: [
+  //     { text: 'Unlimited repurposed posts/month' },
+  //     { text: 'Unlimited content inputs' },
+  //     { text: 'Manage up to 10 clients' },
+  //     { text: 'Team Collaboration: Assign & Review' },
+  //     { text: 'Bulk Upload & Bulk Export' },
+  //     { text: 'Advanced Content Calendar Automation' },
+  //     { text: 'Dedicated Success Manager' },
+  //     { text: 'Priority AI Processing Queue' },
+  //   ],
+  //   button: { text: 'Book a Demo', url: '#' },
+  // },
 ]
 
 /* ---------------------------
@@ -144,7 +144,6 @@ export const PricingSection = ({
   const [isYearly, setIsYearly] = useState(false)
 
   const pathname = usePathname()
-  console.log(pathname)
 
   return (
     <section id="pricing" className="my-20">

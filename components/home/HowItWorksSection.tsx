@@ -21,18 +21,18 @@ const fadeUp = (delay: number = 0): Variants => ({
 const features = [
   {
     img: <Upload />,
-    title: 'Paste Your Content',
-    desc: 'Upload or paste content from YouTube, Podcasts, Webinars, or any long-form content.',
+    title: 'Add Your Content',
+    desc: 'Upload or paste content from Blogs, podcasts, webinars, or any long-form source.',
   },
   {
     img: <Sparkles />,
     title: 'AI Repurposes It',
-    desc: 'Our AI analyzes your content and generates platform-optimized posts tailored to each network.',
+    desc: 'Our AI transforms your content into platform-optimized posts tailored for each channel.',
   },
   {
     img: <Send />,
     title: 'Publish Everywhere',
-    desc: 'Review, edit, and publish to LinkedIn, X, Instagram, TikTok, and more — all in one click.',
+    desc: 'Review, edit, and publish across LinkedIn, X, Instagram, TikTok, and more — in one click.',
   },
 ]
 
@@ -57,9 +57,10 @@ const HowItWorksSection = () => {
         variants={fadeUp(0)}
         className="font-ai my-4 text-center text-2xl font-bold text-white sm:text-3xl lg:text-6xl lg:leading-14"
       >
-        Three steps to{' '}
+        Repurpose your{' '}
         <span className="text-brand-teal">
-          content <br /> everywhere
+          content <br />
+          in 3 steps.
         </span>
       </motion.h2>
 

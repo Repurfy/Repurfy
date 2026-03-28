@@ -82,7 +82,7 @@ const TrustedBySection = () => {
           variants={fadeUp(0)}
           className="text-center font-sans text-xl font-medium text-[#858B99]"
         >
-          Trusted by <span className="text-white">500+</span> creators & agencies worldwide
+          Trusted by <span className="text-white">500+</span> creators & teams worldwide
         </motion.h2>
 
         {/* Logo List */}

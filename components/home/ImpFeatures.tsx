@@ -28,27 +28,27 @@ const ImpFeatures = () => {
     {
       icon: <GalleryThumbnails />,
       title: 'Platform Perfect Posts',
-      description: 'Auto-optimized outputs tailored to each social platform’s rules',
+      description: 'Optimized for each platform’s format and best practices.',
     },
     {
       icon: <AudioLines />,
       title: 'Consistent Brand Voice',
-      description: 'AI learns your tone and keeps every post uniquely “you”',
+      description: 'AI learns your tone and keeps every post uniquely you.',
     },
     {
       icon: <Hash />,
       title: 'Instant Hooks & Captions',
-      description: 'Scroll-stopping headlines and engaging captions — auto-generated',
+      description: 'Scroll-stopping hooks and engaging captions — auto-generated',
     },
     {
       icon: <AlarmClockCheck />,
       title: 'Bulk Content in Minutes',
-      description: 'Create a full content calendar faster than ever before',
+      description: 'Generate a full content calendar in minutes, not hours.',
     },
     {
       icon: <Share2 />,
       title: 'Publish Everywhere',
-      description: 'Export in any format — ready for every platform',
+      description: 'Export and publish in formats ready for every platform.',
     },
   ]
 
@@ -94,7 +94,7 @@ const ImpFeatures = () => {
         className="font-ai my-4 text-center text-2xl font-bold text-white sm:text-3xl lg:text-6xl lg:leading-14"
       >
         Everything you need to <br />
-        <span className="text-brand-teal">repurpose at scale</span>
+        <span className="text-brand-teal">repurpose content at scale</span>
       </motion.h2>
 
       {/* Card Grid */}

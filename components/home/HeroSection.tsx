@@ -86,9 +86,9 @@ export default function HeroSection() {
       </motion.div>
 
       {/* Subtext */}
-      <motion.p variants={fadeUp} className="text-text-secondary max-w-xl text-base sm:max-w-2xl">
-        Turn your long-form content into high-performing posts for LinkedIn, X, Instagram, TikTok,
-        YouTube Shorts, and Facebook — all in seconds.
+      <motion.p variants={fadeUp} className="text-text-secondary max-w-xl text-lg sm:max-w-2xl">
+        Turn your long-form content into high-performing posts for LinkedIn, X, Instagram, YouTube
+        Shorts, and Facebook — in seconds.
       </motion.p>
 
       {/* CTA Buttons */}
@@ -97,11 +97,11 @@ export default function HeroSection() {
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.94 }}>
           {userId !== null || undefined ? (
             <Link href="/dashboard">
-              <Button className="bg-brand-gradient group inline-flex items-center gap-2 rounded-lg p-6 text-base font-medium text-white/90 shadow-lg shadow-teal-500/25 transition-all duration-300 hover:text-white">
-                {userId !== null || undefined ? 'Go To Dashboard' : 'Get Early Access Free'}
+              <Button className="bg-brand-gradient group inline-flex items-center rounded-lg p-6 text-base font-semibold text-white/90 shadow-lg shadow-teal-500/25 transition-all duration-300 hover:text-white">
+                {userId !== null || undefined ? 'Start Creating' : 'Get Early Access Free'}
                 <ArrowRightIcon
                   strokeWidth={2}
-                  className="h-5 w-5 transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110"
+                  className="h-5 w-5 transition-all duration-300 group-hover:translate-x-1 group-hover:scale-110"
                 />
               </Button>
             </Link>
@@ -111,8 +111,8 @@ export default function HeroSection() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button className="bg-brand-gradient group inline-flex items-center gap-2 rounded-lg p-6 text-base font-medium text-white/90 shadow-lg shadow-teal-500/25 transition-all duration-300 hover:text-white">
-                {userId !== null || undefined ? 'Go To Dashboard' : 'Get Early Access Free'}
+              <Button className="bg-brand-gradient group inline-flex items-center gap-2 rounded-lg p-6 text-base font-semibold text-white/90 shadow-lg shadow-teal-500/25 transition-all duration-300 hover:text-white">
+                {userId !== null || undefined ? 'Start Creating' : 'Get Early Access Free'}
                 <ArrowRightIcon
                   strokeWidth={2}
                   className="h-5 w-5 transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110"

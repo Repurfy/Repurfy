@@ -71,25 +71,25 @@ export default function CTASection() {
 
           {/* Heading */}
           <motion.h2
-            className="mb-3 font-sans text-3xl font-bold sm:text-4xl"
+            className="font-ai mb-3 text-2xl font-bold sm:text-5xl"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
-            Join a community of <span className="text-brand-teal">500+</span> creators
+            Join 500+ <span className="text-brand-teal">creators growing community</span>
           </motion.h2>
 
           {/* Sub-text */}
           <motion.p
-            className="text-text-secondary mb-8 max-w-xl"
+            className="text-text-secondary my-4 max-w-xl text-lg"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.45 }}
           >
-            10× your content output, cut your workload in half, and publish everywhere in
-            seconds—without ever feeling burnt out again.{' '}
+            Create 10x more content, cut your workload in half, and publish everywhere — without
+            burnout.
           </motion.p>
 
           {/* CTA Button */}
@@ -98,17 +98,18 @@ export default function CTASection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.6 }}
+            className="my-4"
           >
             <Link
               href={'https://forms.gle/53BNApyitQJJdnCQ9'}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button className="bg-brand-gradient group hover:text-whitel inline-flex items-center gap-2 rounded-lg p-6 text-base font-medium text-white shadow-lg shadow-teal-500/25 transition-all duration-300 hover:scale-105">
+              <Button className="bg-brand-gradient group hover:text-whitel inline-flex items-center gap-2 rounded-lg p-6 text-base font-semibold text-white shadow-lg shadow-teal-500/25 transition-all duration-300 hover:scale-105">
                 Get Early Access
                 <ArrowRightIcon
                   strokeWidth={2}
-                  className="h-5 w-5 transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110"
+                  className="h-5 w-5 transition-all duration-300 group-hover:translate-x-1 group-hover:scale-110"
                 />
               </Button>
             </Link>
