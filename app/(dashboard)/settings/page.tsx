@@ -152,7 +152,9 @@ const Settings = () => {
           </div>
         </motion.div>
 
-        <motion.div
+        {/* Apperance */}
+
+        {/* <motion.div
           variants={itemVariants}
           className="h-40 rounded-xl bg-white p-6 shadow-sm dark:bg-slate-800"
         >
@@ -182,7 +184,7 @@ const Settings = () => {
               <ThemeToggler />
             </div>
           </div>
-        </motion.div>
+        </motion.div> */}
 
         <motion.div
           variants={itemVariants}

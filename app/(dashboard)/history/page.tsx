@@ -1,219 +1,14 @@
-// 'use client'
-
-// import { Button } from '@/components/ui/button'
-// import { Input } from '@/components/ui/input'
-// import axios from 'axios'
-// import { Facebook, Instagram, Linkedin, Search, Twitter, Check } from 'lucide-react'
-// import { useEffect, useState } from 'react'
-// import ReactMarkdown from 'react-markdown'
-
-// const History = () => {
-//   const ButtonsData = [
-//     { title: 'LinkedIn', image: <Linkedin size={16} /> },
-//     { title: 'X (Twitter)', image: <Twitter size={16} /> },
-//     { title: 'Instagram', image: <Instagram size={16} /> },
-//     { title: 'Facebook', image: <Facebook size={16} /> },
-//   ]
-
-//   const [history, setHistory] = useState<any[]>([])
-//   const [expandedId, setExpandedId] = useState<string | null>(null)
-
-//   // 🔥 FETCH HISTORY
-
-//   useEffect(() => {
-//     const fetchHistory = async () => {
-//       try {
-//         const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/content/history`)
-
-//         console.log('History API:', res.data)
-
-//         setHistory(res.data.data || [])
-//       } catch (error) {
-//         console.error('History fetch error:', error)
-//       }
-//     }
-
-//     fetchHistory()
-//   }, [])
-
-//   return (
-//     <div className="h-fit">
-//       <h1 className="text-2xl font-bold tracking-tight">Content History</h1>
-//       <p className="text-text-secondary mt-1 mb-10 leading-relaxed">
-//         View and manage your generated content
-//       </p>
-
-//       {/* 🔍 SEARCH + FILTER BAR */}
-//       <div className="rounded-xl bg-white p-6 shadow-sm dark:bg-slate-800">
-//         <div className="flex items-center gap-3">
-//           <div className="relative w-full md:w-1/2 lg:w-130">
-//             <Input
-//               type="text"
-//               placeholder="Search by title or content..."
-//               className="focus:border-brand-teal focus:ring-brand-teal w-full rounded-lg border-2 bg-transparent px-4 py-2 pl-8 text-sm text-gray-700 placeholder:text-gray-400 focus:ring-1 focus:outline-none dark:border-gray-400 dark:text-white"
-//             />
-//             <Search
-//               size={16}
-//               className="pointer-events-none absolute top-1/2 left-2 -translate-y-1/2 text-gray-400"
-//             />
-//           </div>
-
-//           <Button>All</Button>
-
-//           <div className="ml-auto flex space-x-3">
-//             {ButtonsData.map((button, index) => (
-//               <Button key={index} variant="outline">
-//                 {button.image}
-//                 <span className="ml-2">{button.title}</span>
-//               </Button>
-//             ))}
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* 🔥 HISTORY CARDS */}
-//       <div className="mt-6 space-y-5">
-//         {history.length === 0 && (
-//           <div className="rounded-xl bg-white p-10 text-center shadow-sm dark:bg-slate-800">
-//             <p className="text-lg font-medium">No history yet 🚀</p>
-//             <p className="text-text-secondary text-sm">Generate content to see history here</p>
-//           </div>
-//         )}
-
-//         {history.map((item) => {
-//           const isOpen = expandedId === item._id
-
-//           return (
-//             <div
-//               key={item._id}
-//               className="rounded-xl bg-white p-6 shadow-sm transition-all hover:shadow-md dark:bg-slate-800"
-//             >
-//               {/* HEADER */}
-//               <div className="flex flex-col gap-4 md:flex-row md:items-center">
-//                 {/* LEFT */}
-//                 <div className="flex-1">
-//                   <h3 className="text-lg font-semibold">{item.originalInput?.slice(0, 90)}...</h3>
-
-//                   <div className="text-text-secondary mt-1 flex flex-wrap gap-3 text-sm">
-//                     <span>🎯 {item.tone}</span>
-//                     <span>👥 {item.audience}</span>
-//                     <span>⚡ {item.creditsUsed} credits</span>
-//                     <span>📅 {new Date(item.createdAt).toLocaleDateString()}</span>
-//                   </div>
-//                 </div>
-
-//                 {/* RIGHT */}
-//                 <div className="flex flex-wrap gap-2">
-//                   {item.platforms?.map((p: string) => (
-//                     <span
-//                       key={p}
-//                       className="bg-brand-teal/10 text-brand-teal rounded-full px-3 py-2 text-xs font-medium"
-//                     >
-//                       {p}
-//                     </span>
-//                   ))}
-
-//                   <Button
-//                     size="sm"
-//                     variant="outline"
-//                     onClick={() => setExpandedId(isOpen ? null : item._id)}
-//                   >
-//                     {isOpen ? 'Hide' : 'View'}
-//                   </Button>
-//                 </div>
-//               </div>
-
-//               {/* 🔥 EXPANDED CONTENT */}
-//               {isOpen && (
-//                 <div className="mt-6 space-y-6 border-t pt-6">
-//                   {/* PLATFORM CONTENT */}
-//                   {Object.entries(item.generatedContent || {}).map(([platform, content]: any) => {
-//                     if (Array.isArray(content)) return null
-
-//                     return (
-//                       <div key={platform}>
-//                         <h4 className="text-brand-teal mb-2 text-sm font-semibold uppercase">
-//                           {platform}
-//                         </h4>
-
-//                         <div className="bg-surface-elevated rounded-lg p-4 text-sm leading-relaxed dark:bg-slate-900/60">
-//                           <ReactMarkdown
-//                             components={{
-//                               h1: ({ children }) => (
-//                                 <h1 className="mb-2 text-lg font-bold">{children}</h1>
-//                               ),
-//                               h2: ({ children }) => (
-//                                 <h2 className="text-md mb-2 font-semibold">{children}</h2>
-//                               ),
-//                               p: ({ children }) => (
-//                                 <p className="mb-3 leading-relaxed">{children}</p>
-//                               ),
-//                               li: ({ children }) => <li className="ml-4 list-disc">{children}</li>,
-//                               strong: ({ children }) => (
-//                                 <strong className="font-semibold">{children}</strong>
-//                               ),
-//                             }}
-//                           >
-//                             {content}
-//                           </ReactMarkdown>
-//                         </div>
-//                       </div>
-//                     )
-//                   })}
-
-//                   {/* HOOKS */}
-//                   {item.generatedContent?.hooks && (
-//                     <div>
-//                       <h4 className="text-brand-teal mb-2 text-sm font-semibold">Hooks</h4>
-//                       <ul className="space-y-2">
-//                         {item.generatedContent.hooks.map((hook: string, i: number) => (
-//                           <li
-//                             key={i}
-//                             className="bg-surface-elevated rounded-lg p-3 text-sm dark:bg-slate-900/60"
-//                           >
-//                             <ReactMarkdown>{hook}</ReactMarkdown>
-//                           </li>
-//                         ))}
-//                       </ul>
-//                     </div>
-//                   )}
-
-//                   {/* HASHTAGS */}
-//                   {item.generatedContent?.hashtags && (
-//                     <div>
-//                       <h4 className="text-brand-teal mb-2 text-sm font-semibold">Hashtags</h4>
-//                       <div className="flex flex-wrap gap-2">
-//                         {item.generatedContent.hashtags.map((tag: string) => (
-//                           <span
-//                             key={tag}
-//                             className="rounded-full bg-gray-100 px-3 py-1 text-xs dark:bg-slate-700"
-//                           >
-//                             {tag}
-//                           </span>
-//                         ))}
-//                       </div>
-//                     </div>
-//                   )}
-//                 </div>
-//               )}
-//             </div>
-//           )
-//         })}
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default History
 'use client'
 
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import axios from 'axios'
-import { Facebook, Instagram, Linkedin, Search, Twitter, ImageIcon } from 'lucide-react'
+import { Facebook, Instagram, Linkedin, Search, Twitter, ImageIcon, Sparkles } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useAuth } from '@clerk/nextjs'
+import Image from 'next/image'
+import Link from 'next/link'
 
 interface ContentItem {
   _id: string
@@ -223,16 +18,27 @@ interface ContentItem {
   creditsUsed: number
   createdAt: string
   platforms: string[]
-  imageUrl?: string | null // 👈 added
+  imageUrl?: string | null
   generatedContent: Record<string, string | string[]>
 }
 
 const PLATFORM_BUTTONS = [
-  { title: 'LinkedIn', icon: <Linkedin size={16} /> },
-  { title: 'X (Twitter)', icon: <Twitter size={16} /> },
-  { title: 'Instagram', icon: <Instagram size={16} /> },
-  { title: 'Facebook', icon: <Facebook size={16} /> },
+  { title: 'LinkedIn', icon: <Linkedin size={14} /> },
+  { title: 'X (Twitter)', icon: <Twitter size={14} /> },
+  { title: 'Instagram', icon: <Instagram size={14} /> },
+  { title: 'Facebook', icon: <Facebook size={14} /> },
 ]
+
+const PLATFORM_COLORS: Record<string, string> = {
+  linkedin: 'bg-[#0077B5]/10 text-[#0077B5] dark:bg-[#0077B5]/20 dark:text-[#4db6e8]',
+  twitter: 'bg-[#1DA1F2]/10 text-[#1DA1F2] dark:bg-[#1DA1F2]/20 dark:text-[#60c8ff]',
+  'x (twitter)': 'bg-zinc-100 text-zinc-700 dark:bg-zinc-700 dark:text-zinc-200',
+  instagram: 'bg-gradient-to-r from-pink-500/10 to-purple-500/10 text-pink-600 dark:text-pink-400',
+  facebook: 'bg-[#1877F2]/10 text-[#1877F2] dark:bg-[#1877F2]/20 dark:text-[#6aaeff]',
+}
+
+const getPlatformColor = (platform: string) =>
+  PLATFORM_COLORS[platform.toLowerCase()] || 'bg-teal-500/10 text-teal-600 dark:text-teal-400'
 
 const History = () => {
   const router = useRouter()
@@ -275,13 +81,18 @@ const History = () => {
 
   return (
     <div className="h-fit">
-      <h1 className="text-2xl font-bold tracking-tight">Content History</h1>
-      <p className="text-text-secondary mt-1 mb-10 leading-relaxed">
-        View and manage your generated content
-      </p>
+      {/* ── Page Header ── */}
+      <div className="mb-10">
+        <div className="mb-1 flex items-center gap-2">
+          <h1 className="text-2xl font-bold tracking-tight">Content History</h1>
+        </div>
+        <p className="text-text-secondary mt-1 mb-10 leading-relaxed">
+          View and manage your generated content
+        </p>
+      </div>
 
-      {/* Search + Filter Bar */}
-      <div className="rounded-xl bg-white p-6 shadow-sm dark:bg-slate-800">
+      {/* ── Search + Filter Bar ── */}
+      <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800">
         <div className="flex flex-wrap items-center gap-3">
           {/* Search */}
           <div className="relative w-full md:w-1/2 lg:w-130">
@@ -290,18 +101,24 @@ const History = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by title or content..."
-              className="focus:border-brand-teal focus:ring-brand-teal w-full rounded-lg border-2 bg-transparent px-4 py-2 pl-8 text-sm text-gray-700 placeholder:text-gray-400 focus:ring-1 focus:outline-none dark:border-gray-400 dark:text-white"
+              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 pl-9 text-sm text-gray-700 transition-all placeholder:text-gray-400 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 focus:outline-none dark:border-slate-600 dark:bg-slate-700/50 dark:text-white dark:placeholder:text-slate-400"
             />
             <Search
-              size={16}
-              className="pointer-events-none absolute top-1/2 left-2 -translate-y-1/2 text-gray-400"
+              size={15}
+              className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-gray-400"
             />
           </div>
 
           {/* All filter */}
           <Button
+            size="sm"
             variant={activeFilter === null ? 'default' : 'outline'}
             onClick={() => setActiveFilter(null)}
+            className={`rounded-xl px-4 text-xs font-medium transition-all ${
+              activeFilter === null
+                ? 'bg-teal-500 text-white shadow-sm shadow-teal-200 hover:bg-teal-600 dark:shadow-teal-900'
+                : 'border-slate-200 hover:border-teal-400 dark:border-slate-600'
+            }`}
           >
             All
           </Button>
@@ -311,34 +128,43 @@ const History = () => {
             {PLATFORM_BUTTONS.map((button) => (
               <Button
                 key={button.title}
+                size="sm"
                 variant={activeFilter === button.title ? 'default' : 'outline'}
                 onClick={() => setActiveFilter(activeFilter === button.title ? null : button.title)}
+                className={`gap-1.5 rounded-xl text-xs font-medium transition-all ${
+                  activeFilter === button.title
+                    ? 'bg-teal-500 text-white shadow-sm shadow-teal-200 hover:bg-teal-600 dark:shadow-teal-900'
+                    : 'border-slate-200 hover:border-teal-400 dark:border-slate-600'
+                }`}
               >
                 {button.icon}
-                <span className="ml-2">{button.title}</span>
+                <span>{button.title}</span>
               </Button>
             ))}
           </div>
         </div>
       </div>
 
-      {/* History Cards */}
-      <div className="mt-6 space-y-5">
+      {/* ── History Cards ── */}
+      <div className="mt-5 space-y-4">
         {/* Loading state */}
         {loading && (
-          <div className="rounded-xl bg-white p-10 text-center shadow-sm dark:bg-slate-800">
-            <div className="mx-auto mb-3 h-7 w-7 animate-spin rounded-full border-4 border-teal-500 border-t-transparent" />
-            <p className="text-sm text-slate-400">Loading history...</p>
+          <div className="rounded-2xl border border-slate-100 bg-white p-12 text-center shadow-sm dark:border-slate-700 dark:bg-slate-800">
+            <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-[3px] border-teal-500 border-t-transparent" />
+            <p className="text-sm font-medium text-slate-400">Loading your content history...</p>
           </div>
         )}
 
         {/* Empty state */}
         {!loading && filtered.length === 0 && (
-          <div className="rounded-xl bg-white p-10 text-center shadow-sm dark:bg-slate-800">
-            <p className="text-lg font-medium">
+          <div className="rounded-2xl border border-dashed border-slate-200 bg-white p-12 text-center shadow-sm dark:border-slate-600 dark:bg-slate-800">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-700">
+              <Sparkles className="h-6 w-6 text-slate-400" />
+            </div>
+            <p className="text-base font-semibold text-slate-700 dark:text-white">
               {search || activeFilter ? 'No results found 🔍' : 'No history yet 🚀'}
             </p>
-            <p className="text-text-secondary text-sm">
+            <p className="text-text-secondary mt-1 text-sm">
               {search || activeFilter
                 ? 'Try adjusting your search or filter'
                 : 'Generate content to see history here'}
@@ -349,62 +175,86 @@ const History = () => {
         {/* Cards */}
         {!loading &&
           filtered.map((item) => (
-            <div
-              key={item._id}
-              className="overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:shadow-md dark:bg-slate-800"
-            >
-              <div className="p-6">
-                <div className="flex flex-col gap-4 md:flex-row md:items-center">
-                  {/* Image thumbnail — shown if imageUrl exists */}
-                  {item.imageUrl && (
-                    <div className="relative h-20 w-20 overflow-hidden lg:h-28 lg:w-28">
-                      <img
-                        src={item.imageUrl}
-                        alt="content thumbnail"
-                        className="h-full w-full rounded-lg object-cover"
-                      />
-                      <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
-                    </div>
-                  )}
-                  {/* Left */}
-                  <div className="flex flex-1 items-start gap-3">
-                    {/* No image placeholder icon */}
-                    {!item.imageUrl && (
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-700">
-                        <ImageIcon className="h-5 w-5 text-slate-400" />
+            <Link href={`/results/${item._id}`} key={item._id}>
+              <div className="group my-4 overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition-all duration-200 hover:-translate-y-[1px] hover:border-teal-200 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:hover:border-teal-700">
+                <div className="p-5">
+                  <div className="flex flex-col gap-4 md:flex-row md:items-center">
+                    {/* Image thumbnail */}
+                    {item.imageUrl && (
+                      <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl lg:h-24 lg:w-24">
+                        <Image
+                          src={item.imageUrl}
+                          alt="content thumbnail"
+                          width={200}
+                          height={200}
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent" />
                       </div>
                     )}
-                    <div>
-                      <h3 className="text-lg font-semibold dark:text-white">
-                        {item.originalInput?.slice(0, 90)}
-                        {item.originalInput?.length > 90 ? '...' : ''}
-                      </h3>
-                      <div className="text-text-secondary mt-1 flex flex-wrap gap-3 text-sm">
-                        <span>🎯 {item.tone}</span>
-                        <span>👥 {item.audience}</span>
-                        <span>⚡ {item.creditsUsed} credits</span>
-                        <span>📅 {new Date(item.createdAt).toLocaleDateString()}</span>
+
+                    {/* Left content */}
+                    <div className="flex min-w-0 flex-1 items-start gap-3">
+                      {/* Placeholder icon when no image */}
+                      {!item.imageUrl && (
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-100 bg-gradient-to-br from-teal-50 to-slate-100 dark:border-slate-600 dark:from-teal-900/30 dark:to-slate-700">
+                          <ImageIcon className="h-4 w-4 text-teal-400" />
+                        </div>
+                      )}
+
+                      <div className="min-w-0 flex-1">
+                        <h3 className="truncate text-[15px] leading-snug font-semibold text-slate-800 transition-colors group-hover:text-teal-600 dark:text-white">
+                          {item.originalInput?.slice(0, 90)}
+                          {item.originalInput?.length > 90 ? '...' : ''}
+                        </h3>
+
+                        {/* Meta badges */}
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          <span className="inline-flex items-center gap-1 rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600 dark:bg-slate-700 dark:text-slate-300">
+                            🎯 {item.tone}
+                          </span>
+                          <span className="inline-flex items-center gap-1 rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600 dark:bg-slate-700 dark:text-slate-300">
+                            👥 {item.audience}
+                          </span>
+                          <span className="inline-flex items-center gap-1 rounded-lg bg-amber-50 px-2.5 py-1 text-xs font-medium text-teal-600 dark:bg-teal-900/80 dark:text-teal-400">
+                            <Sparkles className="h-3.5 w-3.5 text-teal-400" />
+                            {item.creditsUsed} credits
+                          </span>
+                          <span className="inline-flex items-center gap-1 rounded-lg bg-slate-100 px-2.5 py-1 text-xs text-slate-500 dark:bg-slate-700 dark:text-slate-400">
+                            📅{' '}
+                            {new Date(item.createdAt).toLocaleDateString('en-IN', {
+                              day: 'numeric',
+                              month: 'short',
+                              year: 'numeric',
+                            })}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Right */}
-                  <div className="flex flex-wrap items-center gap-2">
-                    {item.platforms?.map((p) => (
-                      <span
-                        key={p}
-                        className="bg-brand-teal/10 text-brand-teal rounded-full px-3 py-1 text-xs font-medium capitalize"
-                      >
-                        {p}
+                    {/* Right: platform badges */}
+                    <div className="flex flex-wrap items-center gap-2 md:justify-end">
+                      {item.platforms?.map((p) => (
+                        <span
+                          key={p}
+                          className={`rounded-full border border-transparent px-3 py-1 text-xs font-semibold capitalize ${getPlatformColor(p)}`}
+                        >
+                          {p}
+                        </span>
+                      ))}
+
+                      {/* Subtle arrow cue */}
+                      <span className="ml-1 text-lg leading-none text-slate-300 transition-colors group-hover:text-teal-400 dark:text-slate-600">
+                        →
                       </span>
-                    ))}
-                    <Button size="sm" onClick={() => router.push(`/results/${item._id}`)}>
-                      View
-                    </Button>
+                    </div>
                   </div>
                 </div>
+
+                {/* Bottom accent line on hover */}
+                <div className="h-[2px] w-0 bg-gradient-to-r from-teal-400 to-teal-600 transition-all duration-300 group-hover:w-full" />
               </div>
-            </div>
+            </Link>
           ))}
       </div>
     </div>
