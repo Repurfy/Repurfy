@@ -10,7 +10,6 @@ import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
 import { Variants } from 'framer-motion'
 import { usePathname, useRouter } from 'next/navigation'
-import { useSubscription } from '@/hooks/useSubscription'
 import { useUser } from '@/context/userContext'
 
 /* ---------------------------
@@ -151,7 +150,6 @@ export const PricingSection = ({
   const [loadingPlanId, setLoadingPlanId] = useState<string | null>(null)
   const pathname = usePathname()
   const router = useRouter()
-  const { subscribe } = useSubscription()
 
   const handleSubscribe = async (plan: PricingPlan) => {
     if (plan.monthlyPrice === '$0') {
