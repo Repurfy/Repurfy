@@ -1,6 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import axios from 'axios'
@@ -41,7 +40,6 @@ const getPlatformColor = (platform: string) =>
   PLATFORM_COLORS[platform.toLowerCase()] || 'bg-teal-500/10 text-teal-600 dark:text-teal-400'
 
 const History = () => {
-  const router = useRouter()
   const [history, setHistory] = useState<ContentItem[]>([])
   const [search, setSearch] = useState('')
   const [activeFilter, setActiveFilter] = useState<string | null>(null)
@@ -203,7 +201,7 @@ const History = () => {
                     <div className="flex min-w-0 flex-1 items-start gap-3">
                       {/* Placeholder icon when no image */}
                       {!item.imageUrl && (
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-100 bg-gradient-to-br from-teal-50 to-slate-100 dark:border-slate-600 dark:from-teal-900/30 dark:to-slate-700">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-100 bg-linear-to-br from-teal-50 to-slate-100 dark:border-slate-600 dark:from-teal-900/30 dark:to-slate-700">
                           <ImageIcon className="h-6 w-6 text-teal-400/60" />
                         </div>
                       )}

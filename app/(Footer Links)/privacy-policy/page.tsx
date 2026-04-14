@@ -1,10 +1,6 @@
-// privacy-policy.tsx
-// Drop this file into your Next.js app/pages directory
-// Uses your existing global.css classes: .repurfy-bg, .glass, .card-repurfy, .text-brand-gradient, etc.
-
 import Footer from '@/components/common/FooterSection'
 import Header from '@/components/common/Header'
-import { Badge, FileBadge, FileBadge2Icon } from 'lucide-react'
+import { FileBadge } from 'lucide-react'
 
 export default function PrivacyPolicy() {
   const lastUpdated = 'April 14, 2026'
@@ -167,16 +163,16 @@ export default function PrivacyPolicy() {
         </div>
 
         {/* Sections */}
-        <div className="space-y-6">
+        <div className="space-y-8">
           {sections.map((section, i) => (
             <section
               key={section.id}
               id={section.id}
-              className="card-repurfy scroll-mt-24 border-white/10 bg-white/[0.04] hover:border-white/20"
+              className="card-repurfy scroll-mt-24 border-white/10 bg-white/4 hover:border-white/20"
               style={{ animationDelay: `${i * 60}ms` }}
             >
               <h2 className="mb-5 flex items-center gap-3 text-xl font-semibold text-white">
-                <span className="bg-brand-gradient flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-xs font-bold text-white shadow-sm">
+                <span className="bg-brand-gradient flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-sm font-bold text-white shadow-sm">
                   {i + 1}
                 </span>
                 {section.title.split('. ')[1]}

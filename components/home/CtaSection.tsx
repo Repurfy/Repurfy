@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -103,19 +103,23 @@ export default function CTASection() {
             transition={{ delay: 0.6 }}
             className="my-4"
           >
-            <Link
-              href={'https://forms.gle/53BNApyitQJJdnCQ9'}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button className="bg-brand-gradient group hover:text-whitel inline-flex items-center gap-2 rounded-lg p-6 text-base font-semibold text-white shadow-lg shadow-teal-500/25 transition-all duration-300 hover:scale-105">
-                {isSignedIn ? <Link href={'/dashboard'}>Start Creating</Link> : 'Get Early Access'}
-                <ArrowRightIcon
-                  strokeWidth={2}
-                  className="h-5 w-5 transition-all duration-300 group-hover:translate-x-1 group-hover:scale-110"
-                />
-              </Button>
-            </Link>
+            <Button className="bg-brand-gradient group hover:text-whitel inline-flex items-center gap-2 rounded-lg p-6 text-base font-semibold text-white shadow-lg shadow-teal-500/25 transition-all duration-300 hover:scale-105">
+              {isSignedIn ? (
+                <Link href={'/dashboard'}>Start Creating</Link>
+              ) : (
+                <Link
+                  href={'https://forms.gle/53BNApyitQJJdnCQ9'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Get Early Access
+                </Link>
+              )}
+              <ArrowRightIcon
+                strokeWidth={2}
+                className="h-5 w-5 transition-all duration-300 group-hover:translate-x-1 group-hover:scale-110"
+              />
+            </Button>
           </motion.div>
         </motion.div>
       </TooltipProvider>
