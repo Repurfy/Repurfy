@@ -62,10 +62,14 @@ const companyLinks = [
   { label: 'Demo', href: '#how-it-works' },
 ]
 
+const build_mode = process.env.NEXT_PUBLIC_APP_ENV
+
+const siteURL = build_mode === 'development' ? 'http://localhost:3000' : 'https://www.repurfy.com'
+
 const helpLinks = [
-  { label: 'Privacy Policy', href: '#' },
+  { label: 'Privacy Policy', href: `${siteURL}/privacy-policy` },
   { label: 'Terms of Service', href: '#' },
-  { label: 'Support', href: '#' },
+  { label: 'Support', href: 'mailto:support@repurfy.com' },
   { label: 'Refund Policy', href: '#' },
 ]
 

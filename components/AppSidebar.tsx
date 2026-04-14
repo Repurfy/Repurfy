@@ -33,7 +33,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { SignedIn, UserButton } from '@clerk/nextjs'
+import { useUser } from '@/context/userContext'
 
 const navItems = [
   { title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -45,6 +46,7 @@ const navItems = [
 
 const AppSidebar = () => {
   const pathname = usePathname()
+  const { userData } = useUser()
 
   const isLinkActive = (href: string) => {
     if (href === '/history' && pathname.startsWith('/results/')) return true
@@ -120,15 +122,20 @@ const AppSidebar = () => {
                   size="lg"
                   className="cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700"
                 >
-                  <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                    <AvatarFallback>JD</AvatarFallback>
-                  </Avatar>
+                  <SignedIn>
+                    <UserButton
+                      appearance={{
+                        elements: {
+                          avatarBox: 'w-8! h-8!',
+                        },
+                      }}
+                    />
+                  </SignedIn>
 
                   {/* ✅ hide text when collapsed */}
                   <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
-                    <span className="truncate font-semibold">John Doe</span>
-                    <span className="truncate text-xs">john@example.com</span>
+                    <span className="truncate font-semibold">{userData?.name}</span>
+                    <span className="truncate text-xs">{userData?.email}</span>
                   </div>
 
                   <ChevronsUpDown className="ml-auto size-4 group-data-[collapsible=icon]:hidden" />

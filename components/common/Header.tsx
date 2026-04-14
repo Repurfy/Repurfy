@@ -8,8 +8,6 @@ import { ThemeToggler } from './ThemeToggle'
 import Link from 'next/link'
 import { Variants } from 'framer-motion'
 import { SignedIn, SignedOut, SignInButton, SignUpButton, useAuth, UserButton } from '@clerk/nextjs'
-import { ArrowRightIcon } from 'lucide-react'
-import { useEffect } from 'react'
 
 const fadeDown = {
   hidden: { opacity: 0, y: -20 },
@@ -51,7 +49,7 @@ const Header = () => {
 
       {/* Navbar Links */}
       <motion.div
-        className="flex items-center justify-center gap-4 tracking-wide lg:w-1/3 lg:gap-12"
+        className="hidden items-center justify-center gap-4 tracking-wide md:flex lg:w-1/3 lg:gap-14"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15 }}
@@ -105,7 +103,7 @@ const Header = () => {
                 </motion.div>
               </SignUpButton>
             </SignedOut>
-            <Link
+            {/* <Link
               href={'https://forms.gle/53BNApyitQJJdnCQ9'}
               target="_blank"
               rel="noopener noreferrer"
@@ -113,7 +111,7 @@ const Header = () => {
               <Button className="bg-brand-gradient inline-flex items-center gap-2 rounded-xl text-white shadow-lg shadow-teal-500/25 transition-all hover:shadow-xl">
                 Get Early Access
               </Button>
-            </Link>
+            </Link> */}
           </>
         )}
       </motion.div>

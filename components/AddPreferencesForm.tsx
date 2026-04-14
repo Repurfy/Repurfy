@@ -109,7 +109,11 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
   ) => {
     if (e.key === 'Enter') {
       e.preventDefault()
-      type === 'audience' ? updateAudience() : updateKeywords()
+      if (type === 'audience') {
+        updateAudience()
+      } else {
+        updateKeywords()
+      }
     }
   }
 

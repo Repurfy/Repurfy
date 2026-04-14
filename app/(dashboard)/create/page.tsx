@@ -92,7 +92,7 @@ export default function CreateContentPage() {
                   border: '1px solid var(--border-subtle)',
                   color: 'var(--text-secondary)',
                 }}
-                className="rounded-lg px-3.5 py-1.5 text-xs"
+                className="rounded-lg px-3.5 py-1.5 text-xs capitalize"
               >
                 Current plan:{' '}
                 <span style={{ color: 'var(--text-primary)' }} className="font-medium">
@@ -130,9 +130,9 @@ export default function CreateContentPage() {
       )}
 
       {/* Heading Section */}
-      <h1 className="text-2xl font-bold tracking-tight">Repurpose Content Across All Platforms</h1>
+      <h1 className="text-2xl font-bold tracking-tight">Repurpose Content</h1>
       <p className="text-text-secondary mt-1 mb-10 leading-relaxed">
-        Upload your content, and get AI-optimized posts for Facebook, LinkedIn, Instagram & more.
+        Upload your content & let AI handle it.
       </p>
 
       <CreatePostForm />

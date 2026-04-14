@@ -6,6 +6,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { ArrowRightIcon } from 'lucide-react'
+import { useAuth } from '@clerk/nextjs'
 
 const users = [
   { name: 'Alex', src: '/avatars/1.png' },
@@ -16,6 +17,8 @@ const users = [
 ]
 
 export default function CTASection() {
+  const { isSignedIn } = useAuth()
+
   return (
     <section className="bg-surface-card mb-20 flex items-center justify-center px-4 py-24 lg:mb-40">
       <TooltipProvider>
@@ -57,7 +60,7 @@ export default function CTASection() {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Avatar className="border-brand-cyan/30 cursor-pointer border-2 shadow-md transition-transform duration-200">
-                      <AvatarImage src={u.src} alt={u.name} />
+                      {/* <AvatarImage src={u.src} alt={u.name} /> */}
                       <AvatarFallback>{u.name.charAt(0)}</AvatarFallback>
                     </Avatar>
                   </TooltipTrigger>
@@ -106,7 +109,7 @@ export default function CTASection() {
               rel="noopener noreferrer"
             >
               <Button className="bg-brand-gradient group hover:text-whitel inline-flex items-center gap-2 rounded-lg p-6 text-base font-semibold text-white shadow-lg shadow-teal-500/25 transition-all duration-300 hover:scale-105">
-                Get Early Access
+                {isSignedIn ? <Link href={'/dashboard'}>Start Creating</Link> : 'Get Early Access'}
                 <ArrowRightIcon
                   strokeWidth={2}
                   className="h-5 w-5 transition-all duration-300 group-hover:translate-x-1 group-hover:scale-110"

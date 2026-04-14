@@ -11,33 +11,12 @@ import {
   BarChart3,
   FileText,
   Images,
-  // Target,
 } from 'lucide-react'
 import Link from 'next/link'
 import { motion, type Variants } from 'framer-motion'
-import { useEffect, useState } from 'react'
-import { useAuth } from '@clerk/nextjs'
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-
-interface UserData {
-  name: string
-  email: string
-  plan: string
-  creditsRemaining: number
-  totalUsage: number
-}
-
-interface ContentItem {
-  _id: string
-  originalInput: string
-  tone: string
-  platforms: string[]
-  createdAt: string
-  creditsUsed: number
-  imageUrl?: string | null
-}
+import { useUser } from '@/context/userContext'
 
 const container: Variants = {
   hidden: { opacity: 0 },
@@ -56,13 +35,6 @@ const item: Variants = {
   },
 }
 
-// const PLATFORM_COLORS: Record<string, string> = {
-//   linkedin: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-//   twitter: 'bg-slate-500/10 text-slate-300 border-slate-500/20',
-//   instagram: 'bg-pink-500/10 text-pink-400 border-pink-500/20',
-//   facebook: 'bg-blue-600/10 text-blue-500 border-blue-600/20',
-// }
-
 const PLATFORM_COLORS: Record<string, string> = {
   linkedin: 'bg-[#0A66C2]/10 text-[#0A66C2] border-[#0A66C2]/20',
   twitter: 'bg-[#000000]/10 text-[#000000] dark:text-white border-[#000000]/20',
@@ -71,36 +43,23 @@ const PLATFORM_COLORS: Record<string, string> = {
 }
 
 const DashboardPage = () => {
-  const [userData, setUserData] = useState<UserData | null>(null)
-  const [recentHistory, setRecentHistory] = useState<ContentItem[]>([])
-  const [loading, setLoading] = useState(true)
-  const { getToken } = useAuth()
   const router = useRouter()
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = await getToken()
-        const headers = { Authorization: `Bearer ${token}` }
+  const { userData, loading, recentHistory } = useUser()
 
-        const [userRes, historyRes] = await Promise.all([
-          axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/profile`, { headers }),
-          axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/content/history?limit=4`, { headers }),
-        ])
+  const firstName = userData?.name?.split(' ')[0] || 'Guest User'
+  const PLAN_CREDITS = {
+    free: 30,
+    pro: 100,
+    enterprise: 500,
+  }
 
-        setUserData(userRes.data.user || null)
-        setRecentHistory(historyRes.data.data || [])
-      } catch (error) {
-        console.error('Dashboard fetch error:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [getToken])
+  const totalCredits = PLAN_CREDITS[userData?.plan as keyof typeof PLAN_CREDITS] || 30
 
-  const firstName = userData?.name?.split(' ')[0] || 'there'
-  const creditPercent = userData ? Math.min((userData.creditsRemaining / 30) * 100, 100) : 0
+  const creditUsagePercent = userData
+    ? Math.min(((totalCredits - userData.creditsRemaining) / totalCredits) * 100, 100)
+    : 0
+
   const timeSaved = (userData?.totalUsage ?? 0) * 15
 
   const stats = [
@@ -130,21 +89,21 @@ const DashboardPage = () => {
       suffix: '',
       icon: Zap,
       color:
-        creditPercent < 20
+        creditUsagePercent < 20
           ? 'text-red-400'
-          : creditPercent < 40
+          : creditUsagePercent < 40
             ? 'text-orange-400'
             : 'text-emerald-400',
       bg:
-        creditPercent < 20
+        creditUsagePercent < 20
           ? 'bg-red-500/10'
-          : creditPercent < 40
+          : creditUsagePercent < 40
             ? 'bg-orange-500/10'
             : 'bg-emerald-500/10',
       border:
-        creditPercent < 20
+        creditUsagePercent < 20
           ? 'border-red-500/20'
-          : creditPercent < 40
+          : creditUsagePercent < 40
             ? 'border-orange-500/20'
             : 'border-emerald-500/20',
       desc: 'Available this month',
@@ -220,17 +179,17 @@ const DashboardPage = () => {
               <div className="mt-4 w-full max-w-xs">
                 <div className="mb-1.5 flex items-center justify-between text-xs text-slate-500">
                   <span>Credits used</span>
-                  <span>{30 - (userData.creditsRemaining ?? 0)} / 30</span>
+                  <span>{userData.totalUsage} / 30</span>
                 </div>
                 <div className="h-1.5 w-full rounded-full bg-slate-700">
                   <motion.div
                     initial={{ width: 0 }}
-                    animate={{ width: `${100 - creditPercent}%` }}
+                    animate={{ width: `${creditUsagePercent}%` }}
                     transition={{ duration: 1, ease: 'easeOut', delay: 0.5 }}
                     className={`h-1.5 rounded-full ${
-                      creditPercent < 20
+                      creditUsagePercent < 20
                         ? 'bg-red-500'
-                        : creditPercent < 40
+                        : creditUsagePercent < 40
                           ? 'bg-orange-500'
                           : 'bg-teal-500'
                     }`}
@@ -274,7 +233,7 @@ const DashboardPage = () => {
             >
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-xs font-medium text-slate-500">{stat.label}</p>
+                  <p className="text-sm font-medium text-slate-400">{stat.label}</p>
                   <p className={`mt-1.5 text-2xl font-bold ${stat.color} capitalize`}>
                     {loading ? '—' : `${stat.value}${stat.suffix}`}
                   </p>
@@ -305,7 +264,7 @@ const DashboardPage = () => {
           variants={item}
           className="rounded-2xl border border-slate-700/60 bg-slate-800/60 p-5"
         >
-          <p className="mb-4 text-sm font-semibold text-white">Quick Actions</p>
+          <p className="mb-4 font-semibold text-white">Quick Actions</p>
           <div className="space-y-2.5">
             {quickActions.map((action) => {
               const Icon = action.icon
@@ -330,9 +289,9 @@ const DashboardPage = () => {
           className="rounded-2xl border border-slate-700/60 bg-slate-800/60 p-5 lg:col-span-2"
         >
           <div className="mb-4 flex items-center justify-between">
-            <p className="text-sm font-semibold text-white">Recent Activity</p>
+            <p className="font-semibold text-white">Recent Activity</p>
             <Link href="/history">
-              <button className="flex items-center gap-1 text-xs text-teal-400 transition-colors hover:text-teal-300">
+              <button className="flex cursor-pointer items-center gap-1 text-sm text-teal-400 transition-colors hover:text-teal-300">
                 View all <ArrowRight className="h-3 w-3" />
               </button>
             </Link>
@@ -349,12 +308,12 @@ const DashboardPage = () => {
               <div className="mb-3 rounded-full bg-slate-700/40 p-4">
                 <Sparkles className="h-6 w-6 text-slate-500" />
               </div>
-              <p className="text-sm font-medium text-slate-400">No content yet</p>
-              <p className="mt-1 text-xs text-slate-600">
+              <p className="font-medium text-slate-400">No content yet</p>
+              <p className="mt-1 text-sm text-slate-600">
                 Generate your first post to see activity
               </p>
               <Link href="/create" className="mt-4">
-                <Button size="sm" className="bg-teal-500 text-xs text-white hover:bg-teal-600">
+                <Button className="bg-teal-500 text-sm text-white hover:bg-teal-600">
                   Create First Post
                 </Button>
               </Link>

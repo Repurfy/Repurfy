@@ -39,8 +39,6 @@ const featureArray = [
 export default function HeroSection() {
   const { userId } = useAuth()
 
-  console.log('userId', userId)
-
   return (
     <motion.section
       initial="hidden"

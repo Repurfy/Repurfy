@@ -45,6 +45,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         setUserData(res.data.user || null) // 👈 null not []
       } catch (error) {
         console.error('User fetch error:', error)
+        router.push('/')
       }
     }
 

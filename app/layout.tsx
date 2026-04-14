@@ -1,7 +1,7 @@
+import './globals.css'
 import type { Metadata } from 'next'
 import { Lexend, Inter } from 'next/font/google'
 import { Providers } from './providers'
-import './globals.css'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { ClerkProvider } from '@clerk/nextjs'
 

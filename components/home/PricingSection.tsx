@@ -9,7 +9,9 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
 import { Variants } from 'framer-motion'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { useSubscription } from '@/hooks/useSubscription'
+import { useUser } from '@/context/userContext'
 
 /* ---------------------------
    Types
@@ -20,6 +22,7 @@ interface PricingFeature {
 
 interface PricingPlan {
   id: string
+  clerkPlanId: string
   name: string
   description: string
   monthlyPrice: string
@@ -38,6 +41,7 @@ interface PricingPlan {
 const defaultPlans: PricingPlan[] = [
   {
     id: 'starter',
+    clerkPlanId: 'YOUR_CLERK_STARTER_PLAN_ID',
     name: 'Starter',
     description: 'For creators just starting their repurposing journey',
     monthlyPrice: '$0',
@@ -54,10 +58,11 @@ const defaultPlans: PricingPlan[] = [
   },
   {
     id: 'creator',
+    clerkPlanId: 'cplan_3C142ZHPXSrbzW3a9Hva337SoZt',
     name: 'Creator',
     description: 'For full-time creators scaling their personal brand.',
     monthlyPrice: '$39',
-    yearlyPrice: '$299',
+    yearlyPrice: '$300',
     recommended: true,
     features: [
       { text: 'Up to 120 repurposed posts/month' },
@@ -72,6 +77,7 @@ const defaultPlans: PricingPlan[] = [
   },
   // {
   //   id: 'agency',
+  // clerkPlanId: 'YOUR_CLERK_STARTER_PLAN_ID',
   //   name: 'Agency',
   //   description: 'For teams managing multiple clients at scale.',
   //   monthlyPrice: '$129',
@@ -142,8 +148,21 @@ export const PricingSection = ({
   plans?: PricingPlan[]
 }) => {
   const [isYearly, setIsYearly] = useState(false)
-
+  const [loadingPlanId, setLoadingPlanId] = useState<string | null>(null)
   const pathname = usePathname()
+  const router = useRouter()
+  const { subscribe } = useSubscription()
+
+  const handleSubscribe = async (plan: PricingPlan) => {
+    if (plan.monthlyPrice === '$0') {
+      router.push('/dashboard') // or wherever you want to send free users
+      return
+    }
+    const period = isYearly ? 'annual' : 'month'
+    router.push(`/checkout?planId=${plan.clerkPlanId}&period=${period}`)
+  }
+
+  const { userData } = useUser()
 
   return (
     <section id="pricing" className="my-20">
@@ -211,7 +230,6 @@ export const PricingSection = ({
                 viewport={{ once: true, margin: '-50px' }} // allows retrigger when scrolling
                 whileHover={{ scale: 1.03, transition: { duration: 0.18 } }}
               >
-                {/* <Card className="border-brand-teal relative flex w-80 flex-col justify-between overflow-hidden border text-left shadow-sm transition-shadow hover:shadow-xl"> */}
                 <Card
                   className={`relative flex w-80 flex-col justify-between overflow-hidden text-left shadow-sm transition-shadow hover:shadow-xl ${plan.recommended ? 'border-brand-teal glow-hover shadow-[0_0_30px_rgba(110,207,174,0.5)] lg:-my-12' : 'glow-hover border border-transparent'} `}
                 >
@@ -258,10 +276,19 @@ export const PricingSection = ({
                   </CardContent>
 
                   <CardFooter className="mt-auto">
-                    <Button asChild className="w-full font-semibold text-white">
-                      <a href={plan.button.url} target="_blank" rel="noreferrer">
-                        {plan.button.text}
-                      </a>
+                    <Button
+                      onClick={() => handleSubscribe(plan)}
+                      disabled={
+                        loadingPlanId === plan.id ||
+                        (userData?.plan === 'free' && plan.id === 'starter')
+                      }
+                      className="w-full font-semibold text-white"
+                    >
+                      {loadingPlanId === plan.id
+                        ? 'Processing...'
+                        : userData?.plan === 'free' && plan.id === 'starter'
+                          ? 'Subscribed'
+                          : plan.button.text}
                     </Button>
                   </CardFooter>
                 </Card>

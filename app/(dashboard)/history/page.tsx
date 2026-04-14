@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import axios from 'axios'
 import { Facebook, Instagram, Linkedin, Search, Twitter, ImageIcon, Sparkles } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -49,24 +49,30 @@ const History = () => {
 
   const { getToken } = useAuth()
 
-  useEffect(() => {
-    const fetchHistory = async () => {
-      try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/content/history`, {
-          headers: {
-            Authorization: `Bearer ${await getToken()}`,
-          },
-        })
-        setHistory(res.data.data || [])
-      } catch (error) {
-        console.error('History fetch error:', error)
-      } finally {
-        setLoading(false)
-      }
+  const fetchHistory = useCallback(async () => {
+    try {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/content/history`, {
+        headers: {
+          Authorization: `Bearer ${await getToken()}`,
+        },
+      })
+      setHistory(res.data.data || [])
+    } catch (error) {
+      console.error('History fetch error:', error)
+    } finally {
+      setLoading(false)
     }
-
-    fetchHistory()
   }, [getToken])
+
+  useEffect(() => {
+    const debounceInterval = setTimeout(() => {
+      fetchHistory()
+    }, 1000)
+
+    return () => {
+      clearTimeout(debounceInterval)
+    }
+  }, [fetchHistory])
 
   const filtered = history.filter((item) => {
     const matchesSearch =
@@ -161,10 +167,10 @@ const History = () => {
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-700">
               <Sparkles className="h-6 w-6 text-slate-400" />
             </div>
-            <p className="text-base font-semibold text-slate-700 dark:text-white">
+            <p className="text-lg font-semibold text-slate-700 dark:text-white">
               {search || activeFilter ? 'No results found 🔍' : 'No history yet 🚀'}
             </p>
-            <p className="text-text-secondary mt-1 text-sm">
+            <p className="text-text-secondary mt-1">
               {search || activeFilter
                 ? 'Try adjusting your search or filter'
                 : 'Generate content to see history here'}
@@ -176,17 +182,17 @@ const History = () => {
         {!loading &&
           filtered.map((item) => (
             <Link href={`/results/${item._id}`} key={item._id}>
-              <div className="group my-4 overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition-all duration-200 hover:-translate-y-[1px] hover:border-teal-200 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:hover:border-teal-700">
+              <div className="group my-4 overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition-all duration-200 hover:-translate-y-px hover:border-teal-200 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:hover:border-teal-700">
                 <div className="p-5">
                   <div className="flex flex-col gap-4 md:flex-row md:items-center">
                     {/* Image thumbnail */}
                     {item.imageUrl && (
-                      <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl lg:h-24 lg:w-24">
+                      <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl lg:h-16 lg:w-16">
                         <Image
                           src={item.imageUrl}
                           alt="content thumbnail"
-                          width={200}
-                          height={200}
+                          width={100}
+                          height={100}
                           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                         <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent" />
@@ -198,7 +204,7 @@ const History = () => {
                       {/* Placeholder icon when no image */}
                       {!item.imageUrl && (
                         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-100 bg-gradient-to-br from-teal-50 to-slate-100 dark:border-slate-600 dark:from-teal-900/30 dark:to-slate-700">
-                          <ImageIcon className="h-4 w-4 text-teal-400" />
+                          <ImageIcon className="h-6 w-6 text-teal-400/60" />
                         </div>
                       )}
 
@@ -252,7 +258,7 @@ const History = () => {
                 </div>
 
                 {/* Bottom accent line on hover */}
-                <div className="h-[2px] w-0 bg-gradient-to-r from-teal-400 to-teal-600 transition-all duration-300 group-hover:w-full" />
+                <div className="linear-gradient-to-r h-0.5 w-0 from-teal-400 to-teal-600 transition-all duration-300 group-hover:w-full" />
               </div>
             </Link>
           ))}

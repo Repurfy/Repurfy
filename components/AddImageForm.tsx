@@ -612,23 +612,23 @@ const AddImageForm = ({ onNext, onBack, formData, setFormData }: Props) => {
       </div>
 
       {/* Mode Toggle */}
-      <div className="flex gap-1 rounded-xl bg-slate-900/60 p-1">
+      <div className="flex gap-2 rounded-xl p-1">
         <button
           onClick={() => setMode('upload')} // 👈 no clearImage on tab switch
-          className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium transition-all ${
+          className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border-2 py-2 text-sm font-medium transition-all ${
             mode === 'upload'
               ? 'bg-teal-500 text-white shadow'
-              : 'text-slate-400 hover:text-slate-200'
+              : 'hover:text-slate-2000 bg-slate-900/60 text-slate-400'
           }`}
         >
           <ImagePlus className="h-4 w-4" /> Upload Image
         </button>
         <button
           onClick={() => setMode('generate')} // 👈 no clearImage on tab switch
-          className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium transition-all ${
+          className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border-2 py-2 text-sm font-medium transition-all ${
             mode === 'generate'
               ? 'bg-teal-500 text-white shadow'
-              : 'text-slate-400 hover:text-slate-200'
+              : 'bg-slate-900/60 text-slate-400 hover:text-slate-200'
           }`}
         >
           <Sparkles className="h-4 w-4" /> Generate with AI

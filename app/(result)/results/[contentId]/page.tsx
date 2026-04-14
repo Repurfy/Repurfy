@@ -17,6 +17,7 @@ import {
 import { Button } from '@/components/ui/button'
 import axios from 'axios'
 import { useAuth } from '@clerk/nextjs'
+import Image from 'next/image'
 
 interface GeneratedContent {
   data: {
@@ -177,12 +178,20 @@ export default function ResultsPage() {
         {/* Image Preview — shown if imageUrl exists */}
         {content.imageUrl && (
           <div className="mb-6 overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700">
-            <div className="flex items-center justify-center">
-              <img
-                src={content.imageUrl}
-                alt="Post image"
-                className="lg:h-xl object-cover lg:w-xl"
-              />
+            <div className="flex items-center justify-center p-4">
+              <div className="relative h-48 w-full sm:h-60 md:h-72 lg:h-80">
+                <Image
+                  src={content.imageUrl}
+                  alt="Post image"
+                  fill
+                  className="rounded-lg object-cover"
+                  sizes="(max-width: 640px) 100vw, 
+           (max-width: 768px) 50vw, 
+           (max-width: 1024px) 33vw, 
+           25vw"
+                  priority={false}
+                />
+              </div>
             </div>
             <div className="flex items-center justify-between px-4 py-2 dark:bg-slate-800">
               <p className="text-xs text-slate-400">✨ AI Generated Image</p>
@@ -203,7 +212,7 @@ export default function ResultsPage() {
         )}
 
         {/* Platform Cards Grid */}
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <div className="flex flex-col gap-4 md:grid md:grid-cols-2">
           {platforms.map((platform) => {
             const config = PLATFORM_CONFIG[platform]
             if (!config) return null
@@ -215,20 +224,44 @@ export default function ResultsPage() {
             return (
               <div
                 key={platform}
-                className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800"
+                className="flex min-h-auto flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800"
               >
                 <div className="flex items-center justify-between px-5 pt-5 pb-3">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`flex h-9 w-9 items-center justify-center rounded-xl ${config.bg}`}
-                    >
-                      <Icon className="h-4 w-4 text-white" />
+                  <div className="flex w-full items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`flex h-9 w-9 items-center justify-center rounded-xl ${config.bg}`}
+                      >
+                        <Icon className="h-4 w-4 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold dark:text-white">{config.label}</p>
+                        <p className="text-xs text-slate-400">
+                          {text.length} / {config.maxChars} chars
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-sm font-semibold dark:text-white">{config.label}</p>
-                      <p className="text-xs text-slate-400">
-                        {text.length} / {config.maxChars} chars
-                      </p>
+
+                    <div className="flex items-center gap-2 px-5 pt-2 pb-5">
+                      <button
+                        onClick={() => handleCopy(text, platform)}
+                        className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-teal-500 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-teal-600"
+                      >
+                        <Copy className="h-4 w-4" />
+                        {isCopied ? 'Copied!' : 'Copy'}
+                      </button>
+                      <button
+                        onClick={() => handleDownload(text, platform)}
+                        className="flex items-center justify-center rounded-lg border border-slate-200 p-2.5 text-slate-500 transition hover:text-slate-700 dark:border-slate-600 dark:hover:text-slate-200"
+                      >
+                        <Download className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => setEditingPlatform(isEditing ? null : platform)}
+                        className="flex items-center justify-center rounded-lg border border-slate-200 p-2.5 text-slate-500 transition hover:text-slate-700 dark:border-slate-600 dark:hover:text-slate-200"
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -249,28 +282,6 @@ export default function ResultsPage() {
                       {text}
                     </p>
                   )}
-                </div>
-
-                <div className="flex items-center gap-2 px-5 pt-2 pb-5">
-                  <button
-                    onClick={() => handleCopy(text, platform)}
-                    className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-teal-500 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-teal-600"
-                  >
-                    <Copy className="h-4 w-4" />
-                    {isCopied ? 'Copied!' : 'Copy'}
-                  </button>
-                  <button
-                    onClick={() => handleDownload(text, platform)}
-                    className="flex items-center justify-center rounded-lg border border-slate-200 p-2.5 text-slate-500 transition hover:text-slate-700 dark:border-slate-600 dark:hover:text-slate-200"
-                  >
-                    <Download className="h-4 w-4" />
-                  </button>
-                  <button
-                    onClick={() => setEditingPlatform(isEditing ? null : platform)}
-                    className="flex items-center justify-center rounded-lg border border-slate-200 p-2.5 text-slate-500 transition hover:text-slate-700 dark:border-slate-600 dark:hover:text-slate-200"
-                  >
-                    <Pencil className="h-4 w-4" />
-                  </button>
                 </div>
               </div>
             )
