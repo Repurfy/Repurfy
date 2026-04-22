@@ -33,7 +33,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-import { SignedIn, UserButton } from '@clerk/nextjs'
+import { Show, UserButton } from '@clerk/nextjs'
 import { useUser } from '@/context/userContext'
 
 const navItems = [
@@ -122,7 +122,7 @@ const AppSidebar = () => {
                   size="lg"
                   className="cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700"
                 >
-                  <SignedIn>
+                  <Show when={"signed-in"}>
                     <UserButton
                       appearance={{
                         elements: {
@@ -130,7 +130,7 @@ const AppSidebar = () => {
                         },
                       }}
                     />
-                  </SignedIn>
+                  </Show>
 
                   {/* ✅ hide text when collapsed */}
                   <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">

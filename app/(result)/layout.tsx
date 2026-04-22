@@ -3,7 +3,7 @@
 import AppSidebar from '@/components/AppSidebar'
 import { ThemeToggler } from '@/components/common/ThemeToggle'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
-import { SignedIn, UserButton } from '@clerk/nextjs'
+import { Show, UserButton } from '@clerk/nextjs'
 import { motion, type Variants } from 'framer-motion'
 
 const layoutVariants: Variants = {
@@ -35,7 +35,7 @@ export default function ResultLayout({ children }: { children: React.ReactNode }
             <SidebarTrigger className="[&_svg]:size-5!" />
             <div className="flex flex-row gap-6">
               <ThemeToggler />
-              <SignedIn>
+              <Show when={"signed-in"}>
                 <UserButton
                   appearance={{
                     elements: {
@@ -43,7 +43,7 @@ export default function ResultLayout({ children }: { children: React.ReactNode }
                     },
                   }}
                 />
-              </SignedIn>
+              </Show>
             </div>
           </header>
 
