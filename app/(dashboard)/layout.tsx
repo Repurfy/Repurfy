@@ -2,7 +2,7 @@
 
 import AppSidebar from '@/components/AppSidebar'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
-import { SignedIn, useAuth, UserButton } from '@clerk/nextjs'
+import { Show, useAuth, UserButton } from '@clerk/nextjs'
 import axios from 'axios'
 import { motion, type Variants } from 'framer-motion' // 👈 removed number
 import { Sparkles, Zap } from 'lucide-react'
@@ -100,7 +100,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   </div>
                 ))}
 
-              <SignedIn>
+              <Show when={"signed-in"}>
                 <UserButton
                   appearance={{
                     elements: {
@@ -108,7 +108,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     },
                   }}
                 />
-              </SignedIn>
+              </Show>
             </div>
           </header>
 
