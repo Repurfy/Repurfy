@@ -7,7 +7,7 @@ import Image from 'next/image'
 import { ThemeToggler } from './ThemeToggle'
 import Link from 'next/link'
 import { Variants } from 'framer-motion'
-import { SignedIn, SignedOut, SignInButton, SignUpButton, useAuth, UserButton } from '@clerk/nextjs'
+import { SignInButton, SignUpButton, useAuth, UserButton, Show } from '@clerk/nextjs'
 
 const fadeDown = {
   hidden: { opacity: 0, y: -20 },
@@ -70,7 +70,8 @@ const Header = () => {
 
         {(userId && userId !== null) || undefined ? (
           <>
-            <SignedIn>
+            <Show when="signed-in">
+              {' '}
               <UserButton
                 appearance={{
                   elements: {
@@ -78,11 +79,11 @@ const Header = () => {
                   },
                 }}
               />
-            </SignedIn>
+            </Show>
           </>
         ) : (
           <>
-            <SignedOut>
+            <Show when="signed-out">
               <SignInButton mode="modal">
                 <Button
                   variant="ghost"
@@ -102,7 +103,7 @@ const Header = () => {
                   </Button>
                 </motion.div>
               </SignUpButton>
-            </SignedOut>
+            </Show>
             {/* <Link
               href={'https://forms.gle/53BNApyitQJJdnCQ9'}
               target="_blank"
