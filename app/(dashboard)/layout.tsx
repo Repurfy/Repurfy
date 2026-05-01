@@ -2,12 +2,11 @@
 
 import AppSidebar from '@/components/AppSidebar'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
-import { Show, useAuth, UserButton } from '@clerk/nextjs'
-import axios from 'axios'
+import { Show, UserButton } from '@clerk/nextjs'
 import { motion, type Variants } from 'framer-motion' // 👈 removed number
 import { Sparkles, Zap } from 'lucide-react'
-import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useUser } from '@/context/userContext'
 
 const layoutVariants: Variants = {
   hidden: { opacity: 0 },
@@ -31,26 +30,9 @@ interface UserDetails {
 }
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const [userData, setUserData] = useState<UserDetails | null>(null) // 👈 object not array
-  const { getToken } = useAuth()
   const router = useRouter()
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const token = await getToken()
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/profile`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        setUserData(res.data.user || null) // 👈 null not []
-      } catch (error) {
-        console.error('User fetch error:', error)
-        router.push('/')
-      }
-    }
-
-    fetchUserDetails()
-  }, [getToken])
+  const { userData } = useUser()
 
   return (
     <SidebarProvider>
@@ -77,7 +59,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   >
                     <Zap className="h-3.5 w-3.5 text-red-400" />
                     <span className="text-xs font-semibold text-red-400">No credits</span>
-                    <span className="text-xs text-slate-400">· Upgrade</span>
+                    <span className="text-xs text-slate-400">Upgrade</span>
                   </button>
                 ) : userData.creditsRemaining <= 5 ? (
                   <button
@@ -85,22 +67,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     className="flex items-center gap-1.5 rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1.5 transition-all hover:border-orange-500/60 hover:bg-orange-500/20"
                   >
                     <Sparkles className="h-3.5 w-3.5 text-orange-400" />
+                    <span className="text-xs text-slate-400">Credits left</span>
                     <span className="text-xs font-semibold text-orange-400">
                       {userData.creditsRemaining}
                     </span>
-                    <span className="text-xs text-slate-400">credits left</span>
                   </button>
                 ) : (
                   <div className="flex items-center gap-1.5 rounded-full border border-teal-500/30 bg-teal-500/10 px-3 py-1.5">
                     <Sparkles className="h-3.5 w-3.5 text-teal-400" />
+                    <span className="text-xs text-slate-400">Credits:</span>
                     <span className="text-xs font-semibold text-teal-400">
                       {userData.creditsRemaining}
                     </span>
-                    <span className="text-xs text-slate-400">credits</span>
                   </div>
                 ))}
 
-              <Show when={"signed-in"}>
+              <Show when={'signed-in'}>
                 <UserButton
                   appearance={{
                     elements: {

@@ -140,8 +140,10 @@ export default function ResultsPage() {
 
   if (!content) return null
 
-  const platforms = Object.keys(content.data).filter((k) => k !== 'hooks' && k !== 'hashtags')
+  // const platforms = Object.keys(content.data).filter((k) => k !== 'hooks' && k !== 'hashtags')
 
+  const platforms = Object.keys(content.data || {}).filter((k) => k!== 'hooks' && k!== 'hashtags')
+  
   return (
     <div className="min-h-screen">
       <div>

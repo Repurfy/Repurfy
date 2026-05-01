@@ -4,7 +4,7 @@ import { Lexend, Inter } from 'next/font/google'
 import { Providers } from './providers'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { ClerkProvider } from '@clerk/nextjs'
-
+import { ToastContainer } from 'react-toastify'
 export const metadata: Metadata = {
   metadataBase: new URL('https://repurfy.com'),
 
@@ -81,6 +81,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <ClerkProvider signInForceRedirectUrl={'/dashboard'} signUpForceRedirectUrl={'/dashboard'}>
       <html lang="en" suppressHydrationWarning className={`${lexend.variable} ${inter.variable}`}>
         <body className="antialiased">
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            pauseOnHover
+            draggable
+            theme="dark"
+          />
           <Providers>{children}</Providers>
           <SpeedInsights />
         </body>

@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import NavLink from './nav-link'
+import { HeartIcon } from 'lucide-react'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -62,15 +63,12 @@ const companyLinks = [
   { label: 'Demo', href: '#how-it-works' },
 ]
 
-const build_mode = process.env.NEXT_PUBLIC_APP_ENV
-
-const siteURL = build_mode === 'development' ? 'http://localhost:3000' : 'https://www.repurfy.com'
-
 const helpLinks = [
-  { label: 'Privacy Policy', href: `${siteURL}/privacy-policy` },
-  { label: 'Terms of Service', href: '#' },
+  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Terms of Service', href: '/terms' },
   { label: 'Support', href: 'mailto:support@repurfy.com' },
-  { label: 'Refund Policy', href: '#' },
+  { label: 'Refund Policy', href: '/refund-policy' },
+  { label: 'Donate Us', href: '/donate-us' },
 ]
 
 export default function Footer() {
@@ -145,25 +143,21 @@ export default function Footer() {
             </ul>
           </motion.div>
 
-          {/* Newsletter */}
+          {/* Donate Us */}
           <motion.div variants={fadeUp}>
-            <h3 className="mb-5 text-sm font-semibold tracking-wide text-white/90 uppercase">
-              Stay Updated
+          <h3 className="mb-5 text-sm font-semibold tracking-wide text-white/90 uppercase">
+              Support Us
             </h3>
             <p className="mb-4 text-sm text-gray-400">
-              Get tips on content repurposing and product updates.
+              Repurfy is built solo, with love. If it saves you time, consider buying me a chai ☕
             </p>
-            <div className="flex flex-col gap-2">
-              <Input
-                type="email"
-                placeholder="you@example.com"
-                className="focus:border-brand-teal/50 border-white/10 bg-white/5 text-sm placeholder:text-gray-600"
-              />
-              <Button className="bg-brand-gradient w-full rounded-lg text-sm font-semibold text-white shadow-teal-500/25 hover:shadow-xl">
-                Subscribe
+            <Link href="/donate-us">
+              <Button className="bg-brand-gradient group flex w-full items-center justify-center gap-2 rounded-lg text-sm font-semibold text-white shadow-teal-500/25 hover:scale-[1.02] hover:shadow-xl transition-all duration-200">
+                <HeartIcon className="h-4 w-4 fill transition-transform duration-200 group-hover:scale-125" />
+                Support Us
               </Button>
-            </div>
-            <p className="mt-3 text-xs text-gray-600">No spam. Unsubscribe anytime.</p>
+            </Link>
+            <p className="mt-3 text-xs text-gray-600">UPI · PayPal · Any amount welcome.</p>
           </motion.div>
         </motion.div>
 

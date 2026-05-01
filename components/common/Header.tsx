@@ -4,7 +4,6 @@ import { motion } from 'framer-motion'
 import NavLink from '@/components/common/nav-link'
 import { Button } from '../ui/button'
 import Image from 'next/image'
-import { ThemeToggler } from './ThemeToggle'
 import Link from 'next/link'
 import { Variants } from 'framer-motion'
 import { SignInButton, SignUpButton, useAuth, UserButton, Show } from '@clerk/nextjs'
@@ -41,7 +40,7 @@ const Header = () => {
 
         <Link
           href="/"
-          className="font-heading font-ai text-xl font-semibold tracking-tighter lg:text-3xl"
+          className="font-heading font-ai text-xl font-semibold tracking-tighter lg:text-3xl text-slate-200"
         >
           Repurfy
         </Link>

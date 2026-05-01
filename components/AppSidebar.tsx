@@ -41,7 +41,7 @@ const navItems = [
   { title: 'Create', href: '/create', icon: CirclePlus },
   { title: 'History', href: '/history', icon: History },
   { title: 'Pricing', href: '/pricing', icon: CreditCard },
-  { title: 'Settings', href: '/settings', icon: Settings },
+  // { title: 'Settings', href: '/settings', icon: Settings },
 ]
 
 const AppSidebar = () => {
@@ -122,7 +122,7 @@ const AppSidebar = () => {
                   size="lg"
                   className="cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700"
                 >
-                  <Show when={"signed-in"}>
+                  <Show when={'signed-in'}>
                     <UserButton
                       appearance={{
                         elements: {

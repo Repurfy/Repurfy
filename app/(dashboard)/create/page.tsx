@@ -1,10 +1,8 @@
 'use client'
 
 import CreatePostForm from '@/components/CreatePostForm'
-import { useAuth } from '@clerk/nextjs'
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useUser } from '@/context/userContext'
 
 interface UserDetails {
   creditsRemaining: number
@@ -15,25 +13,10 @@ interface UserDetails {
 }
 
 export default function CreateContentPage() {
-  const [userData, setUserData] = useState<UserDetails | null>(null)
-  const { getToken } = useAuth()
+
+  const {userData} = useUser();
   const router = useRouter()
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const token = await getToken()
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/profile`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        setUserData(res.data.user || null)
-      } catch (error) {
-        console.error('User fetch error:', error)
-      }
-    }
-
-    fetchUserDetails()
-  }, [getToken])
 
   const hasNoCredits = userData !== null && userData.creditsRemaining === 0
 

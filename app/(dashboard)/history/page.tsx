@@ -3,7 +3,16 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import axios from 'axios'
-import { Facebook, Instagram, Linkedin, Search, Twitter, ImageIcon, Sparkles } from 'lucide-react'
+import {
+  Facebook,
+  Instagram,
+  Linkedin,
+  Search,
+  Twitter,
+  ImageIcon,
+  Sparkles,
+  DeleteIcon,
+} from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '@clerk/nextjs'
 import Image from 'next/image'
@@ -82,6 +91,20 @@ const History = () => {
 
     return matchesSearch && matchesPlatform
   })
+
+  const handleDeleteCard = async (id: string) => {
+    try {
+      const res = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/content/${id}`, {
+        headers: {
+          Authorization: `Bearer ${await getToken()}`,
+        },
+      })
+      console.log('deleted res', res)
+      setHistory((prev) => prev.filter((item) => item._id !== id))
+    } catch (error) {
+      console.error('History fetch error:', error)
+    }
+  }
 
   return (
     <div className="h-fit">
@@ -198,7 +221,7 @@ const History = () => {
                     )}
 
                     {/* Left content */}
-                    <div className="flex min-w-0 flex-1 items-start gap-3">
+                    <div className="group flex min-w-0 flex-1 items-start">
                       {/* Placeholder icon when no image */}
                       {!item.imageUrl && (
                         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-100 bg-linear-to-br from-teal-50 to-slate-100 dark:border-slate-600 dark:from-teal-900/30 dark:to-slate-700">
@@ -246,11 +269,16 @@ const History = () => {
                           {p}
                         </span>
                       ))}
-
-                      {/* Subtle arrow cue */}
-                      <span className="ml-1 text-lg leading-none text-slate-300 transition-colors group-hover:text-teal-400 dark:text-slate-600">
-                        →
-                      </span>
+                      <div
+                        className="z-10 mr-2 cursor-pointer"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          handleDeleteCard(item._id)
+                        }}
+                      >
+                        <DeleteIcon />
+                      </div>
                     </div>
                   </div>
                 </div>

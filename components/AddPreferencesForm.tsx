@@ -157,9 +157,11 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
     } catch (err: unknown) {
       setIsGenerating(false)
       if (axios.isAxiosError(err)) {
-        console.error('❌ ERROR:', err.response?.data || err.message)
+        console.error('❌ Status:', err.response?.status);
+        console.error('❌ Data:', JSON.stringify(err.response?.data));
+        console.error('❌ Message:', err.message);
       } else {
-        console.error('❌ Unexpected error:', err)
+        console.error('❌ Unexpected error:', err);
       }
     }
   }

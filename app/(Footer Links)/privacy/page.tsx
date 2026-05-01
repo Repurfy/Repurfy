@@ -132,13 +132,13 @@ export default function PrivacyPolicy() {
             Legal Document
           </div>
 
-          <h1 className="mb-4 text-5xl leading-tight font-bold text-white md:text-6xl">
+          <h1 className="mb-4 text-5xl leading-tight font-bold text-white md:text-6xl font-ai">
             Privacy <span className="text-brand-gradient">Policy</span>
           </h1>
           <p className="mt-4 text-base text-white/50">
             Last updated: <span className="font-medium text-white/70">{lastUpdated}</span>
           </p>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/60">
+          <p className="mt-6 max-w-2xl leading-relaxed text-white/60">
             At Repurfy, your privacy matters. This policy explains what data we collect, why we
             collect it, and how you remain in control of your information.
           </p>
