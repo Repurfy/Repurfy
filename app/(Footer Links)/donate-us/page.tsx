@@ -345,7 +345,7 @@ export default function DonationPage() {
 
           {/* ── CTA Button ── */}
           <motion.div
-            className="w-1/3"
+            className="w-fit"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}

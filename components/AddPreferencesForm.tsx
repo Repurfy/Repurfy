@@ -117,11 +117,13 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
     }
   }
 
+  
+
   const sendData = async () => {
     try {
       setIsGenerating(true)
       const token = await getToken()
-
+  
       const payload: Payload = {
         title: formData.title,
         platforms: formData.platforms,
@@ -130,9 +132,9 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
         keywords: Array.isArray(formData.keywords) ? formData.keywords : [],
         imageUrl: formData.photoUrl ?? null,
       }
-
+  
       if (formData.blogUrl?.trim()) payload.blogUrl = formData.blogUrl
-
+  
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/content/generate`,
         payload,
@@ -143,25 +145,36 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
           },
         }
       )
-
+  
+      // ✅ Shape now matches exactly what the result page expects
       sessionStorage.setItem(
         'generatedContent',
         JSON.stringify({
-          ...res.data,
-          imageUrl: res.data.imageUrl,
+          contentId: res.data.contentId,         // 👈 explicit, not spread
+          creditsRemaining: res.data.creditsRemaining,
+          imageUrl: res.data.imageUrl ?? null,
+          data: res.data.data,                   // 👈 the actual generated posts object
         })
       )
-
+  
       setFormData(EMPTY_FORM)
-      router.push(`/results/${res.data?.contentId}`)
+  
+      // ✅ Guard: don't navigate if contentId is missing
+      if (!res.data.contentId) {
+        console.error('❌ No contentId in response:', res.data)
+        throw new Error('Generation succeeded but contentId is missing')
+      }
+  
+      router.push(`/results/${res.data.contentId}`)
+  
     } catch (err: unknown) {
       setIsGenerating(false)
       if (axios.isAxiosError(err)) {
-        console.error('❌ Status:', err.response?.status);
-        console.error('❌ Data:', JSON.stringify(err.response?.data));
-        console.error('❌ Message:', err.message);
+        console.error('❌ Status:', err.response?.status)
+        console.error('❌ Data:', JSON.stringify(err.response?.data))
+        console.error('❌ Message:', err.message)
       } else {
-        console.error('❌ Unexpected error:', err);
+        console.error('❌ Unexpected error:', err)
       }
     }
   }

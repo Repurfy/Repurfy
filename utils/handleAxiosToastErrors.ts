@@ -14,8 +14,10 @@ export const handleApiError = (error: unknown) => {
     }
 
     // ⚠️ Generic backend message
-    if (data?.message) {
+    if (data?.message !== "Unauthorized") {
       toast.error(`⚠️ ${data.message}`)
+      return
+    }else{
       return
     }
   }
