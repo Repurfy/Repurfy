@@ -4,6 +4,7 @@ import { PricingSection } from '@/components/home/PricingSection'
 import { Button } from '@/components/ui/button'
 import { ArrowRightIcon, Sparkles } from 'lucide-react'
 import { motion, type Variants } from 'framer-motion'
+import { useUser } from '@/context/userContext'
 
 const pageVariants: Variants = {
   hidden: { opacity: 0 },
@@ -32,6 +33,8 @@ const itemVariants: Variants = {
 }
 
 const Pricing = () => {
+
+  const { userData} = useUser()
   return (
     <motion.div
       variants={pageVariants}
@@ -55,9 +58,9 @@ const Pricing = () => {
           <div className="bg-brand-teal/30 text-brand-teal rounded-full p-3">
             <Sparkles />
           </div>
-          <div>
-            <h2 className="text-lg">You&apos;re on the free plan</h2>
-            <p className="text-sm">12 of 25 posts used this month</p>
+          <div className="font-ai">
+            <h2 className="text-lg font-semibold">You&apos;re on the {userData?.plan} plan</h2>
+            <p className="text-sm text-muted-foreground">Credits Remaining : {userData?.creditsRemaining}</p>
           </div>
         </div>
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.94 }}>
