@@ -436,11 +436,10 @@ const History = () => {
                 size="sm"
                 variant={activeFilter === null ? 'default' : 'outline'}
                 onClick={() => setActiveFilter(null)}
-                className={`shrink-0 rounded-xl px-4 text-xs font-medium transition-all ${
-                  activeFilter === null
+                className={`shrink-0 rounded-xl px-4 text-xs font-medium transition-all ${activeFilter === null
                     ? 'bg-teal-500 text-white shadow-sm hover:bg-teal-600'
                     : 'border-slate-200 hover:border-teal-400 dark:border-slate-600'
-                }`}
+                  }`}
               >
                 All
               </Button>
@@ -457,11 +456,10 @@ const History = () => {
                   onClick={() =>
                     setActiveFilter(activeFilter === button.title ? null : button.title)
                   }
-                  className={`shrink-0 gap-1.5 rounded-xl text-xs font-medium transition-all ${
-                    activeFilter === button.title
+                  className={`shrink-0 gap-1.5 rounded-xl text-xs font-medium transition-all ${activeFilter === button.title
                       ? 'bg-teal-500 text-white shadow-sm hover:bg-teal-600'
                       : 'border-slate-200 hover:border-teal-400 dark:border-slate-600'
-                  }`}
+                    }`}
                 >
                   {button.icon}
                   {/* Hide text on very small screens to save space */}
@@ -519,7 +517,7 @@ const History = () => {
                               alt="content thumbnail"
                               fill
                               className="object-cover transition-transform duration-300 group-hover:scale-105"
-                              sizes="56px"
+                              fetchPriority='high'
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                           </>

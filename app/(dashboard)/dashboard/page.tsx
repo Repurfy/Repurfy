@@ -446,13 +446,16 @@ const DashboardPage = () => {
                   >
                     {/* Thumbnail or placeholder */}
                     {historyItem.imageUrl ? (
-                      <Image
-                        src={historyItem.imageUrl}
-                        alt="thumbnail"
-                        width={10}
-                        height={10}
-                        className="h-14 w-14 shrink-0 rounded-lg object-cover"
-                      />
+                      <div className='relative h-12 w-12 shrink-0 overflow-hidden rounded-xl sm:h-14 sm:w-14'>
+
+                        <Image
+                          src={historyItem.imageUrl}
+                          alt="thumbnail"
+                          fill
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
+                          fetchPriority='high'
+                        />
+                      </div>
                     ) : (
                       <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-slate-700">
                         <Images className="h-4 w-4 text-slate-500 lg:h-6 lg:w-6" />

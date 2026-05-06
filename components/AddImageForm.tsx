@@ -531,12 +531,69 @@ const AddImageForm = ({ onNext, onBack, formData, setFormData }: Props) => {
     el.style.height = `${el.scrollHeight}px`
   }, [prompt, mode]) // 👈 added mode to fix shrink bug
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    setImageSource('upload')
-    setFormData((p) => ({ ...p, photoUrl: URL.createObjectURL(file) }))
-  }
+  const handleImageChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    console.log("image change function called");
+
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    try {
+      setImageSource("upload");
+
+      // local preview
+      const previewUrl = URL.createObjectURL(file);
+
+      setFormData((prev) => ({
+        ...prev,
+        photoUrl: previewUrl,
+      }));
+
+      console.log("preview set");
+
+      const token = await getToken();
+
+      const uploadData = new FormData();
+      uploadData.append("image", file);
+
+      console.log("upload started");
+
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`,
+        uploadData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("upload success", res.data);
+
+      // IMPORTANT
+      const cloudinaryUrl = res.data.imageUrl;
+
+      if (!cloudinaryUrl) {
+        throw new Error("No imageUrl returned from backend");
+      }
+
+      // replace blob preview with permanent url
+      setFormData((prev) => ({
+        ...prev,
+        photoUrl: cloudinaryUrl,
+      }));
+
+      console.log("cloudinary url saved");
+
+    } catch (error: any) {
+      console.log(
+        "Image upload failed:",
+        error?.response?.data || error.message
+      );
+    }
+  };
 
   const clearImage = () => {
     setFormData((p) => ({ ...p, photoUrl: '' }))
@@ -615,21 +672,19 @@ const AddImageForm = ({ onNext, onBack, formData, setFormData }: Props) => {
       <div className="flex gap-2 rounded-xl p-1">
         <button
           onClick={() => setMode('upload')} // 👈 no clearImage on tab switch
-          className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border-2 py-2 text-sm font-medium transition-all ${
-            mode === 'upload'
-              ? 'bg-teal-500 text-white shadow'
-              : 'hover:text-slate-2000 bg-slate-900/60 text-slate-400'
-          }`}
+          className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border-2 py-2 text-sm font-medium transition-all ${mode === 'upload'
+            ? 'bg-teal-500 text-white shadow'
+            : 'hover:text-slate-2000 bg-slate-900/60 text-slate-400'
+            }`}
         >
           <ImagePlus className="h-4 w-4" /> Upload Image
         </button>
         <button
           onClick={() => setMode('generate')} // 👈 no clearImage on tab switch
-          className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border-2 py-2 text-sm font-medium transition-all ${
-            mode === 'generate'
-              ? 'bg-teal-500 text-white shadow'
-              : 'bg-slate-900/60 text-slate-400 hover:text-slate-200'
-          }`}
+          className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border-2 py-2 text-sm font-medium transition-all ${mode === 'generate'
+            ? 'bg-teal-500 text-white shadow'
+            : 'bg-slate-900/60 text-slate-400 hover:text-slate-200'
+            }`}
         >
           <Sparkles className="h-4 w-4" /> Generate with AI
         </button>
