@@ -44,7 +44,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const fetchUserProfile = async () => {
     try {
       const token = await getToken();
-  
+
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/profile`,
         {
@@ -53,18 +53,18 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
           },
         }
       );
-  
+
       setUserData(res.data.user);
     } catch (error) {
       handleApiError(error);
       console.error("Profile Error:", error);
     }
   };
-  
+
   const fetchUserCreationHistory = async () => {
     try {
       const token = await getToken();
-  
+
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/content/history?limit=5`,
         {
@@ -73,7 +73,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
           },
         }
       );
-  
+
       setRecentHistory(res.data.data);
     } catch (error) {
       handleApiError(error);
@@ -94,7 +94,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }
 
-  
   useEffect(() => {
     if (isLoaded) {
       fetchAllData()

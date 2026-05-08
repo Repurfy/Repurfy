@@ -18,12 +18,14 @@ import { useRouter, useSearchParams } from 'next/navigation'
 
 type PlanPeriod = 'month' | 'annual'
 
-function getCheckoutErrorMessage(errors: { global: Array<{ message?: string }> | null } | null | undefined) {
+function getCheckoutErrorMessage(
+  errors: { global: Array<{ message?: string }> | null } | null | undefined
+) {
   return errors?.global?.[0]?.message ?? 'Failed to load checkout. Please try again.'
 }
 
 /* ---------------------------
-   Root Page (Wrapped in Suspense)
+   Root Page
 --------------------------- */
 
 export default function CheckoutPage() {
@@ -41,7 +43,7 @@ export default function CheckoutPage() {
 }
 
 /* ---------------------------
-   Search Params Logic Component
+   Search Params Logic
 --------------------------- */
 
 function CheckoutContent() {
@@ -49,7 +51,6 @@ function CheckoutContent() {
 
   const planId = searchParams.get('planId') ?? ''
   const period = searchParams.get('period') ?? 'month'
-
   const planPeriod: PlanPeriod = period === 'annual' ? 'annual' : 'month'
 
   if (!planId) {
@@ -59,37 +60,40 @@ function CheckoutContent() {
           <p className="font-medium text-red-500">
             No plan selected. Please go back and choose a plan.
           </p>
-          <a href="/pricing" className="text-sm text-white/70 underline transition-colors hover:text-white">
+          <a
+            href="/pricing"
+            className="text-sm text-white/70 underline transition-colors hover:text-white"
+          >
             &larr; Back to Pricing
           </a>
         </div>
-      </CheckoutLayout>
+      </CheckoutLayout >
     )
   }
 
   return (
     <CheckoutProvider key={planId} for="user" planId={planId} planPeriod={planPeriod}>
       <ClerkLoaded>
-        <Show 
+        <Show
           when="signed-in"
           fallback={
             <CheckoutLayout>
-               <div className="flex flex-col items-center gap-5 p-10 text-center">
-                 <p className="text-white/80">You must be signed in to complete checkout.</p>
-                 <a 
-                   href="/sign-in" 
-                   className="w-full rounded-md bg-teal-500 px-5 py-2.5 font-medium text-white transition-colors hover:bg-teal-600 active:scale-[0.98]"
-                 >
-                   Sign In to Continue
-                 </a>
-               </div>
+              <div className="flex flex-col items-center gap-5 p-10 text-center">
+                <p className="text-white/80">You must be signed in to complete checkout.</p>
+                <a
+                  href="/sign-in"
+                  className="w-full rounded-md bg-teal-500 px-5 py-2.5 font-medium text-white transition-colors hover:bg-teal-600 active:scale-[0.98]"
+                >
+                  Sign In to Continue
+                </a>
+              </div>
             </CheckoutLayout>
           }
         >
           <CustomCheckout />
         </Show>
-      </ClerkLoaded>
-    </CheckoutProvider>
+      </ClerkLoaded >
+    </CheckoutProvider >
   )
 }
 
@@ -98,18 +102,27 @@ function CheckoutContent() {
 --------------------------- */
 
 function CustomCheckout() {
-  // ✅ Destructure fetchStatus and errors directly from the hook
+
   const { checkout, fetchStatus, errors } = useCheckout()
 
-  if (fetchStatus === 'fetching') {
+  // ✅ Auto-initialize — no "Start Checkout" button needed
+  React.useEffect(() => {
+    if (checkout.status === 'needs_initialization') {
+      checkout.start()
+    }
+  }, [checkout.status])
+
+  // 1. Loading
+  if (fetchStatus === 'fetching' || checkout.status === 'needs_initialization') {
     return (
       <CheckoutLayout>
-        <LoadingState message="Loading plan details..." />
+        <LoadingState message="Loading checkout..." />
       </CheckoutLayout>
     )
   }
 
-  if (errors) {
+  // 2. Real errors only
+  if (errors?.global && errors.global.length > 0) {
     return (
       <CheckoutLayout>
         <ErrorState message={getCheckoutErrorMessage(errors)} />
@@ -117,14 +130,7 @@ function CustomCheckout() {
     )
   }
 
-  if (checkout.status === 'needs_initialization') {
-    return (
-      <CheckoutLayout>
-        <InitializationState onStart={checkout.start} />
-      </CheckoutLayout>
-    )
-  }
-
+  // 3. Plan not ready yet
   if (!checkout.plan) {
     return (
       <CheckoutLayout>
@@ -161,7 +167,7 @@ function CustomCheckout() {
 
 function CheckoutLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-black px-4 py-16">
+    <main className="flex min-h-screen items-center justify-center px-4 py-16">
       <div className="w-full max-w-md rounded-xl border border-white/10 bg-white/5 shadow-xl backdrop-blur-md">
         {children}
       </div>
@@ -186,24 +192,12 @@ function ErrorState({ message }: { message: string }) {
   return (
     <div className="flex flex-col items-center gap-4 p-10 text-center">
       <p className="font-medium text-red-500">{message}</p>
-      <a href="/pricing" className="text-sm text-white/70 underline transition-colors hover:text-white">
+      <a
+        href="/pricing"
+        className="text-sm text-white/70 underline transition-colors hover:text-white">
         &larr; Back to Pricing
       </a>
-    </div>
-  )
-}
-
-function InitializationState({ onStart }: { onStart: () => void }) {
-  return (
-    <div className="flex flex-col items-center gap-5 p-10 text-center">
-      <h2 className="text-xl font-bold text-white">Complete Your Purchase</h2>
-      <button 
-        onClick={onStart} 
-        className="w-full rounded-md bg-teal-500 px-4 py-2.5 font-medium text-white transition-colors hover:bg-teal-600 active:scale-[0.98]"
-      >
-        Start Checkout
-      </button>
-    </div>
+    </div >
   )
 }
 
@@ -225,12 +219,12 @@ function OrderSummary({
   return (
     <div className="space-y-3 rounded-xl border border-white/10 bg-white/5 p-5">
       <h2 className="text-lg font-bold text-white">Order Summary</h2>
-
       <div>
         <p className="font-semibold text-white">{planName}</p>
-        {planDescription && <p className="text-sm text-white/60">{planDescription}</p>}
+        {planDescription && (
+          <p className="text-sm text-white/60">{planDescription}</p>
+        )}
       </div>
-
       <p className="text-3xl font-bold text-teal-400">
         {currencySymbol}
         {amountFormatted}
@@ -248,7 +242,8 @@ function DevTestBanner() {
 
   return (
     <div className="rounded-md border border-yellow-400/50 bg-yellow-400/10 p-4 text-center text-sm font-medium text-yellow-300">
-      Test Card: <span className="font-mono tracking-wider">4242 4242 4242 4242</span>
+      Test Card:{' '}
+      <span className="font-mono tracking-wider">4242 4242 4242 4242</span>
     </div>
   )
 }
@@ -258,7 +253,6 @@ function DevTestBanner() {
 --------------------------- */
 
 function PaymentSection() {
-  // ✅ Destructure errors directly here as well
   const { checkout, errors } = useCheckout()
   const { isFormReady, submit } = usePaymentElement()
 
@@ -267,7 +261,6 @@ function PaymentSection() {
 
   const router = useRouter()
 
-  // ✅ Removed non-existent checkout.isConfirming
   const isDisabled = !isFormReady || isProcessing
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -286,15 +279,15 @@ function PaymentSection() {
         return
       }
 
-      // ✅ Capture confirmation errors
       const confirmResult = await checkout.confirm(data)
       if (confirmResult.error) {
         setClientError(confirmResult.error.message ?? 'Payment confirmation failed.')
         return
       }
 
+      // ✅ upgraded=true triggers polling on dashboard
       await checkout.finalize({
-        navigate: () => router.push('/dashboard'),
+        navigate: () => router.push('/dashboard?upgraded=true'),
       })
     } catch (err) {
       setClientError('Payment failed. Please try again.')
@@ -306,12 +299,22 @@ function PaymentSection() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div className="min-h-[200px]">
-        <PaymentElement fallback={<LoadingState message="Loading payment form..." />} />
+        <PaymentElement
+          fallback={<LoadingState message="Loading payment form..." />}
+        />
       </div>
 
-      {/* ✅ Use the top-level errors object */}
-      {errors && <p className="text-sm font-medium text-red-500">{getCheckoutErrorMessage(errors)}</p>}
-      {clientError && <p className="text-sm font-medium text-red-500">{clientError}</p>}
+      {/* ✅ Fixed: only show when real global error exists */}
+      {errors?.global && errors.global.length > 0 && (
+        <p className="text-sm font-medium text-red-500">
+          {getCheckoutErrorMessage(errors)}
+        </p>
+      )}
+
+      {/* Client-side errors */}
+      {clientError && (
+        <p className="text-sm font-medium text-red-500">{clientError}</p>
+      )}
 
       <button
         type="submit"

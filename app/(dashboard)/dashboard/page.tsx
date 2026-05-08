@@ -14,7 +14,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { motion, type Variants } from 'framer-motion'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { useUser } from '@/context/userContext'
 
@@ -22,12 +22,7 @@ import { useTour } from '@/context/tourContext'
 import { Joyride } from "react-joyride"
 import { useEffect, useState } from 'react'
 import { JoyrideTooltip } from '@/components/JoyrideTooltip'
-
-interface demo {
-  zIndex: number;
-  overlayColor: string;
-  arrowColor: string;
-}
+import { toast } from 'react-toastify'
 
 const container: Variants = {
   hidden: { opacity: 0 },
@@ -56,7 +51,12 @@ const PLATFORM_COLORS: Record<string, string> = {
 const DashboardPage = () => {
   const router = useRouter()
 
-  const { userData, loading, recentHistory } = useUser()
+  const searchParams = useSearchParams()
+  const justUpgraded = searchParams.get('upgraded') === 'true'
+  // const { userData, refetchUser } = useUser()
+  const [issyncing, setIsSyncing] = useState(false)
+
+  const { userData, loading, recentHistory, refreshUser } = useUser()
 
   const firstName = userData?.name?.split(' ')[0] || 'Guest User'
   const PLAN_CREDITS = {
@@ -238,6 +238,31 @@ const DashboardPage = () => {
   }, [loading, userData]);
 
   useEffect(() => {
+    if (!justUpgraded) return
+
+    // Start polling until plan is no longer 'free'
+    setIsSyncing(true)
+
+    const MAX_ATTEMPTS = 10
+    const INTERVAL_MS = 2000 // check every 2 seconds
+    let attempts = 0
+
+    const interval = setInterval(async () => {
+      attempts++
+      await refreshUser() // re-fetch user data from your backend
+
+      if (userData?.plan !== 'free' || attempts >= MAX_ATTEMPTS) {
+        clearInterval(interval)
+        setIsSyncing(false)
+        toast.success('Plan activated successfully!')
+      }
+    }, INTERVAL_MS)
+
+    return () => clearInterval(interval)
+  }, [justUpgraded])
+
+
+  useEffect(() => {
     const hasSeen = localStorage.getItem("tourCompleted");
     if (isReady && !hasSeen) {
       const timer = setTimeout(() => {
@@ -260,6 +285,12 @@ const DashboardPage = () => {
 
   return (
     <>
+      {issyncing && (
+        <div className="flex items-center gap-2 rounded-md border border-teal-500/30 bg-teal-500/10 px-4 py-3 text-sm text-teal-400">
+          <div className="h-4 w-4 animate-spin rounded-full border-2 border-teal-400 border-t-transparent" />
+          Activating your plan, please wait...
+        </div>
+      )}
 
       <Joyride
         steps={steps}
@@ -453,7 +484,6 @@ const DashboardPage = () => {
                           alt="thumbnail"
                           fill
                           className="object-cover transition-transform duration-300 group-hover:scale-105"
-                          fetchPriority='high'
                         />
                       </div>
                     ) : (
