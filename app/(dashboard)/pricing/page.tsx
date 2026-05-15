@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { ArrowRightIcon, Sparkles } from 'lucide-react'
 import { motion, type Variants } from 'framer-motion'
 import { useUser } from '@/context/userContext'
+import { useClerk } from '@clerk/nextjs'
 
 const pageVariants: Variants = {
   hidden: { opacity: 0 },
@@ -33,8 +34,8 @@ const itemVariants: Variants = {
 }
 
 const Pricing = () => {
-
-  const { userData} = useUser()
+  const { openUserProfile } = useClerk()
+  const { userData } = useUser()
   return (
     <motion.div
       variants={pageVariants}
@@ -64,8 +65,8 @@ const Pricing = () => {
           </div>
         </div>
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.94 }}>
-          <Button className="group bg-brand-gradient font-medoum flex items-center justify-center rounded-lg py-5 font-sans text-[14px] text-white shadow-lg shadow-teal-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-teal-500/30">
-            Upgrade Plan
+          <Button onClick={() => openUserProfile({ appearance: { tab: "billing" } })} className="group bg-brand-gradient font-medoum flex items-center justify-center rounded-lg py-5 font-sans text-[14px] text-white shadow-lg shadow-teal-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-teal-500/30">
+            {userData?.plan === 'free' ? 'Upgrade Plan' : 'Manage Plan'}
             <ArrowRightIcon className="ml-2 h-5! w-5! transition-all duration-300 group-hover:translate-x-1 group-hover:scale-110" />
           </Button>
         </motion.div>

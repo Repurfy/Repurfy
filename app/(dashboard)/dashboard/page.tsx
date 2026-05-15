@@ -59,13 +59,9 @@ const DashboardPage = () => {
   const { userData, loading, recentHistory, refreshUser } = useUser()
 
   const firstName = userData?.name?.split(' ')[0] || 'Guest User'
-  const PLAN_CREDITS = {
-    free: 30,
-    pro: 100,
-    enterprise: 500,
-  }
 
-  const totalCredits = PLAN_CREDITS[userData?.plan as keyof typeof PLAN_CREDITS] || 30
+
+  const totalCredits = userData?.plan === 'free' ? 30 : userData?.plan === 'creator' ? 130 : 300
 
   const creditUsagePercent = userData
     ? Math.min(((totalCredits - userData.creditsRemaining) / totalCredits) * 100, 100)
@@ -231,6 +227,8 @@ const DashboardPage = () => {
   ];
 
 
+  console.log(userData, "user Data")
+
   useEffect(() => {
     if (!loading && userData) {
       setIsReady(true);
@@ -243,13 +241,13 @@ const DashboardPage = () => {
     // Start polling until plan is no longer 'free'
     setIsSyncing(true)
 
-    const MAX_ATTEMPTS = 10
+    const MAX_ATTEMPTS = 5
     const INTERVAL_MS = 2000 // check every 2 seconds
     let attempts = 0
 
     const interval = setInterval(async () => {
       attempts++
-      await refreshUser() // re-fetch user data from your backend
+      await refreshUser()// re-fetch user data from your backend
 
       if (userData?.plan !== 'free' || attempts >= MAX_ATTEMPTS) {
         clearInterval(interval)
@@ -345,7 +343,7 @@ const DashboardPage = () => {
                 <div className="mt-4 w-full font-ai max-w-xs">
                   <div className="mb-1.5 flex items-center justify-between text-xs text-slate-400">
                     <span>Credits used</span>
-                    <span>{userData.totalUsage} / 30</span>
+                    <span>{userData.totalUsage} / {totalCredits}</span>
                   </div>
                   <div className="h-1.5 w-full rounded-full bg-slate-700">
                     <motion.div

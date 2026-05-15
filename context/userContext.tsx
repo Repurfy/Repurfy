@@ -34,7 +34,7 @@ interface UserContextType {
 const UserContext = createContext<UserContextType | null>(null)
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const { getToken, isLoaded } = useAuth()
+  const { getToken, isLoaded, isSignedIn } = useAuth()
 
   const [userData, setUserData] = useState<UserData | null>(null)
   const [recentHistory, setRecentHistory] = useState<ContentItem[]>([])
@@ -96,9 +96,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (isLoaded) {
-      fetchAllData()
+      if (isSignedIn) {
+        fetchAllData()
+      } else {
+        setLoading(false)
+      }
     }
-  }, [isLoaded])
+  }, [isLoaded, isSignedIn])
 
   return (
     <UserContext.Provider

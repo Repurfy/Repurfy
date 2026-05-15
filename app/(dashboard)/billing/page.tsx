@@ -1,9 +1,14 @@
+'use client'
+
 import PricingSection from '@/components/home/PricingSection'
 import { Button } from '@/components/ui/button'
 import { PricingTable } from '@clerk/nextjs'
 import { Sparkles } from 'lucide-react'
+import { useUser } from '@/context/userContext'
 
 const Billing = () => {
+
+  const { userData } = useUser()
   return (
     <div className="w-full overflow-hidden">
       {/* Page Heading */}
@@ -22,7 +27,11 @@ const Billing = () => {
             <p className="text-sm">12 of 25 posts used this month</p>
           </div>
         </div>
-        <Button>Upgrade Plan </Button>
+        {userData?.plan === 'free' ? (
+          <Button>Upgrade Plan </Button>
+        ) : (
+          <Button>Manage Plan </Button>
+        )}
       </div>
       {/* Upgrade Plans Section */}
       <div className="-mt-16">

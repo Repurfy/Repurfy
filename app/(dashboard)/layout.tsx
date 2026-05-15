@@ -4,7 +4,7 @@ import AppSidebar from '@/components/AppSidebar'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { Show, UserButton } from '@clerk/nextjs'
 import { motion, type Variants } from 'framer-motion' // 👈 removed number
-import { Sparkles, Zap } from 'lucide-react'
+import { LayoutDashboard, Sparkles, Zap } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@/context/userContext'
 import { TourProvider } from '@/context/tourContext'
@@ -91,7 +91,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         avatarBox: 'w-8! h-8!',
                       },
                     }}
-                  />
+                  >
+                    <UserButton.MenuItems>
+                      <UserButton.Link
+                        label="Dashboard"
+                        labelIcon={<LayoutDashboard size={16} />}
+                        href="/dashboard"
+                      />
+                    </UserButton.MenuItems>
+                  </UserButton>
                 </Show>
               </div>
             </header>

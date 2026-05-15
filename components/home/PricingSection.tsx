@@ -11,6 +11,7 @@ import { Switch } from '@/components/ui/switch'
 import { Variants } from 'framer-motion'
 import { usePathname, useRouter } from 'next/navigation'
 import { useUser } from '@/context/userContext'
+import { useAuth } from '@clerk/nextjs'
 
 /* ---------------------------
    Types
@@ -53,15 +54,15 @@ const defaultPlans: PricingPlan[] = [
       { text: 'Basic Brand Voice Setting' },
       // { text: 'Watermarked Exports' },
     ],
-    button: { text: 'Get Started Free', url: '#' },
+    button: { text: 'Get Started Free', url: `#` },
   },
   {
     id: 'creator',
     clerkPlanId: 'cplan_3C142ZHPXSrbzW3a9Hva337SoZt',
     name: 'Creator',
     description: 'For full-time creators scaling their personal brand.',
-    monthlyPrice: '$39',
-    yearlyPrice: '$300',
+    monthlyPrice: '$29',
+    yearlyPrice: '$25',
     recommended: true,
     features: [
       { text: 'Up to 120 repurposed posts/month' },
@@ -76,7 +77,7 @@ const defaultPlans: PricingPlan[] = [
   },
   // {
   //   id: 'agency',
-  // clerkPlanId: 'YOUR_CLERK_STARTER_PLAN_ID',
+  //   clerkPlanId: 'YOUR_CLERK_STARTER_PLAN_ID',
   //   name: 'Agency',
   //   description: 'For teams managing multiple clients at scale.',
   //   monthlyPrice: '$129',
@@ -161,6 +162,7 @@ export const PricingSection = ({
   }
 
   const { userData } = useUser()
+  const { isSignedIn } = useAuth()
 
   return (
     <section id="pricing" className="my-20">
@@ -193,13 +195,17 @@ export const PricingSection = ({
           </motion.h2>
 
           <motion.div
-            className="flex items-center gap-3 text-lg"
+            className="flex items-center gap-3 text-lg  -mb-6"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.12 }}
           >
-            <span className="font-medium">Monthly</span>
+            <span
+              className={`font-medium transition-colors ${isYearly ? 'text-text-secondary' : 'text-white'}`}
+            >
+              Monthly
+            </span>
 
             {/* Switch: ensure thumb is white in both states */}
             <Switch
@@ -256,7 +262,8 @@ export const PricingSection = ({
                         {isYearly ? plan.yearlyPrice : plan.monthlyPrice}
                       </span>
                       <span className="text-muted-foreground text-xl">
-                        {isYearly ? '/yr' : '/mo'}
+                        {/* {isYearly ? '/yr' : '/mo'} */}
+                        {isYearly ? '/mo' : '/mo'}
                       </span>
                     </motion.div>
                   </CardHeader>
@@ -274,20 +281,29 @@ export const PricingSection = ({
                   </CardContent>
 
                   <CardFooter className="mt-auto">
-                    <Button
-                      onClick={() => handleSubscribe(plan)}
-                      disabled={
-                        loadingPlanId === plan.id ||
-                        (userData?.plan === 'free' && plan.id === 'starter')
-                      }
-                      className="w-full font-semibold text-white"
-                    >
-                      {loadingPlanId === plan.id
-                        ? 'Processing...'
-                        : userData?.plan === 'free' && plan.id === 'starter'
-                          ? 'Subscribed'
-                          : plan.button.text}
-                    </Button>
+                    {
+                      isSignedIn ? (<Button
+                        onClick={() => handleSubscribe(plan)}
+                        disabled={
+                          plan.id === 'starter'
+                        }
+                        className="w-full font-semibold text-white"
+                      >
+                        {plan.id === 'starter' && loadingPlanId === plan.id
+                          ? 'Processing...'
+                          : (plan.id === 'starter' && (userData?.plan === 'free' || userData?.plan === 'creator'))
+                            ? 'Subscribed'
+                            : plan.button.text}
+                      </Button>) : (
+                        <Button
+                          onClick={() => router.push('/sign-in')}
+                          className="w-full font-semibold text-white"
+                        >
+                          {plan.button.text}
+                        </Button>
+                      )
+                    }
+
                   </CardFooter>
                 </Card>
               </motion.div>

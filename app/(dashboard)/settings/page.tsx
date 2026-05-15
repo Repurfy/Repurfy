@@ -6,6 +6,25 @@ import { Camera, Cookie, Sun, User } from 'lucide-react'
 import { motion, type Variants } from 'framer-motion'
 import { ThemeToggler } from '@/components/common/ThemeToggle'
 import { Switch } from '@/components/ui/switch'
+import { useUser } from '@/context/userContext'
+import { useEffect, useState } from 'react'
+
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import Router from 'next/router'
+import { useRouter } from 'next/navigation'
+import { toast } from 'react-toastify'
+import { useAuth } from '@clerk/nextjs'
 
 const pageVariants: Variants = {
   hidden: { opacity: 0 },
@@ -34,6 +53,42 @@ const itemVariants: Variants = {
 }
 
 const Settings = () => {
+
+  const { userData } = useUser();
+  const { getToken, signOut } = useAuth()
+  const router = useRouter()
+
+  const [formData, setFormData] = useState({
+    name: userData?.name || "",
+    email: userData?.email || "",
+  });
+
+  const handleDeleteAccount = async () => {
+    const token = await getToken();
+    await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/delete`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        method: "DELETE",
+      }
+    )
+
+    await signOut();
+    toast.success("Account deleted successfully")
+    router.push("/")
+  }
+
+  useEffect(() => {
+    if (userData) {
+      setFormData({
+        name: userData.name || "",
+        email: userData.email || "",
+      });
+    }
+  }, [userData]);
+
   return (
     <motion.div
       variants={pageVariants}
@@ -67,14 +122,14 @@ const Settings = () => {
             </div>
           </div>
 
-          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center">
+          <div className="mb-6 flex gap-4 sm:flex-row sm:items-center">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br from-purple-500 to-pink-500 text-xl font-semibold text-white">
               R
             </div>
 
             <Button
               variant="outline"
-              className="bg-bg-secondary flex items-center gap-2 self-center"
+              className="bg-bg-secondary flex  items-center gap-2 self-center"
             >
               <Camera className="h-4 w-4" />
               Change Avatar
@@ -85,17 +140,19 @@ const Settings = () => {
             <div className="space-y-2">
               <label className="text-text-primary font-semibold">Full Name</label>
               <Input
-                defaultValue="Alex Creator"
-                className="bg-surface-elevated text-text-primary placeholder:text-text-tertiary focus:ring-brand-teal border-border-subtle mt-1 w-full rounded-md border outline-none focus:ring-1 dark:bg-slate-900/60 dark:text-white dark:placeholder:text-slate-500"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                className="bg-surface-elevated text-text-secondary placeholder:text-text-tertiary focus:ring-brand-teal border-border-subtle mt-1 w-full rounded-md border outline-none focus:ring-1 dark:bg-slate-900/60 dark:placeholder:text-slate-500"
               />
             </div>
 
             <div className="space-y-2">
               <label className="text-text-primary font-semibold">Email</label>
               <Input
-                defaultValue="johndoe@gmail.com"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 type="email"
-                className="bg-surface-elevated text-text-primary placeholder:text-text-tertiary focus:ring-brand-teal border-border-subtle mt-1 w-full rounded-md border outline-none focus:ring-1 dark:bg-slate-900/60 dark:text-white dark:placeholder:text-slate-500"
+                className="bg-surface-elevated text-text-secondary placeholder:text-text-tertiary focus:ring-brand-teal border-border-subtle mt-1 w-full rounded-md border outline-none focus:ring-1 dark:bg-slate-900/60 dark:placeholder:text-slate-500"
               />
             </div>
           </div>
@@ -186,7 +243,7 @@ const Settings = () => {
           </div>
         </motion.div> */}
 
-        <motion.div
+        {/* <motion.div
           variants={itemVariants}
           className="rounded-xl bg-white p-6 shadow-sm dark:bg-slate-800"
         >
@@ -235,7 +292,7 @@ const Settings = () => {
               />
             </div>
           </div>
-        </motion.div>
+        </motion.div> */}
 
         <motion.div
           variants={itemVariants}
@@ -249,16 +306,46 @@ const Settings = () => {
               </p>
             </div>
 
-            <div className="flex items-center justify-between rounded-md px-4 py-2">
+            <div className="flex items-center justify-between rounded-md py-2">
               <div>
-                <h2 className="font-normal">Delete Account</h2>
+                <h2 className="font-medium text-text-primary">Delete Account</h2>
                 <p className="text-text-secondary text-sm">
                   Permanently delete your account and all data
                 </p>
               </div>
-              <Button variant="destructive" className="font-medium">
-                Delete Account
-              </Button>
+
+              {/* modal */}
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive" className="font-medium">
+                    Delete Account
+                  </Button>
+                </AlertDialogTrigger>
+
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle className="pb-4">
+                      Are you sure? Confirm account deletion
+                    </AlertDialogTitle>
+
+                    <AlertDialogDescription className="py-1">
+                      This action cannot be undone. This will permanently delete your
+                      account from our servers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+
+                    <AlertDialogAction
+                      className="font-medium"
+                      onClick={handleDeleteAccount}
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </div>
         </motion.div>

@@ -41,7 +41,7 @@ const navItems = [
   { title: 'Create', href: '/create', icon: CirclePlus },
   { title: 'History', href: '/history', icon: History },
   { title: 'Pricing', href: '/pricing', icon: CreditCard },
-  // { title: 'Settings', href: '/settings', icon: Settings },
+  { title: 'Settings', href: '/settings', icon: Settings },
 ]
 
 const AppSidebar = () => {
@@ -58,10 +58,10 @@ const AppSidebar = () => {
       {/* ✅ FIXED LOGO (only change) */}
       <SidebarHeader className="bg-card px-3 py-4 group-data-[collapsible=icon]:px-2">
         <Link
-          href="/"
+          href="/dashboard"
           className="flex items-center justify-start gap-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
         >
-          <Image src="/logo.svg" alt="Repurfy logo" width={30} height={30} className="shrink-0" />
+          <Image src="/logo.svg" alt="Repurfy logo" width={30} height={30} className="shrink-0 " />
 
           <h1 className="font-ai text-lg font-semibold group-data-[collapsible=icon]:hidden lg:text-2xl">
             Repurfy

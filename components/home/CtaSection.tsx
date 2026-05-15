@@ -108,11 +108,9 @@ export default function CTASection() {
                 <Link href={'/dashboard'}>Start Creating</Link>
               ) : (
                 <Link
-                  href={'https://forms.gle/53BNApyitQJJdnCQ9'}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={'/sign-in'}
                 >
-                  Get Early Access
+                  Get Started
                 </Link>
               )}
               <ArrowRightIcon

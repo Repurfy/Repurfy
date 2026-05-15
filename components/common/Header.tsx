@@ -7,6 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Variants } from 'framer-motion'
 import { SignInButton, SignUpButton, useAuth, UserButton, Show } from '@clerk/nextjs'
+import { LayoutDashboard } from 'lucide-react'
 
 const fadeDown = {
   hidden: { opacity: 0, y: -20 },
@@ -70,14 +71,21 @@ const Header = () => {
         {(userId && userId !== null) || undefined ? (
           <>
             <Show when="signed-in">
-              {' '}
               <UserButton
                 appearance={{
                   elements: {
                     avatarBox: 'w-8! h-8!',
                   },
                 }}
-              />
+              >
+                <UserButton.MenuItems>
+                  <UserButton.Link
+                    label="Dashboard"
+                    labelIcon={<LayoutDashboard size={16} />}
+                    href="/dashboard"
+                  />
+                </UserButton.MenuItems>
+              </UserButton>
             </Show>
           </>
         ) : (
