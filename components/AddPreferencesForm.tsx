@@ -60,12 +60,12 @@ const EMPTY_FORM: FormDataType = {
 
 const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
   const [isGenerating, setIsGenerating] = useState(false)
+  const [error, setError] = useState<string | null>(null) // ← ADDED: show errors to user
   const { getToken } = useAuth()
   const router = useRouter()
 
   const { platforms: selectedPlatforms, tone, audience, keywords } = formData
 
-  // ✅ LOCAL INPUT STATE (FIX)
   const [audienceInput, setAudienceInput] = useState(
     Array.isArray(audience) ? audience.join(', ') : ''
   )
@@ -82,7 +82,6 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
         : [...p.platforms, id],
     }))
 
-  // ✅ PARSE HELPER
   const parseInput = (value: string) =>
     value
       .split(',')
@@ -90,17 +89,11 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
       .filter((v) => v.length > 0)
 
   const updateAudience = () => {
-    setFormData((p) => ({
-      ...p,
-      audience: parseInput(audienceInput),
-    }))
+    setFormData((p) => ({ ...p, audience: parseInput(audienceInput) }))
   }
 
   const updateKeywords = () => {
-    setFormData((p) => ({
-      ...p,
-      keywords: parseInput(keywordsInput),
-    }))
+    setFormData((p) => ({ ...p, keywords: parseInput(keywordsInput) }))
   }
 
   const handleKeyDown = (
@@ -109,21 +102,17 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
   ) => {
     if (e.key === 'Enter') {
       e.preventDefault()
-      if (type === 'audience') {
-        updateAudience()
-      } else {
-        updateKeywords()
-      }
+      type === 'audience' ? updateAudience() : updateKeywords()
     }
   }
-
-  
 
   const sendData = async () => {
     try {
       setIsGenerating(true)
+      setError(null) // ← clear previous errors
+
       const token = await getToken()
-  
+
       const payload: Payload = {
         title: formData.title,
         platforms: formData.platforms,
@@ -132,9 +121,11 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
         keywords: Array.isArray(formData.keywords) ? formData.keywords : [],
         imageUrl: formData.photoUrl ?? null,
       }
-  
+
       if (formData.blogUrl?.trim()) payload.blogUrl = formData.blogUrl
-  
+
+      console.log('[Debug] Sending payload:', payload) // ← remove after testing
+
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/content/generate`,
         payload,
@@ -145,41 +136,64 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
           },
         }
       )
-  
-      // ✅ Shape now matches exactly what the result page expects
+
+      console.log('[Debug] Full API response:', res.data) // ← remove after testing
+
+      // ✅ FIX 1: Validate BEFORE doing anything else
+      if (!res.data.success) {
+        throw new Error(res.data.message || 'Generation failed on server')
+      }
+
+      if (!res.data.contentId) {
+        console.error('❌ No contentId in response:', res.data)
+        throw new Error('Server did not return a content ID. Please try again.')
+      }
+
+      // ✅ FIX 2: Save to sessionStorage AFTER validating contentId
       sessionStorage.setItem(
         'generatedContent',
         JSON.stringify({
-          contentId: res.data.contentId,         // 👈 explicit, not spread
+          contentId: res.data.contentId,
           creditsRemaining: res.data.creditsRemaining,
           imageUrl: res.data.imageUrl ?? null,
-          data: res.data.data,                   // 👈 the actual generated posts object
+          data: res.data.data,
         })
       )
-  
+
+      // ✅ FIX 3: Reset form AFTER everything succeeds
       setFormData(EMPTY_FORM)
-  
-      // ✅ Guard: don't navigate if contentId is missing
-      if (!res.data.contentId) {
-        console.error('❌ No contentId in response:', res.data)
-        throw new Error('Generation succeeded but contentId is missing')
-      }
-  
+
+      // ✅ Navigate
       router.push(`/results/${res.data.contentId}`)
-  
+
     } catch (err: unknown) {
-      setIsGenerating(false)
+      setIsGenerating(false) // ← only reset on error, not success (navigation takes over)
+
       if (axios.isAxiosError(err)) {
+        const serverMessage = err.response?.data?.message || err.message
         console.error('❌ Status:', err.response?.status)
         console.error('❌ Data:', JSON.stringify(err.response?.data))
-        console.error('❌ Message:', err.message)
+
+        // ✅ FIX 4: Show user-friendly error instead of silent failure
+        setError(
+          err.response?.status === 402
+            ? 'Not enough credits. Please upgrade your plan.'
+            : err.response?.status === 401
+            ? 'Session expired. Please refresh and try again.'
+            : serverMessage || 'Something went wrong. Please try again.'
+        )
+      } else if (err instanceof Error) {
+        setError(err.message)
       } else {
-        console.error('❌ Unexpected error:', err)
+        setError('An unexpected error occurred. Please try again.')
       }
     }
   }
 
-  const isValid = selectedPlatforms.length > 0 && formData.audience.length > 0
+  const isValid =
+    selectedPlatforms.length > 0 &&
+    formData.audience.length > 0 &&
+    formData.title.trim().length > 0 // ← ADDED: prevent empty title submission
 
   if (isGenerating) return <GeneratingLoader />
 
@@ -195,6 +209,13 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
           <p className="text-xs text-slate-400">Choose platforms and set your preferences</p>
         </div>
       </div>
+
+      {/* ✅ FIX 5: Error Banner — user now sees what went wrong */}
+      {error && (
+        <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+          ⚠️ {error}
+        </div>
+      )}
 
       {/* Platforms + Tone */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -248,7 +269,6 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
 
       {/* Audience + Keywords */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {/* Audience */}
         <div className="space-y-1.5">
           <label className="text-xs font-semibold text-slate-400 uppercase">Target Audience</label>
           <input
@@ -261,7 +281,6 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
           />
         </div>
 
-        {/* Keywords */}
         <div className="space-y-1.5">
           <label className="text-xs font-semibold text-slate-400 uppercase">Keywords / CTA</label>
           <input
@@ -280,7 +299,11 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
         <Button variant="outline" onClick={onBack}>
           ← Back
         </Button>
-        <Button onClick={sendData} disabled={!isValid} className="bg-brand-gradient text-white">
+        <Button
+          onClick={sendData}
+          disabled={!isValid}
+          className="bg-brand-gradient text-white"
+        >
           ✨ Generate for {selectedPlatforms.length} Platform
           {selectedPlatforms.length !== 1 ? 's' : ''}
         </Button>

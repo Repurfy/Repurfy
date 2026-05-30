@@ -6,9 +6,8 @@ import { Camera, Cookie, Sun, User } from 'lucide-react'
 import { motion, type Variants } from 'framer-motion'
 import { ThemeToggler } from '@/components/common/ThemeToggle'
 import { Switch } from '@/components/ui/switch'
-import { useUser } from '@/context/userContext'
+import { useUser as useUserContext } from '@/context/userContext'
 import { useEffect, useState } from 'react'
-
 
 import {
   AlertDialog,
@@ -20,11 +19,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from '@/components/ui/alert-dialog'
 import Router from 'next/router'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
-import { useAuth } from '@clerk/nextjs'
+import { useAuth, useClerk, useUser } from '@clerk/nextjs'
+import Image from 'next/image'
 
 const pageVariants: Variants = {
   hidden: { opacity: 0 },
@@ -53,41 +53,39 @@ const itemVariants: Variants = {
 }
 
 const Settings = () => {
-
-  const { userData } = useUser();
+  const { userData } = useUserContext()
+  const { openUserProfile } = useClerk()
   const { getToken, signOut } = useAuth()
   const router = useRouter()
 
   const [formData, setFormData] = useState({
-    name: userData?.name || "",
-    email: userData?.email || "",
-  });
+    name: userData?.name || '',
+    email: userData?.email || '',
+  })
 
   const handleDeleteAccount = async () => {
-    const token = await getToken();
-    await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/delete`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        method: "DELETE",
-      }
-    )
+    const token = await getToken()
+    await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/delete`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      method: 'DELETE',
+    })
 
-    await signOut();
-    toast.success("Account deleted successfully")
-    router.push("/")
+    await signOut()
+    toast.success('Account deleted successfully')
+    router.push('/')
   }
+
 
   useEffect(() => {
     if (userData) {
       setFormData({
-        name: userData.name || "",
-        email: userData.email || "",
-      });
+        name: userData.name || '',
+        email: userData.email || '',
+      })
     }
-  }, [userData]);
+  }, [userData])
 
   return (
     <motion.div
@@ -109,50 +107,73 @@ const Settings = () => {
           variants={itemVariants}
           className="rounded-xl bg-white p-6 shadow-sm dark:bg-slate-800"
         >
-          <div className="mb-6 flex items-center gap-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/20 text-indigo-500">
-              <User className="h-7 w-7" />
-            </div>
+          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/20 text-indigo-500">
+                <User className="h-7 w-7" />
+              </div>
 
-            <div>
-              <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Profile</h2>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
-                Your personal information
-              </p>
-            </div>
-          </div>
+              <div>
+                <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+                  Profile
+                </h2>
 
-          <div className="mb-6 flex gap-4 sm:flex-row sm:items-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br from-purple-500 to-pink-500 text-xl font-semibold text-white">
-              R
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  Your personal information
+                </p>
+              </div>
             </div>
 
             <Button
               variant="outline"
-              className="bg-bg-secondary flex  items-center gap-2 self-center"
+              className="bg-bg-secondary flex items-center gap-2 self-center"
+              onClick={() => openUserProfile()}
+            >
+              Edit Profile
+            </Button>
+          </div>
+
+          {/* <div className="mb-6 flex gap-4 sm:flex-row sm:items-center">
+            <div className="border-secondary h-12 w-12 overflow-hidden rounded-full border-2">
+              <Image
+                src={user?.imageUrl || '/default-avatar.png'}
+                alt="Profile"
+                width={48}
+                height={48}
+                className="h-full w-full object-cover"
+              />
+            </div>
+
+            <Button
+              variant="outline"
+              className="bg-bg-secondary flex items-center gap-2 self-center"
+              onClick={() => openUserProfile()}
             >
               <Camera className="h-4 w-4" />
               Change Avatar
             </Button>
-          </div>
+          </div> */}
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <label className="text-text-primary font-semibold">Full Name</label>
+
               <Input
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="bg-surface-elevated text-text-secondary placeholder:text-text-tertiary focus:ring-brand-teal border-border-subtle mt-1 w-full rounded-md border outline-none focus:ring-1 dark:bg-slate-900/60 dark:placeholder:text-slate-500"
-              />
+               type='text'
+               disabled
+               className="bg-surface-elevated text-text-secondary placeholder:text-text-tertiary focus:ring-brand-teal border-border-subtle mt-1 w-full rounded-md border outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-slate-900/60 dark:placeholder:text-slate-500"
+               />
             </div>
 
             <div className="space-y-2">
               <label className="text-text-primary font-semibold">Email</label>
+
               <Input
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 type="email"
-                className="bg-surface-elevated text-text-secondary placeholder:text-text-tertiary focus:ring-brand-teal border-border-subtle mt-1 w-full rounded-md border outline-none focus:ring-1 dark:bg-slate-900/60 dark:placeholder:text-slate-500"
+                disabled
+                className="bg-surface-elevated text-text-secondary placeholder:text-text-tertiary focus:ring-brand-teal border-border-subtle mt-1 w-full rounded-md border outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-slate-900/60 dark:placeholder:text-slate-500"
               />
             </div>
           </div>
@@ -308,7 +329,7 @@ const Settings = () => {
 
             <div className="flex items-center justify-between rounded-md py-2">
               <div>
-                <h2 className="font-medium text-text-primary">Delete Account</h2>
+                <h2 className="text-text-primary font-medium">Delete Account</h2>
                 <p className="text-text-secondary text-sm">
                   Permanently delete your account and all data
                 </p>
@@ -329,18 +350,15 @@ const Settings = () => {
                     </AlertDialogTitle>
 
                     <AlertDialogDescription className="py-1">
-                      This action cannot be undone. This will permanently delete your
-                      account from our servers.
+                      This action cannot be undone. This will permanently delete your account from
+                      our servers.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
 
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
 
-                    <AlertDialogAction
-                      className="font-medium"
-                      onClick={handleDeleteAccount}
-                    >
+                    <AlertDialogAction className="font-medium" onClick={handleDeleteAccount}>
                       Delete
                     </AlertDialogAction>
                   </AlertDialogFooter>

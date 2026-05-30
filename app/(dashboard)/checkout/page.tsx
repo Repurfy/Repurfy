@@ -148,7 +148,6 @@ function CustomCheckout() {
 
         <OrderSummary
           planName={plan.name}
-          planDescription={plan.description ?? null}
           currencySymbol={totals?.totalDueNow?.currencySymbol ?? '$'}
           amountFormatted={totals?.totalDueNow?.amountFormatted ?? '—'}
         />
@@ -207,12 +206,10 @@ function ErrorState({ message }: { message: string }) {
 
 function OrderSummary({
   planName,
-  planDescription,
   currencySymbol,
   amountFormatted,
 }: {
   planName: string
-  planDescription: string | null
   currencySymbol: string
   amountFormatted: string
 }) {
@@ -220,10 +217,7 @@ function OrderSummary({
     <div className="space-y-3 rounded-xl border border-white/10 bg-white/5 p-5">
       <h2 className="text-lg font-bold text-white">Order Summary</h2>
       <div>
-        <p className="font-semibold text-white">{planName}</p>
-        {planDescription && (
-          <p className="text-sm text-white/60">{planDescription}</p>
-        )}
+        <p className="font-semibold text-md text-white"> <span className='text-sm text-white/80'>Plan name:</span> {planName}</p>
       </div>
       <p className="text-3xl font-bold text-teal-400">
         {currencySymbol}

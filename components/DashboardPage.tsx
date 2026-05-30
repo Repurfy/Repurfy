@@ -53,13 +53,11 @@ const DashboardPage = () => {
 
   const searchParams = useSearchParams()
   const justUpgraded = searchParams.get('upgraded') === 'true'
-  // const { userData, refetchUser } = useUser()
   const [issyncing, setIsSyncing] = useState(false)
 
   const { userData, loading, recentHistory, refreshUser } = useUser()
 
   const firstName = userData?.name?.split(' ')[0] || 'Guest User'
-
 
   const totalCredits = userData?.plan === 'free' ? 30 : userData?.plan === 'creator' ? 130 : 300
 
@@ -162,35 +160,6 @@ const DashboardPage = () => {
   const { runTour, setRunTour, stepIndex, setStepIndex } = useTour();
   const [isReady, setIsReady] = useState(false);
 
-  // const steps = [
-  //   {
-  //     title: "Welcome to Repurfy! 🚀",
-  //     content: "Let's take a quick tour of your new content command center.",
-  //     target: "body",
-  //     placement: "center" as const
-  //   },
-  //   {
-  //     title: "Credit Balance",
-  //     content: "This is your current credit balance. Every post consumes 5 credits.",
-  //     target: "#credits-btn-tour"
-  //   },
-  //   {
-  //     title: "Repurpose Your Post",
-  //     content: "Click here to turn your ideas into social media posts instantly.",
-  //     target: "#create-btn-tour"
-  //   },
-  //   {
-  //     title: "View History",
-  //     content: "Click here to view your repurposed posts.",
-  //     target: "#view-history-btn-tour"
-  //   },
-  //   {
-  //     title: "Upgrade Your Plan",
-  //     content: "Click here to upgrade your plan and get more credits.",
-  //     target: "#upgrade-btn-tour"
-  //   }
-  // ]
-
   const steps = [
     {
       title: "Welcome to Repurfy 👋",
@@ -225,9 +194,6 @@ const DashboardPage = () => {
       target: "#upgrade-btn-tour",
     },
   ];
-
-
-  console.log(userData, "user Data")
 
   useEffect(() => {
     if (!loading && userData) {
@@ -343,7 +309,7 @@ const DashboardPage = () => {
                 <div className="mt-4 w-full font-ai max-w-xs">
                   <div className="mb-1.5 flex items-center justify-between text-xs text-slate-400">
                     <span>Credits used</span>
-                    <span>{userData.totalUsage} / {totalCredits}</span>
+                    <span>{userData.totalUsage*10} / {totalCredits}</span>
                   </div>
                   <div className="h-1.5 w-full rounded-full bg-slate-700">
                     <motion.div
