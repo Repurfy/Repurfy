@@ -54,7 +54,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         }
       );
 
-      setUserData(res.data.user);
+      setUserData(res.data.data);
     } catch (error) {
       handleApiError(error);
       console.error("Profile Error:", error);
