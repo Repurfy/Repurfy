@@ -109,22 +109,28 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
   const sendData = async () => {
     try {
       setIsGenerating(true)
-      setError(null) // ← clear previous errors
+      setError(null)
 
       const token = await getToken()
 
+      // Build payload — only include non-empty fields
       const payload: Payload = {
-        title: formData.title,
+        title: formData.blogUrl.trim() ? undefined as unknown as string : formData.title,
         platforms: formData.platforms,
-        tone: formData.tone,
+        tone: formData.tone || 'professional', // default to professional if not set
         audience: Array.isArray(formData.audience) ? formData.audience : [],
         keywords: Array.isArray(formData.keywords) ? formData.keywords : [],
         imageUrl: formData.photoUrl ?? null,
       }
 
-      if (formData.blogUrl?.trim()) payload.blogUrl = formData.blogUrl
+      // Attach URL if provided (backend handles YouTube vs blog detection)
+      if (formData.blogUrl?.trim()) {
+        payload.blogUrl = formData.blogUrl.trim()
+        // Remove title from payload when URL is provided to avoid confusion
+        delete (payload as any).title
+      }
 
-      console.log('[Debug] Sending payload:', payload) // ← remove after testing
+      console.log('[Debug] Sending payload:', payload)
 
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/content/generate`,
@@ -134,12 +140,12 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
+          timeout: 120000, // 2 min timeout for AI generation
         }
       )
 
-      console.log('[Debug] Full API response:', res.data) // ← remove after testing
+      console.log('[Debug] Full API response:', res.data)
 
-      // ✅ FIX 1: Validate BEFORE doing anything else
       if (!res.data.success) {
         throw new Error(res.data.message || 'Generation failed on server')
       }
@@ -149,7 +155,6 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
         throw new Error('Server did not return a content ID. Please try again.')
       }
 
-      // ✅ FIX 2: Save to sessionStorage AFTER validating contentId
       sessionStorage.setItem(
         'generatedContent',
         JSON.stringify({
@@ -160,28 +165,32 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
         })
       )
 
-      // ✅ FIX 3: Reset form AFTER everything succeeds
       setFormData(EMPTY_FORM)
-
-      // ✅ Navigate
       router.push(`/results/${res.data.contentId}`)
 
     } catch (err: unknown) {
-      setIsGenerating(false) // ← only reset on error, not success (navigation takes over)
+      setIsGenerating(false)
 
       if (axios.isAxiosError(err)) {
+        const status = err.response?.status
         const serverMessage = err.response?.data?.message || err.message
-        console.error('❌ Status:', err.response?.status)
-        console.error('❌ Data:', JSON.stringify(err.response?.data))
 
-        // ✅ FIX 4: Show user-friendly error instead of silent failure
-        setError(
-          err.response?.status === 402
-            ? 'Not enough credits. Please upgrade your plan.'
-            : err.response?.status === 401
-            ? 'Session expired. Please refresh and try again.'
-            : serverMessage || 'Something went wrong. Please try again.'
-        )
+        console.error('❌ Status:', status, '| Message:', serverMessage)
+
+        if (status === 402) {
+          setError('Not enough credits. Please upgrade your plan.')
+        } else if (status === 401) {
+          setError('Session expired. Please refresh the page and try again.')
+        } else if (status === 422) {
+          // Extraction errors (YouTube transcript / blog scraping failed)
+          setError(serverMessage || 'Could not extract content from the URL. Try a different URL or paste the content manually.')
+        } else if (status === 429) {
+          setError('Too many requests. Please wait a moment and try again.')
+        } else if (err.code === 'ECONNABORTED') {
+          setError('The request timed out. AI generation took too long — please try again.')
+        } else {
+          setError(serverMessage || 'Something went wrong. Please try again.')
+        }
       } else if (err instanceof Error) {
         setError(err.message)
       } else {
@@ -190,10 +199,14 @@ const AddPreferencesForm = ({ onBack, formData, setFormData }: Props) => {
     }
   }
 
+  const hasContent =
+  formData.title.trim().length > 0 ||
+  formData.blogUrl.trim().length > 0
+
   const isValid =
     selectedPlatforms.length > 0 &&
     formData.audience.length > 0 &&
-    formData.title.trim().length > 0 // ← ADDED: prevent empty title submission
+    hasContent
 
   if (isGenerating) return <GeneratingLoader />
 

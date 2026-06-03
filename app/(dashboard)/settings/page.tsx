@@ -72,6 +72,7 @@ const Settings = () => {
       method: 'DELETE',
     })
 
+    localStorage.clear()
     await signOut()
     toast.success('Account deleted successfully')
     router.push('/')
