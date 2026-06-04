@@ -285,13 +285,14 @@ export const PricingSection = ({
                       isSignedIn ? (<Button
                         onClick={() => handleSubscribe(plan)}
                         disabled={
-                          plan.id === 'starter'
+                          plan.id === 'starter' || (plan.id === 'creator' && userData?.plan === 'creator')
                         }
                         className="w-full font-semibold text-white"
                       >
-                        {plan.id === 'starter' && loadingPlanId === plan.id
+                        {loadingPlanId === plan.id
                           ? 'Processing...'
-                          : (plan.id === 'starter' && (userData?.plan === 'free' || userData?.plan === 'creator'))
+                          : ((plan.id === 'starter' && (userData?.plan === 'free' || userData?.plan === 'creator')) ||
+                             (plan.id === 'creator' && userData?.plan === 'creator'))
                             ? 'Subscribed'
                             : plan.button.text}
                       </Button>) : (

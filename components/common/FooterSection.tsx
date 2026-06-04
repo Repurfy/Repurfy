@@ -145,7 +145,7 @@ export default function Footer() {
 
           {/* Donate Us */}
           <motion.div variants={fadeUp}>
-          <h3 className="mb-5 text-sm font-semibold tracking-wide text-white/90 uppercase">
+            <h3 className="mb-5 text-sm font-semibold tracking-wide text-white/90 uppercase">
               Support Us
             </h3>
             <p className="mb-4 text-sm text-gray-400">
