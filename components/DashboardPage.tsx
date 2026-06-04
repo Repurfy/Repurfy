@@ -24,6 +24,46 @@ import { useEffect, useState } from 'react'
 import { JoyrideTooltip } from '@/components/JoyrideTooltip'
 import { toast } from 'react-toastify'
 
+// ── Skeleton shimmer pieces ─────────────────────────────────────────────────────────────
+const Sk = ({ className = '' }: { className?: string }) => (
+  <div className={`animate-pulse rounded-lg bg-slate-700/50 ${className}`} />
+)
+
+const StatSkeleton = () => (
+  <div className="relative overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-800/60 p-4">
+    <div className="flex items-start justify-between">
+      <div className="space-y-2.5 flex-1">
+        <Sk className="h-3 w-24" />
+        <Sk className="h-7 w-16" />
+        <Sk className="h-2.5 w-28" />
+      </div>
+      <Sk className="h-9 w-9 rounded-xl" />
+    </div>
+  </div>
+)
+
+const HeroSkeleton = () => (
+  <div className="relative rounded-2xl border border-slate-700/60 bg-slate-800/60 p-6 sm:p-8">
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="space-y-3 flex-1">
+        <Sk className="h-5 w-24 rounded-full" />
+        <Sk className="h-8 w-64" />
+        <Sk className="h-3.5 w-48" />
+        <div className="mt-4 w-full max-w-xs space-y-1.5">
+          <div className="flex justify-between">
+            <Sk className="h-2.5 w-20" />
+            <Sk className="h-2.5 w-16" />
+          </div>
+          <Sk className="h-1.5 w-full rounded-full" />
+        </div>
+      </div>
+      <div className="flex gap-3">
+        <Sk className="h-9 w-28 rounded-xl" />
+      </div>
+    </div>
+  </div>
+)
+
 const container: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -60,9 +100,10 @@ const DashboardPage = () => {
   const firstName = userData?.name?.split(' ')[0] || 'Guest User'
 
   const totalCredits = userData?.plan === 'free' ? 30 : userData?.plan === 'creator' ? 130 : 300
+  const creditsUsed = totalCredits - (userData?.creditsRemaining ?? totalCredits)
 
   const creditUsagePercent = userData
-    ? Math.min(((totalCredits - userData.creditsRemaining) / totalCredits) * 100, 100)
+    ? Math.min((creditsUsed / totalCredits) * 100, 100)
     : 0
 
   const timeSaved = (userData?.totalUsage ?? 0) * 15
@@ -213,9 +254,9 @@ const DashboardPage = () => {
 
     const interval = setInterval(async () => {
       attempts++
-      await refreshUser()// re-fetch user data from your backend
+      const updatedUser = await refreshUser()// re-fetch user data from your backend
 
-      if (userData?.plan !== 'free' || attempts >= MAX_ATTEMPTS) {
+      if (updatedUser?.plan !== 'free' || attempts >= MAX_ATTEMPTS) {
         clearInterval(interval)
         setIsSyncing(false)
         toast.success('Plan activated successfully!')
@@ -263,62 +304,96 @@ const DashboardPage = () => {
         tooltipComponent={JoyrideTooltip}
         onEvent={handleJoyrideCallback}
         styles={{
-          beaconInner: {
-            backgroundColor: '#ffffff',
-            borderColor: '#ffffff',
-          },
-          beaconOuter: {
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-            borderColor: 'rgba(255, 255, 255, 0.4)',
-          },
+          beaconInner: { backgroundColor: '#ffffff', borderColor: '#ffffff' },
+          beaconOuter: { backgroundColor: 'rgba(255,255,255,0.1)', borderColor: 'rgba(255,255,255,0.4)' },
         }}
       />
 
-      <motion.div variants={container} initial="hidden" animate="visible" className="space-y-6 pb-10">
-        {/* ── Hero greeting ── */}
-        <motion.div
-          variants={item}
-          className="relative rounded-2xl border border-slate-700/60 bg-slate-800/60 p-6 sm:p-8"
-        >
-          {/* Background glow */}
-          <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
-            <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-teal-500/10 blur-3xl" />
-            <div className="absolute -bottom-10 left-1/3 h-40 w-40 rounded-full bg-violet-500/10 blur-2xl" />
+      {/* ── Loading skeleton ── */}
+      {loading ? (
+        <div className="space-y-6 pb-10">
+          <HeroSkeleton />
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            {[1, 2, 3, 4].map((i) => <StatSkeleton key={i} />)}
           </div>
-
-          <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <div className="mb-2 flex items-center gap-2">
-                <span className="rounded-lg border border-teal-500/20 bg-teal-500/10 px-3 -ml-1.5 py-1 text-xs font-semibold text-teal-400 capitalize">
-                  {loading ? '...' : `${userData?.plan ?? 'Free'} Plan`}
-                </span>
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+            {/* Recent Activity skeleton */}
+            <div className="rounded-2xl border border-slate-700/60 bg-slate-800/60 p-5 lg:col-span-2 space-y-4">
+              <div className="flex items-center justify-between">
+                <Sk className="h-4 w-32" />
+                <Sk className="h-3.5 w-16" />
               </div>
-              <h1 className="text-2xl font-bold  text-white sm:text-3xl">
-                Welcome back, {loading ? '...' : firstName}! 👋
-              </h1>
-              <p className="mt-1.5 text-[14px] font-ai text-slate-400">
-                {loading
-                  ? 'Loading your stats...'
-                  : userData?.creditsRemaining === 0
+              <div className="space-y-3">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="flex items-center gap-3 rounded-xl border border-slate-700/40 p-3">
+                    <Sk className="h-14 w-14 shrink-0 rounded-xl" />
+                    <div className="flex-1 space-y-2">
+                      <Sk className="h-3.5 w-3/4" />
+                      <Sk className="h-2.5 w-1/2" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Quick Actions skeleton */}
+            <div className="rounded-2xl border border-slate-700/60 bg-slate-800/60 p-5 space-y-4">
+              <Sk className="h-4 w-28" />
+              <div className="space-y-2.5">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="flex items-center gap-3 rounded-xl border border-slate-700/40 p-3">
+                    <Sk className="h-8 w-8 rounded-lg" />
+                    <Sk className="h-3.5 flex-1" />
+                    <Sk className="h-3 w-3" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <motion.div variants={container} initial="hidden" animate="visible" className="space-y-6 pb-10">
+          {/* ── Hero greeting ── */}
+          <motion.div
+            variants={item}
+            className="relative rounded-2xl border border-slate-700/60 bg-slate-800/60 p-6 sm:p-8"
+          >
+            {/* Background glow */}
+            <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
+              <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-teal-500/10 blur-3xl" />
+              <div className="absolute -bottom-10 left-1/3 h-40 w-40 rounded-full bg-violet-500/10 blur-2xl" />
+            </div>
+
+            <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <div className="mb-2 flex items-center gap-2">
+                  <span className="rounded-lg border border-teal-500/20 bg-teal-500/10 px-3 -ml-1.5 py-1 text-xs font-semibold text-teal-400 capitalize">
+                    {`${userData?.plan ?? 'Free'} Plan`}
+                </span>
+                </div>
+                <h1 className="text-2xl font-bold text-white sm:text-3xl">
+                  Welcome back, {firstName}! 👋
+                </h1>
+                <p className="mt-1.5 text-[14px] font-ai text-slate-400">
+                  {userData?.creditsRemaining === 0
                     ? "You're out of credits. Upgrade to keep creating!"
                     : `You have ${userData?.creditsRemaining} credits remaining. Keep creating!`}
-              </p>
+                </p>
 
               {/* Credit progress bar */}
               {userData && (
                 <div className="mt-4 w-full font-ai max-w-xs">
                   <div className="mb-1.5 flex items-center justify-between text-xs text-slate-400">
                     <span>Credits used</span>
-                    <span>{userData.totalUsage*10} / {totalCredits}</span>
+                    <span>{creditsUsed} / {totalCredits}</span>
                   </div>
                   <div className="h-1.5 w-full rounded-full bg-slate-700">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${creditUsagePercent}%` }}
                       transition={{ duration: 1, ease: 'easeOut', delay: 0.5 }}
-                      className={`h-1.5 rounded-full ${creditUsagePercent < 20
+                      className={`h-1.5 rounded-full ${creditUsagePercent > 80
                         ? 'bg-red-500'
-                        : creditUsagePercent < 40
+                        : creditUsagePercent > 60
                           ? 'bg-orange-500'
                           : 'bg-teal-500'
                         }`}
@@ -351,12 +426,12 @@ const DashboardPage = () => {
                   </Button>
                 </Link>
               </div>
+              </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
 
-        {/* ── Stats grid ── */}
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {/* ── Stats grid ── */}
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {stats.map((stat) => {
             const Icon = stat.icon
             return (
@@ -521,8 +596,9 @@ const DashboardPage = () => {
           </motion.div>
 
 
-        </div>
-      </motion.div>
+          </div>
+        </motion.div>
+      )}
     </>
   )
 }

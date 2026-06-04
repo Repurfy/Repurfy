@@ -18,7 +18,7 @@ export default function CreateContentPage() {
   const router = useRouter()
 
 
-  const hasNoCredits = userData !== null && userData.creditsRemaining === 0
+  const hasNoCredits = userData !== null && userData.creditsRemaining < 5
 
   return (
     <div>
@@ -59,11 +59,11 @@ export default function CreateContentPage() {
                 style={{ color: 'var(--text-primary)', letterSpacing: '-0.02em' }}
                 className="text-lg font-semibold"
               >
-                You&apos;re out of credits
+                Insufficient credits
               </h2>
               <p style={{ color: 'var(--text-secondary)' }} className="text-sm leading-relaxed">
-                You&apos;ve used all your available credits. Upgrade your plan to continue
-                repurposing content.
+                Generating content costs 5 credits, but you only have {userData.creditsRemaining} remaining.
+                Upgrade your plan or top up to continue repurposing content.
               </p>
             </div>
 

@@ -490,30 +490,23 @@
 // export default AddImageForm
 
 import { Button } from './ui/button'
-import { ImagePlus, X, Sparkles, Loader2 } from 'lucide-react'
+import { ImagePlus, X, Sparkles, Loader2, Lock } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useAuth } from '@clerk/nextjs'
 import axios from 'axios'
 import Image from 'next/image'
 
-interface FormDataType {
-  title: string
-  blogUrl: string
-  photoUrl: string
-  platforms: string[]
-  tone: string
-  audience: string[]
-  keywords: string[]
-}
+import { FormDataType } from './CreatePostForm'
 
 interface Props {
   formData: FormDataType
   setFormData: React.Dispatch<React.SetStateAction<FormDataType>>
   onNext: () => void
   onBack: () => void
+  isPaid?: boolean
 }
 
-const AddImageForm = ({ onNext, onBack, formData, setFormData }: Props) => {
+const AddImageForm = ({ onNext, onBack, formData, setFormData, isPaid = false }: Props) => {
   const promptRef = useRef<HTMLTextAreaElement>(null)
   const fileRef = useRef<HTMLInputElement>(null)
   const [mode, setMode] = useState<'upload' | 'generate'>('upload')
@@ -671,7 +664,7 @@ const AddImageForm = ({ onNext, onBack, formData, setFormData }: Props) => {
       {/* Mode Toggle */}
       <div className="flex gap-2 rounded-xl p-1">
         <button
-          onClick={() => setMode('upload')} // 👈 no clearImage on tab switch
+          onClick={() => setMode('upload')}
           className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border-2 py-2 text-sm font-medium transition-all ${mode === 'upload'
             ? 'bg-teal-500 text-white shadow'
             : 'hover:text-slate-2000 bg-slate-900/60 text-slate-400'
@@ -680,13 +673,21 @@ const AddImageForm = ({ onNext, onBack, formData, setFormData }: Props) => {
           <ImagePlus className="h-4 w-4" /> Upload Image
         </button>
         <button
-          onClick={() => setMode('generate')} // 👈 no clearImage on tab switch
-          className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border-2 py-2 text-sm font-medium transition-all ${mode === 'generate'
-            ? 'bg-teal-500 text-white shadow'
-            : 'bg-slate-900/60 text-slate-400 hover:text-slate-200'
-            }`}
+          onClick={() => { if (isPaid) setMode('generate') }}
+          className={`relative flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border-2 py-2 text-sm font-medium transition-all ${
+            !isPaid
+              ? 'cursor-not-allowed bg-slate-900/40 text-slate-600 opacity-70'
+              : mode === 'generate'
+                ? 'bg-teal-500 text-white shadow'
+                : 'bg-slate-900/60 text-slate-400 hover:text-slate-200'
+          }`}
         >
           <Sparkles className="h-4 w-4" /> Generate with AI
+          {!isPaid && (
+            <span className="ml-1 inline-flex items-center gap-0.5 rounded-md border border-amber-500/30 bg-amber-500/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-amber-400">
+              <Lock className="h-2 w-2" /> Pro
+            </span>
+          )}
         </button>
       </div>
 
@@ -724,58 +725,80 @@ const AddImageForm = ({ onNext, onBack, formData, setFormData }: Props) => {
       {/* Generate Mode */}
       {mode === 'generate' && (
         <div className="space-y-3">
-          {formData.photoUrl ? (
-            <PreviewImage />
-          ) : (
-            <div className="flex h-52 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-slate-700 bg-slate-900/40">
-              {generating ? (
-                <>
-                  <Loader2 className="h-8 w-8 animate-spin text-teal-400" />
-                  <p className="text-sm text-slate-400">Generating your image...</p>
-                  <p className="text-xs text-slate-500">This may take 10–30 seconds</p>
-                </>
-              ) : (
-                <>
-                  <Sparkles className="h-8 w-8 text-slate-600" />
-                  <p className="text-sm text-slate-500">Your generated image will appear here</p>
-                </>
-              )}
+          {!isPaid ? (
+            /* ── Locked state — matches AddContentForm URL lock UI exactly ── */
+            <div className="flex flex-col items-center justify-center rounded-xl border border-slate-700/60 bg-slate-900/60 p-8 text-center">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-teal-500/10 text-teal-400 ring-1 ring-teal-500/20">
+                <Lock className="h-5 w-5" />
+              </div>
+              <h3 className="mb-2 text-base font-semibold text-white">Unlock AI Image Generation</h3>
+              <p className="mb-6 max-w-sm text-xs leading-relaxed text-slate-400">
+                Generate stunning, on-brand images for your posts using AI.
+                Upgrade to Creator or Pro to unlock this feature.
+              </p>
+              <a
+                href="/pricing"
+                className="bg-brand-gradient hover:shadow-lg inline-flex items-center gap-2 rounded-xl px-6 py-2 text-xs font-semibold text-white transition-all hover:scale-[1.02]"
+              >
+                Upgrade Plan
+              </a>
             </div>
-          )}
-
-          {/* Prompt Input */}
-          <div className="flex gap-2">
-            <textarea
-              ref={promptRef}
-              rows={1}
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault()
-                  generateImage()
-                }
-              }}
-              placeholder="e.g., A futuristic workspace with glowing screens..."
-              className="flex-1 resize-none overflow-hidden rounded-lg border border-slate-700 bg-slate-900/60 px-4 py-2.5 text-sm text-white transition-all outline-none placeholder:text-slate-500 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/30"
-            />
-            <Button
-              onClick={generateImage}
-              disabled={generating || !prompt.trim()}
-              className="shrink-0 self-end rounded-xl bg-teal-500 px-4 text-white hover:bg-teal-600 disabled:opacity-40"
-            >
-              {generating ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <>
+              {formData.photoUrl ? (
+                <PreviewImage />
               ) : (
-                <Sparkles className="h-4 w-4" />
+                <div className="flex h-52 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-slate-700 bg-slate-900/40">
+                  {generating ? (
+                    <>
+                      <Loader2 className="h-8 w-8 animate-spin text-teal-400" />
+                      <p className="text-sm text-slate-400">Generating your image...</p>
+                      <p className="text-xs text-slate-500">This may take 10–30 seconds</p>
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="h-8 w-8 text-slate-600" />
+                      <p className="text-sm text-slate-500">Your generated image will appear here</p>
+                    </>
+                  )}
+                </div>
               )}
-            </Button>
-          </div>
 
-          {error && <p className="text-xs text-red-400">{error}</p>}
-          <p className="text-xs text-slate-500">
-            💡 Describe the image you want • Press Enter to generate
-          </p>
+              {/* Prompt Input */}
+              <div className="flex gap-2">
+                <textarea
+                  ref={promptRef}
+                  rows={1}
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault()
+                      generateImage()
+                    }
+                  }}
+                  placeholder="e.g., A futuristic workspace with glowing screens..."
+                  className="flex-1 resize-none overflow-hidden rounded-lg border border-slate-700 bg-slate-900/60 px-4 py-2.5 text-sm text-white transition-all outline-none placeholder:text-slate-500 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/30"
+                />
+                <Button
+                  onClick={generateImage}
+                  disabled={generating || !prompt.trim()}
+                  className="shrink-0 self-end rounded-xl bg-teal-500 px-4 text-white hover:bg-teal-600 disabled:opacity-40"
+                >
+                  {generating ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Sparkles className="h-4 w-4" />
+                  )}
+                </Button>
+              </div>
+
+              {error && <p className="text-xs text-red-400">{error}</p>}
+              <p className="text-xs text-slate-500">
+                💡 Describe the image you want • Press Enter to generate
+              </p>
+            </>
+          )}
         </div>
       )}
 

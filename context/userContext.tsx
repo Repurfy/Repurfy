@@ -5,12 +5,20 @@ import axios from 'axios'
 import { useAuth } from '@clerk/nextjs'
 import { handleApiError } from '@/utils/handleAxiosToastErrors'
 
+interface BrandDefaults {
+  tone: string
+  audience: string[]
+  keywords: string[]
+  defaultCta: string
+}
+
 interface UserData {
   name: string
   email: string
   plan: string
   creditsRemaining: number
   totalUsage: number
+  brandDefaults?: BrandDefaults
 }
 
 interface ContentItem {
@@ -27,7 +35,7 @@ interface UserContextType {
   userData: UserData | null
   recentHistory: ContentItem[]
   loading: boolean
-  refreshUser: () => Promise<void>
+  refreshUser: () => Promise<UserData | undefined>
   refreshHistory: () => Promise<void>
 }
 
@@ -41,7 +49,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true)
 
 
-  const fetchUserProfile = async () => {
+  const fetchUserProfile = async (): Promise<UserData | undefined> => {
     try {
       const token = await getToken();
 
@@ -55,6 +63,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       );
 
       setUserData(res.data.data);
+      return res.data.data;
     } catch (error) {
       handleApiError(error);
       console.error("Profile Error:", error);
