@@ -50,11 +50,11 @@ const itemVariants: Variants = {
 
 const TONES = [
   { value: 'professional', label: 'Professional', emoji: '💼' },
-  { value: 'casual',       label: 'Casual',       emoji: '😊' },
-  { value: 'bold',         label: 'Bold',         emoji: '🔥' },
-  { value: 'friendly',     label: 'Friendly',     emoji: '👋' },
-  { value: 'witty',        label: 'Witty',        emoji: '😄' },
-  { value: 'authoritative',label: 'Authoritative',emoji: '📢' },
+  { value: 'casual', label: 'Casual', emoji: '😊' },
+  { value: 'bold', label: 'Bold', emoji: '🔥' },
+  { value: 'friendly', label: 'Friendly', emoji: '👋' },
+  { value: 'witty', label: 'Witty', emoji: '😄' },
+  { value: 'authoritative', label: 'Authoritative', emoji: '📢' },
 ]
 
 // ─── Reusable tag-input ───────────────────────────────────────────────────────
@@ -223,7 +223,7 @@ const Settings = () => {
         >
           <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/20 text-indigo-500">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-teal-500/20 text-teal-500">
                 <User className="h-7 w-7" />
               </div>
               <div>
@@ -271,7 +271,7 @@ const Settings = () => {
           {/* Header row */}
           <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/20 text-indigo-500">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-teal-500/20 text-teal-500">
                 <Cookie className="h-7 w-7" />
               </div>
               <div>
@@ -330,79 +330,78 @@ const Settings = () => {
                 💡 These values will be automatically pre-filled when you create new content. You can always override them per-generation.
               </div>
 
-          <div className="grid grid-cols-1 gap-6">
-            {/* Tone — same button grid as create page */}
-            <div className="space-y-2">
-              <label className="text-text-primary font-semibold">Default Brand Tone</label>
-              <p className="text-text-secondary text-xs">
-                This tone will be used as the default for all generated content
-              </p>
-              <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
-                {TONES.map((t) => {
-                  const active = t.value === tone
-                  return (
-                    <button
-                      key={t.value}
-                      type="button"
-                      onClick={() => setTone(t.value === tone ? '' : t.value)}
-                      className={`flex cursor-pointer flex-col items-center gap-1.5 rounded-xl border px-3 py-3 text-sm transition-all duration-200 ${
-                        active
-                          ? 'border-teal-500 bg-teal-500/10 text-white shadow-sm shadow-teal-500/10'
-                          : 'border-slate-200 bg-slate-50 text-slate-500 hover:border-slate-300 hover:bg-white hover:text-slate-700 dark:border-slate-700/60 dark:bg-slate-900/40 dark:text-slate-400 dark:hover:border-slate-600 dark:hover:text-slate-200'
-                      }`}
-                    >
-                      <span className="text-lg">{t.emoji}</span>
-                      <span className="text-[11px] font-medium leading-tight">{t.label}</span>
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
+              <div className="grid grid-cols-1 gap-6">
+                {/* Tone — same button grid as create page */}
+                <div className="space-y-2">
+                  <label className="text-text-primary font-semibold">Default Brand Tone</label>
+                  <p className="text-text-secondary text-xs">
+                    This tone will be used as the default for all generated content
+                  </p>
+                  <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
+                    {TONES.map((t) => {
+                      const active = t.value === tone
+                      return (
+                        <button
+                          key={t.value}
+                          type="button"
+                          onClick={() => setTone(t.value === tone ? '' : t.value)}
+                          className={`flex cursor-pointer flex-col items-center gap-1.5 rounded-xl border px-3 py-3 text-sm transition-all duration-200 ${active
+                            ? 'border-teal-500 bg-teal-500/10 text-white shadow-sm shadow-teal-500/10'
+                            : 'border-slate-200 bg-slate-50 text-slate-500 hover:border-slate-300 hover:bg-white hover:text-slate-700 dark:border-slate-700/60 dark:bg-slate-900/40 dark:text-slate-400 dark:hover:border-slate-600 dark:hover:text-slate-200'
+                            }`}
+                        >
+                          <span className="text-lg">{t.emoji}</span>
+                          <span className="text-[11px] font-medium leading-tight">{t.label}</span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
 
-            {/* Default CTA */}
-            <div className="space-y-2">
-              <label className="text-text-primary font-semibold">Default CTA / Keywords Phrase</label>
-              <Input
-                id="brand-cta-input"
-                value={defaultCta}
-                onChange={(e) => setDefaultCta(e.target.value)}
-                className="bg-surface-elevated text-text-primary placeholder:text-text-tertiary focus:ring-brand-teal border-border-subtle mt-1 w-full rounded-md border outline-none focus:ring-1 dark:bg-slate-900/60 dark:text-white dark:placeholder:text-slate-500"
-                placeholder="e.g., Follow for more insights"
-              />
-            </div>
+                {/* Default CTA */}
+                <div className="space-y-2">
+                  <label className="text-text-primary font-semibold">Default CTA / Keywords Phrase</label>
+                  <Input
+                    id="brand-cta-input"
+                    value={defaultCta}
+                    onChange={(e) => setDefaultCta(e.target.value)}
+                    className="bg-surface-elevated text-text-primary placeholder:text-text-tertiary focus:ring-brand-teal border-border-subtle mt-1 w-full rounded-md border outline-none focus:ring-1 dark:bg-slate-900/60 dark:text-white dark:placeholder:text-slate-500"
+                    placeholder="e.g., Follow for more insights"
+                  />
+                </div>
 
-            {/* Target Audience */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label className="text-text-primary font-semibold">Target Audience</label>
-                <span className="text-xs text-slate-400">Press Enter or comma to add</span>
-              </div>
-              <TagInput
-                tags={audience}
-                onAdd={(tag) => setAudience((p) => [...p, tag])}
-                onRemove={(tag) => setAudience((p) => p.filter((a) => a !== tag))}
-                placeholder="Entrepreneurs, marketers, content creators…"
-              />
-              <p className="text-text-secondary text-xs">
-                Add multiple audience segments as tags
-              </p>
-            </div>
+                {/* Target Audience */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-text-primary font-semibold">Target Audience</label>
+                    <span className="text-xs text-slate-400">Press Enter or comma to add</span>
+                  </div>
+                  <TagInput
+                    tags={audience}
+                    onAdd={(tag) => setAudience((p) => [...p, tag])}
+                    onRemove={(tag) => setAudience((p) => p.filter((a) => a !== tag))}
+                    placeholder="Entrepreneurs, marketers, content creators…"
+                  />
+                  <p className="text-text-secondary text-xs">
+                    Add multiple audience segments as tags
+                  </p>
+                </div>
 
-            {/* Keywords */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label className="text-text-primary font-semibold">Default Keywords</label>
-                <span className="text-xs text-slate-400">Press Enter or comma to add</span>
+                {/* Keywords */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-text-primary font-semibold">Default Keywords</label>
+                    <span className="text-xs text-slate-400">Press Enter or comma to add</span>
+                  </div>
+                  <TagInput
+                    tags={keywords}
+                    onAdd={(tag) => setKeywords((p) => [...p, tag])}
+                    onRemove={(tag) => setKeywords((p) => p.filter((k) => k !== tag))}
+                    placeholder="e.g., AI, productivity, SaaS…"
+                  />
+                </div>
               </div>
-              <TagInput
-                tags={keywords}
-                onAdd={(tag) => setKeywords((p) => [...p, tag])}
-                onRemove={(tag) => setKeywords((p) => p.filter((k) => k !== tag))}
-                placeholder="e.g., AI, productivity, SaaS…"
-              />
-            </div>
-          </div>
-          </>
+            </>
           )}
         </motion.div>
 

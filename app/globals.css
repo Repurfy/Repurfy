@@ -31,7 +31,7 @@ html{scroll-behavior:smooth}
 --muted:oklch(0.24 0.04 240);--muted-foreground:var(--text-secondary);
 --accent:var(--accent-teal-light);--accent-foreground:var(--text-primary);
 --destructive:var(--status-error);--destructive-foreground:oklch(0.99 0 0);
---border:var(--border-subtle);--input:var(--bg-secondary);--ring:var(--brand-teal);
+--border:var(--border-subtle);--input:var(--bg-secondary);--ring:var(--brand-teal);--radius:0.75rem;
 --chart-1:var(--brand-teal);--chart-2:var(--brand-blue);--chart-3:var(--brand-cyan);--chart-4:oklch(0.55 0.12 280);--chart-5:oklch(0.75 0.14 160);
 --sidebar:hsl(240 5.9% 10%);--sidebar-foreground:hsl(240 4.8% 95.9%);--sidebar-primary:hsl(224.3 76.3% 48%);
 --sidebar-primary-foreground:hsl(0 0% 100%);--sidebar-accent:hsl(240 3.7% 15.9%);
