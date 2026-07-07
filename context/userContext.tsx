@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import axios from 'axios'
 import { useAuth } from '@clerk/nextjs'
 import { handleApiError } from '@/utils/handleAxiosToastErrors'
@@ -49,7 +49,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true)
 
 
-  const fetchUserProfile = async (): Promise<UserData | undefined> => {
+  const fetchUserProfile = useCallback(async (): Promise<UserData | undefined> => {
     try {
       const token = await getToken();
 
@@ -68,9 +68,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       handleApiError(error);
       console.error("Profile Error:", error);
     }
-  };
+  }, [getToken]);
 
-  const fetchUserCreationHistory = async () => {
+  const fetchUserCreationHistory = useCallback(async () => {
     try {
       const token = await getToken();
 
@@ -88,9 +88,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       handleApiError(error);
       console.error("History Error:", error);
     }
-  };
+  }, [getToken]);
 
-  const fetchAllData = async () => {
+  const fetchAllData = useCallback(async () => {
     try {
       setLoading(true)
 
@@ -101,7 +101,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [fetchUserProfile, fetchUserCreationHistory])
 
   useEffect(() => {
     if (isLoaded) {
@@ -111,7 +111,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         setLoading(false)
       }
     }
-  }, [isLoaded, isSignedIn])
+  }, [isLoaded, isSignedIn, fetchAllData])
 
   return (
     <UserContext.Provider

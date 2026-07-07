@@ -189,7 +189,7 @@ const AddPreferencesForm = ({ onBack, formData, setFormData, isPaid = false }: P
   const [error, setError] = useState<string | null>(null)
   const { getToken } = useAuth()
   const router = useRouter()
-  const { userData } = useUser()
+  const { userData, refreshUser, refreshHistory } = useUser()
   const bd = userData?.brandDefaults
 
   // Track which fields are still matching the saved defaults (i.e. not yet overridden)
@@ -283,6 +283,9 @@ const AddPreferencesForm = ({ onBack, formData, setFormData, isPaid = false }: P
           data: res.data.data,
         })
       )
+
+      refreshUser()
+      refreshHistory()
 
       setFormData(EMPTY_FORM)
       router.push(`/results/${res.data.contentId}`)

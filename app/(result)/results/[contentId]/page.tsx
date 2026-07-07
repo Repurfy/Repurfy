@@ -483,6 +483,8 @@ const ResultsPage = () => {
             sessionStorage.removeItem('generatedContent')
             setLoading(false)
             fetchSourceDoc()
+            refreshUser()
+            refreshHistory()
             return
           }
         }

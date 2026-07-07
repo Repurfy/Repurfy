@@ -95,7 +95,7 @@ const DashboardPage = () => {
   const justUpgraded = searchParams.get('upgraded') === 'true'
   const [issyncing, setIsSyncing] = useState(false)
 
-  const { userData, loading, recentHistory, refreshUser } = useUser()
+  const { userData, loading, recentHistory, refreshUser, refreshHistory } = useUser()
 
   const firstName = userData?.name?.split(' ')[0] || 'Guest User'
 
@@ -241,6 +241,11 @@ const DashboardPage = () => {
       setIsReady(true);
     }
   }, [loading, userData]);
+
+  useEffect(() => {
+    refreshUser()
+    refreshHistory()
+  }, [refreshUser, refreshHistory])
 
   useEffect(() => {
     if (!justUpgraded) return
